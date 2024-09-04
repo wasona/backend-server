@@ -15,12 +15,12 @@ const db = pgp(connection);
 const router = Router();
 
 // Define a simple route
-router.get("/", (req: Request, res: Response) => {
+router.get("/api/hello", (req: Request, res: Response) => {
   res.send("Hello, World!");
 });
 
 // Test db connection
-router.get("/db", (req: Request, res: Response) => {
+router.get("/api/db", (req: Request, res: Response) => {
   db.any("SELECT VERSION();", [true])
     .then(function (data: any) {
       res.send(data);
@@ -31,11 +31,11 @@ router.get("/db", (req: Request, res: Response) => {
 });
 
 // You can define more routes here
-router.get("/about", (req: Request, res: Response) => {
+router.get("/api/about", (req: Request, res: Response) => {
   res.send("About us");
 });
 
-router.post("/data", (req: Request, res: Response) => {
+router.post("/api/data", (req: Request, res: Response) => {
   res.send(`You sent: ${JSON.stringify(req.body)}`);
 });
 
