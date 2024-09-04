@@ -29,10 +29,10 @@ router.get('/', (req: Request, res: Response) => {
 // Test db connection
 router.get('/db', (req: Request, res: Response) => {
     db.any('SELECT VERSION();', [true])
-    .then(function(data) {
+    .then(function(data: any) {
         res.send(data);
     })
-    .catch(function(error) {
+    .catch(function(error: any) {
         console.log('ERROR:', error)
     });
 });
