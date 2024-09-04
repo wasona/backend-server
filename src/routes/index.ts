@@ -5,7 +5,8 @@ import dotenv from 'dotenv';
 dotenv.config();  // Load environment variables from .env file
 const dbPword = process.env.DB_PWORD;  // Retrieve the environment variable
 
-const initOptions = {
+const pgp = require('pg-promise')();
+const connection = {
     host: 'localhost', // 'localhost' is the default;
     port: 5432, // 5432 is the default;
     database: 'backend_db',
@@ -16,8 +17,6 @@ const initOptions = {
     // see https://github.com/vitaly-t/pg-promise#library-de-initialization
     allowExitOnIdle: true
 };
-
-const pgp = require('pg-promise')(initOptions);
 const db = pgp(connection);
 
 const router = Router();
