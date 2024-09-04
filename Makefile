@@ -1,5 +1,8 @@
-up:
+build:
 	git pull
 	yarn install
-	yarn build
-	yarn run start
+	tsc
+up:
+	sudo systemctl start backend-server.service
+down:
+	sudo systemctl stop backend-server.service
