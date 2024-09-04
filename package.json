@@ -13,5 +13,8 @@
     "@types/node": "^22.5.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
