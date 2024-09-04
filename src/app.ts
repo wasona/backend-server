@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import routes from './routes'; // Import the routes
 
 const app = express();
-const port = 3000;
+const port = 6000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
