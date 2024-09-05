@@ -4,6 +4,10 @@ import express, { Request, Response } from "express"; // le web framework
 import router from "./controllers/index"; // import the default export 'router' at /src/controllers/index.ts
 import serverState from "./init/server_state_config"; // initialize and bring over server config
 
+/*
+ * Initialize the connection pool here.
+ */
+
 const pgp = require("pg-promise")(); // Import and initialize pg-promise library
 const connection = {
   // class method to get us the string from disparate loaded env. vars. hardcoding bad -jyh
@@ -13,7 +17,6 @@ const connection = {
   // not the case for ours; we'll keep our connections hot. -jyh
   allowExitOnIdle: false,
 };
-
 export const db = pgp(connection); // create and export the database connection pool to be used across the app
 
 // Initialize the Express application

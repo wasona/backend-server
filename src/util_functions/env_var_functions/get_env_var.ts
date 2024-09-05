@@ -11,6 +11,7 @@ export function getEnvVariable(name: string): string {
   return value;
 }
 
+// get .env string for DB_TYPE and make sure it's in the enum
 export function getDatabaseType(): DbType {
   const dbTypeStr = getEnvVariable("DB_TYPE").toLowerCase();
   switch (dbTypeStr) {
@@ -23,6 +24,7 @@ export function getDatabaseType(): DbType {
   }
 }
 
+// get .env string for HOST_PORT and check for validity
 // gonna take a while to get used to JS/TS stl function names -jyh
 export function getServerPort(): number {
   const serverPortStr = getEnvVariable("HOST_PORT");
