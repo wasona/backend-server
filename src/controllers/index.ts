@@ -15,7 +15,7 @@ const createRouter = (serverState: ServerState) => {
   });
 
   router.get("/iso-639/get-all", (req: Request, res: Response) => {
-    return getAllIso639(req, res);
+    return getAllIso639(req, res, serverState);
   });
 
   return router;
