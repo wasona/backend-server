@@ -7,7 +7,18 @@ const createRouter = (serverState: ServerState) => {
   const router = Router();
 
   router.get("/healthcheck", (req: Request, res: Response) => {
-    res.send(`${serverState.serverConfig.serverName} up and good to go!`);
+    const startTime = process.hrtime(); // Start timing
+
+    try {
+      res.send(`${serverState.serverConfig.serverName} up and good to go!`);
+    } catch (error) {
+      console.log("ERROR:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } finally {
+      const endTime = process.hrtime(startTime); // End timing
+      const durationMs = endTime[0] * 1000 + endTime[1] / 1e6; // Convert to milliseconds
+      console.log(`healthcheck took ${durationMs.toFixed(3)} ms`);
+    }
   });
 
   router.get("/healthcheck/db", (req: Request, res: Response) => {
