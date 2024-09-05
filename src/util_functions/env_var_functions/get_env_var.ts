@@ -11,13 +11,15 @@ export function getEnvVariable(name: string): string {
   return value;
 }
 
-// as keyof typeof DbType is fucked up -jyh
 export function getDatabaseType(): DbType {
   const dbTypeStr = getEnvVariable("DB_TYPE").toLowerCase();
-  if (dbTypeStr in DbType) {
-    return DbType[dbTypeStr as keyof typeof DbType];
-  } else {
-    throw new Error(`Invalid DB_TYPE value: ${dbTypeStr}`);
+  switch (dbTypeStr) {
+    case DbType.PostgreSQL:
+    case DbType.MySQL:
+    case DbType.SQLite:
+      return dbTypeStr as DbType;
+    default:
+      throw new Error(`Invalid DB_TYPE value: ${dbTypeStr}`);
   }
 }
 

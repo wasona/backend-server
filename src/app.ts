@@ -1,3 +1,5 @@
+const initStartTime = Date.now();
+
 import express, { Request, Response } from "express"; // le web framework
 import router from "./controllers/index"; // import the default export 'router' at /src/controllers/index.ts
 import serverState from "./init/server_state_config"; // initialize and bring over server config
@@ -28,7 +30,13 @@ app.use("/", router);
 
 // host port, server name, etc
 app.listen(serverState.serverConfig.hostPort, () => {
+  const initEndTime = Date.now();
+  const initDurationMs = initEndTime - initStartTime;
+  const initDurationSec = (initDurationMs / 1000).toFixed(2);
   console.log(
     `${serverState.serverConfig.serverName} is running on http://localhost:${serverState.serverConfig.hostPort}`,
+  );
+  console.log(
+    `Server initialized in ${initDurationMs} ms (${initDurationSec} s)`,
   );
 });
