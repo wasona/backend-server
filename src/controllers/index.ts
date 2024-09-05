@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
-import serverState from "../init/server_state_config";
 import { getDatabaseVersion } from "./healthcheck/db";
 import { getAllIso639 } from "./iso-639/get-iso-639";
+import { serverState } from "../app";
 
 const router = Router();
 

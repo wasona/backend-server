@@ -1,3 +1,5 @@
+import { Iso639 } from "../db_models/iso-639";
+
 // possible database types and their string equivalents. just lowercase everyting -jyh
 export enum DbType {
   PostgreSQL = "postgresql",
@@ -27,7 +29,9 @@ export class ServerConfig {
   }
 }
 
-// the ServerState will include the config as well as init-time loaded DB data and all sorts of stuff.
 export class ServerState {
-  constructor(public serverConfig: ServerConfig) {}
+  constructor(
+    public serverConfig: ServerConfig,
+    public iso639List: Iso639[],
+  ) {}
 }

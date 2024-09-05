@@ -30,11 +30,5 @@ const serverConfig = new ServerConfig(
   getEnvVariable("DB_NAME"),
   getServerPort(),
 );
+export default serverConfig;
 
-// let's load the ISO-639 table from DB. who knows, maybe there will be an expansion
-
-// ok, so the actual server state can contain a bunch of other shit apart from mere config.
-// data loaded in from the DB at server start, for example. -jyh
-const serverState = new ServerState(serverConfig);
-
-export default serverState;
