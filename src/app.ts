@@ -17,34 +17,8 @@ const connection = {
 };
 export const db = pgp(connection); // create and export the database connection pool to be used across the app
 
-export let iso639List: Iso639[] = [];
-
-// p ugly, should be put somewhere else i think
-db.any("SELECT * FROM v1.iso_639;")
-  .then((data: any[]) =>
-    data.map((item) => {
-      try {
-        return new Iso639(
-          item.iso_639_2,
-          item.iso_639_english_name,
-          item.iso_639_korean_name,
-          item.iso_639_1 || null,
-        );
-      } catch (error) {
-        console.log("Validation ERROR:", error);
-        throw new Error("Validation Error");
-      }
-    }),
-  )
-  .then((mappedData: any) => {
-    iso639List = mappedData;
-  })
-  .catch((error: any) => {
-    console.log("ERROR:", error);
-    throw new Error("Internal Server Error");
-  });
-
-export const serverState = createServerState(serverConfig, iso639List);
+const Iso639List = fetchIso639List(db);
+export const serverState = createServerState(serverConfig, Iso639List);
 
 // Initialize the Express application
 const app: express.Application = express();
@@ -59,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 import router from "./controllers/index"; // import the default export 'router' at /src/controllers/index.ts
 import { createServerState } from "./init/server_state";
 import { Iso639 } from "./models/db_models/iso-639";
+import { fetchIso639List } from "./init/init_from_db/iso_639";
 app.use("/", router);
 
 // host port, server name, etc
