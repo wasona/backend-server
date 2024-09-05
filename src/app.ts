@@ -1,6 +1,10 @@
 const initStartTime = Date.now();
 import express, { Request, Response } from "express"; // le web framework
 import serverConfig from "./init/server_config"; // initialize and bring over server config
+import router from "./controllers/index"; // import the default export 'router' at /src/controllers/index.ts
+import { createServerState } from "./init/server_state";
+import { Iso639 } from "./models/db_models/iso-639";
+import { fetchIso639List } from "./init/init_from_db/iso_639";
 
 /*
  * Initialize the connection pool here.
@@ -30,10 +34,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Use the router
-import router from "./controllers/index"; // import the default export 'router' at /src/controllers/index.ts
-import { createServerState } from "./init/server_state";
-import { Iso639 } from "./models/db_models/iso-639";
-import { fetchIso639List } from "./init/init_from_db/iso_639";
 app.use("/", router);
 
 // host port, server name, etc
