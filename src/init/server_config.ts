@@ -31,4 +31,3 @@ const serverConfig = new ServerConfig(
   getServerPort(),
 );
 export default serverConfig;
-

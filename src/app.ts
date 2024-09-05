@@ -1,50 +1,57 @@
-const initStartTime = Date.now();
-import express, { Request, Response } from "express"; // le web framework
+import express from "express"; // le web framework
 import serverConfig from "./init/server_config"; // initialize and bring over server config
 import router from "./controllers/index"; // import the default export 'router' at /src/controllers/index.ts
 import { createServerState } from "./init/server_state";
-import { Iso639 } from "./models/db_models/iso-639";
 import { fetchIso639List } from "./init/init_from_db/iso_639";
+import { ServerState } from "./models/app_models/server_state_model";
+import pgPromise from "pg-promise"; // Import pg-promise library
 
 /*
  * Initialize the connection pool here.
  */
-
-const pgp = require("pg-promise")(); // Import and initialize pg-promise library
+const initStartTime = Date.now();
+const pgp = pgPromise(); // Initialize pg-promise
 const connection = {
-  // class method to get us the string from disparate loaded env. vars. hardcoding bad -jyh
   connectionString: serverConfig.getPgDatabaseConnStr(),
-  // drops connections when idle.
-  // setting this to 'true' might be advantageous when there are a lot of backend servers vying for DB connections to relieve congestion.
-  // not the case for ours; we'll keep our connections hot. -jyh
   allowExitOnIdle: false,
 };
 export const db = pgp(connection); // create and export the database connection pool to be used across the app
 
-const Iso639List = fetchIso639List(db);
-export const serverState = createServerState(serverConfig, Iso639List);
+let serverState: ServerState;
 
-// Initialize the Express application
-const app: express.Application = express();
+const initializeServer = async () => {
+  try {
+    const iso639List = await fetchIso639List(db);
+    serverState = createServerState(serverConfig, iso639List);
 
-// Middleware to parse incoming JSON requests
-app.use(express.json());
+    // Initialize the Express application
+    const app: express.Application = express();
 
-// Middleware to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
-app.use(express.urlencoded({ extended: true }));
+    // Middleware to parse incoming JSON requests
+    app.use(express.json());
 
-// Use the router
-app.use("/", router);
+    // Middleware to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
+    app.use(express.urlencoded({ extended: true }));
 
-// host port, server name, etc
-app.listen(serverState.serverConfig.hostPort, () => {
-  const initEndTime = Date.now();
-  const initDurationMs = initEndTime - initStartTime;
-  const initDurationSec = (initDurationMs / 1000).toFixed(2);
-  console.log(
-    `${serverState.serverConfig.serverName} is running on http://localhost:${serverState.serverConfig.hostPort}`,
-  );
-  console.log(
-    `Server initialized in ${initDurationMs} ms (${initDurationSec} s)`,
-  );
-});
+    // Use the router; passing serverState to the routes
+    app.use("/", router(serverState));
+
+    // host port, server name, etc
+    app.listen(serverState.serverConfig.hostPort, () => {
+      const initEndTime = Date.now();
+      const initDurationMs = initEndTime - initStartTime;
+      const initDurationSec = (initDurationMs / 1000).toFixed(2);
+      console.log(
+        `${serverState.serverConfig.serverName} is running on http://localhost:${serverState.serverConfig.hostPort}`,
+      );
+      console.log(
+        `Server initialized in ${initDurationMs} ms (${initDurationSec} s)`,
+      );
+    });
+  } catch (error) {
+    console.error("Failed to initialize server state:", error);
+    process.exit(1); // Exit the process with an error code
+  }
+};
+
+initializeServer(); // Start the initialization process
