@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import { signup } from "./auth/signup";
 import { getDatabaseVersion } from "./healthcheck/db";
 import { getAllIso639 } from "./iso-639/get-iso-639";
 import { ServerState } from "../models/app_models/server_state_model"; // Adjust import if necessary
@@ -19,6 +20,10 @@ const createRouter = (serverState: ServerState) => {
       const durationMs = endTime[0] * 1000 + endTime[1] / 1e6; // Convert to milliseconds
       console.log(`healthcheck took ${durationMs.toFixed(3)} ms`);
     }
+  });
+
+  router.post("/auth/signup", (req: Request, res: Response) => {
+    return signup(req, res);
   });
 
   router.get("/healthcheck/db", (req: Request, res: Response) => {
