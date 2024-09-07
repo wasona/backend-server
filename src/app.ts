@@ -29,10 +29,8 @@ const initializeServer = async () => {
 
     // Middleware to parse incoming JSON requests
     app.use(express.json());
-
     // Middleware to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
     app.use(express.urlencoded({ extended: true }));
-
     // Use the router; passing serverState to the routes
     app.use("/", router(serverState));
 
