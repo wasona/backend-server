@@ -1,4 +1,4 @@
-import { Iso639 } from "../../models/db_models/iso-639";
+import { Iso639 } from "../../models/db/iso-639";
 
 export async function fetchIso639List(db: any): Promise<Iso639[]> {
   const startTime = Date.now();

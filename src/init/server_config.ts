@@ -8,7 +8,7 @@ import {
   ServerConfig,
   ServerState,
   DbType,
-} from "../models/app_models/server_state_model";
+} from "../models/app/server_state_model";
 
 // we're going to push as much of the utility functions out of the way into /src/util_functions
 import {

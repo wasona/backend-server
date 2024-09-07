@@ -3,7 +3,7 @@ import serverConfig from "./init/server_config"; // initialize and bring over se
 import router from "./controllers/index"; // import the default export 'router' at /src/controllers/index.ts
 import { createServerState } from "./init/server_state";
 import { fetchIso639List } from "./init/init_from_db/iso_639";
-import { ServerState } from "./models/app_models/server_state_model";
+import { ServerState } from "./models/app/server_state_model";
 import pgPromise from "pg-promise"; // Import pg-promise library
 
 /*
@@ -32,7 +32,6 @@ const initializeServer = async () => {
 
     // Middleware to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
     app.use(express.urlencoded({ extended: true }));
-    
 
     // Use the router; passing serverState to the routes
     app.use("/", router(serverState));

@@ -2,21 +2,23 @@ import { UUID } from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { z, ZodError } from "zod";
 
-const SignupRequestSchema = z.object({
-  user_invitee_id: z.string().uuid(),
-  user_authority_id: z.number(),
-  user_email: z.string().email(),
-  user_pw: z.string(),
-  user_name: z.string(),
-  user_phone: z.string(),
-  user_country: z.string().length(2), // bpchar(2)
-  user_verified: z.boolean(),
-  user_status: z.boolean(),
-  user_login_attempts_left: z.number(),
-  // user_created_at: z.date().default(new Date()),
-  // user_updated_at: z.date(),
-  user_subnational: z.string(),
-});
+const SignupRequestSchema = z
+  .object({
+    user_invitee_id: z.string().uuid(),
+    user_authority_id: z.number(),
+    user_email: z.string().email(),
+    user_pw: z.string(),
+    user_name: z.string(),
+    user_phone: z.string(),
+    user_country: z.string().length(2), // bpchar(2)
+    user_verified: z.boolean(),
+    user_status: z.boolean(),
+    user_login_attempts_left: z.number(),
+    // user_created_at: z.date().default(new Date()),
+    // user_updated_at: z.date(),
+    user_subnational: z.string(),
+  })
+  .strict();
 
 const validateSignupRequest = (
   req: Request,

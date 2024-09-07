@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { db } from "../../app";
-import { Iso639 } from "../../models/db_models/iso-639";
-import { ServerState } from "../../models/app_models/server_state_model";
+import { Iso639 } from "../../models/db/iso-639";
+import { ServerState } from "../../models/app/server_state_model";
 
 export function getAllIso639(
   req: Request,

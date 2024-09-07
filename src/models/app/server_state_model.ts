@@ -1,4 +1,4 @@
-import { Iso639 } from "../db_models/iso-639";
+import { Iso639 } from "../db/iso-639";
 
 // possible database types and their string equivalents. just lowercase everyting -jyh
 export enum DbType {

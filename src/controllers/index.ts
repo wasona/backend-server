@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
 import { signup } from "./auth/signup";
-import validateSignupRequest from "../models/app_models/auth_models/auth_models";
+import validateSignupRequest from "../models/app/auth/signup";
 import { getDatabaseVersion } from "./healthcheck/db";
 import { getAllIso639 } from "./iso-639/get-iso-639";
-import { ServerState } from "../models/app_models/server_state_model"; // Adjust import if necessary
+import { ServerState } from "../models/app/server_state_model"; // Adjust import if necessary
 
 const createRouter = (serverState: ServerState) => {
   const router = Router();
