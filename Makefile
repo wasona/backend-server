@@ -11,8 +11,3 @@ up:
 	sudo systemctl start backend-server.service
 down:
 	sudo systemctl stop backend-server.service
-dev:
-	git pull
-	yarn install
-	tsc
-	node dist/app.js
