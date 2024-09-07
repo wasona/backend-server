@@ -1,10 +1,16 @@
 import { Router, Request, Response } from "express";
 import { db } from "../../app";
+import fs from "fs";
+
+const query = fs.readFileSync(
+  "src/queries/healthcheck/select_version.sql",
+  "utf8",
+);
 
 export function getDatabaseVersion(req: Request, res: Response) {
   const startTime = process.hrtime(); // Start timing
 
-  db.one("SELECT VERSION();") // you use 'one' when only one row is expected to be returned
+  db.one(query) // you use 'one' when only one row is expected to be returned
     .then(function (data: any) {
       return res.json(data.version);
     })
