@@ -18,7 +18,7 @@ export function signup(req: Request, res: Response) {
 
   db.none(query, params)
     .then(function (data: any) {
-      return res.status(200).json({ message: "Signup successful" });
+      return res.status(200).json({ message: "Signup successful!" });
     })
     .catch(function (error: any) {
       console.log("ERROR:", error);
