@@ -15,15 +15,13 @@ export function signup(req: Request, res: Response) {
     req.body.user_country,
     req.body.user_subnational,
   ];
-  
+
   db.none(query, params)
     .then(function (data: any) {
-      return res.status(200);
+      return res.status(200).json({ message: "Signup successful" });
     })
     .catch(function (error: any) {
       console.log("ERROR:", error);
       return res.status(500).json({ error: "Internal Server Error" });
-    })
-    .finally(() => {});
-
+    });
 }
