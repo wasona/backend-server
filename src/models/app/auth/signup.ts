@@ -4,7 +4,7 @@ import { z, ZodError } from "zod";
 
 const SignupRequestSchema = z
   .object({
-    user_invitee_id: z.string().uuid(),
+    user_invitee_id: z.string().uuid().optional(),
     user_authority_id: z.number(),
     user_email: z.string().email(),
     user_pw: z.string(),
