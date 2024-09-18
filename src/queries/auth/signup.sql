@@ -1,4 +1,4 @@
-INSERT INTO users (
+INSERT INTO v1.users (
   user_invitee_id,
   user_authority_id,
   user_email,
