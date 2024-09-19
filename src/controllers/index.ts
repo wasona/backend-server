@@ -8,9 +8,9 @@ import { ServerState } from "../models/app/server_state_model"; // Adjust import
 const createRouter = (serverState: ServerState) => {
   const router = Router();
 
+  // basic server healthcheck
   router.get("/healthcheck", (req: Request, res: Response) => {
     const startTime = process.hrtime(); // Start timing
-
     try {
       res.send(`${serverState.serverConfig.serverName} up and good to go!`);
     } catch (error) {
@@ -23,6 +23,12 @@ const createRouter = (serverState: ServerState) => {
     }
   });
 
+  // database healthcheck
+  router.get("/healthcheck/db", (req: Request, res: Response) => {
+    return getDatabaseVersion(req, res);
+  });
+
+  // signup
   router.post(
     "/auth/signup",
     validateSignupRequest,
@@ -31,10 +37,7 @@ const createRouter = (serverState: ServerState) => {
     },
   );
 
-  router.get("/healthcheck/db", (req: Request, res: Response) => {
-    return getDatabaseVersion(req, res);
-  });
-
+  // get all iso-639 codes
   router.get("/iso-639/get-all", (req: Request, res: Response) => {
     return getAllIso639(req, res, serverState);
   });

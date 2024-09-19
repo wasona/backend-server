@@ -4,7 +4,7 @@ import { z, ZodError } from "zod";
 
 const SignupRequestSchema = z
   .object({
-    user_invitee_id: z.string().uuid().optional(),
+    user_invitee_id: z.string().uuid().optional(), // denote optional fields this way
     user_authority_id: z.number(),
     user_email: z.string().email(),
     user_pw: z.string(),
@@ -18,7 +18,7 @@ const SignupRequestSchema = z
     // user_updated_at: z.date(),
     user_subnational: z.string(),
   })
-  .strict();
+  .strict(); // denote rejection of unknown fields this way
 
 const validateSignupRequest = (
   req: Request,
