@@ -31,6 +31,9 @@ const initializeServer = async () => {
     app.use(express.json());
     // Middleware to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
     app.use(express.urlencoded({ extended: true }));
+    // Middleware to enable CORS
+    const cors = require('cors');
+    app.use(cors());
     // Use the router; passing serverState to the routes
     app.use("/", router(serverState));
 
