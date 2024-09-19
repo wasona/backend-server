@@ -1,6 +1,6 @@
-import { Iso639 } from "../../models/db/iso-639";
+import { Iso_639, Iso_639T } from "../../models/db/iso-639";
 
-export async function fetchIso639List(db: any): Promise<Iso639[]> {
+export async function fetchIso639List(db: any): Promise<Iso_639T[]> {
   const startTime = Date.now();
   let data;
   try {
@@ -16,21 +16,13 @@ export async function fetchIso639List(db: any): Promise<Iso639[]> {
   }
 
   const iso639List = data.map((item: any) => {
-    if (
-      typeof item.iso_639_2 !== "string" ||
-      typeof item.iso_639_english_name !== "string" ||
-      typeof item.iso_639_korean_name !== "string"
-    ) {
-      console.error("Item validation failed:", item);
+    const parseResult = Iso_639.safeParse(item);
+    if (!parseResult.success) {
+      console.error("Item validation failed:", parseResult.error);
       throw new Error("Validation Error");
     }
 
-    return new Iso639(
-      item.iso_639_2,
-      item.iso_639_english_name,
-      item.iso_639_korean_name,
-      item.iso_639_1 || null,
-    );
+    return parseResult.data;
   });
 
   const endTime = Date.now();

@@ -1,6 +1,6 @@
-import { Iso639 } from "../db/iso-639";
+import { z } from "zod";
 
-// possible database types and their string equivalents. just lowercase everyting -jyh
+// possible database types and their string equivalents. just lowercase everything -jyh
 export enum DbType {
   PostgreSQL = "postgresql",
   MySQL = "mysql",
@@ -29,9 +29,18 @@ export class ServerConfig {
   }
 }
 
+export const Iso_639 = z.object({
+  iso_639_2: z.string(),
+  iso_639_english_name: z.string(),
+  iso_639_korean_name: z.string(),
+  iso_639_1: z.string().nullable().optional(),
+});
+
+export type Iso_639T = z.infer<typeof Iso_639>;
+
 export class ServerState {
   constructor(
     public serverConfig: ServerConfig,
-    public iso639List: Iso639[],
+    public iso639List: Iso_639T[],
   ) {}
 }
