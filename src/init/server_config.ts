@@ -15,7 +15,7 @@ import {
   getDatabaseType,
   getEnvVariable,
   getServerPort,
-} from "../util_functions/env_var_functions/get_env_var";
+} from "../utils/env_var/get_env_var";
 
 // holy fuddles, there's no way to have field names be visible in TS class constructors? -jyh
 // anyway, server config initializing here; ServerConfig class and DbType enum defined in
