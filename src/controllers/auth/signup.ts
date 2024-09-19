@@ -9,8 +9,6 @@ const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
 export async function signup(req: Request, res: Response) {
   try {
     const params = [
-      req.body.user_invitee_id,
-      req.body.user_authority_id,
       req.body.user_email,
       req.body.user_pw,
       req.body.user_name,
