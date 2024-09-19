@@ -8,4 +8,5 @@ INSERT INTO v1.users (
   user_country,
   user_subnational
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+RETURNING *;
