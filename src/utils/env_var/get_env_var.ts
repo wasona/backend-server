@@ -1,4 +1,4 @@
-import { DbType } from "../../models/app/server_state_model";
+import { DbType } from "@models/app/server_state_model";
 
 // TS is shockingly lax with error handling, but we're gonna do it anyway (hopefully) -jyh
 export function getEnvVariable(name: string): string {

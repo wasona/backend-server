@@ -2,6 +2,7 @@ build:
 	git pull
 	yarn install
 	yarn run tsc
+	yarn run tsc-alias
 dev:
 	make build
 	node dist/app.js

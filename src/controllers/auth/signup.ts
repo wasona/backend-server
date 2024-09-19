@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
-import { db } from "../../app";
+import { db } from "@app";
 import { z } from "zod";
 import fs from "fs";
-import { ApiResponse } from "../../models/app/response/response";
+import { ApiResponse } from "@models/app/response/response";
 
 const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
 

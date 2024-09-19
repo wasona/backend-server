@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
-import { db } from "../../app";
-import { ServerState } from "../../models/app/server_state_model";
+import { db } from "@app";
+import { ServerState } from "@models/app/server_state_model";
 
 export function getAllIso639(
   req: Request,

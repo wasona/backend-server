@@ -8,14 +8,14 @@ import {
   ServerConfig,
   ServerState,
   DbType,
-} from "../models/app/server_state_model";
+} from "@models/app/server_state_model";
 
 // we're going to push as much of the utility functions out of the way into /src/util_functions
 import {
   getDatabaseType,
   getEnvVariable,
   getServerPort,
-} from "../utils/env_var/get_env_var";
+} from "@utils/env_var/get_env_var";
 
 // holy fuddles, there's no way to have field names be visible in TS class constructors? -jyh
 // anyway, server config initializing here; ServerConfig class and DbType enum defined in

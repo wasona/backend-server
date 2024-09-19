@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { db } from "../../app";
+import { db } from "@app";
 import fs from "fs";
 
 const query = fs.readFileSync(
