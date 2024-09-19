@@ -1,11 +1,9 @@
 build:
 	git pull
 	yarn install
-	tsc
+	yarn run tsc
 dev:
-	git pull
-	yarn install
-	tsc
+	make build
 	node dist/app.js
 up:
 	sudo systemctl start backend-server.service
