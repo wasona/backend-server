@@ -9,17 +9,17 @@ const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
 export async function signup(req: Request, res: Response) {
   try {
     const params = [
-      req.body.user_email,
-      req.body.user_pw,
-      req.body.user_name,
-      req.body.user_phone,
-      req.body.user_country,
-      req.body.user_subnational,
+      req.body.userEmail,
+      req.body.userPw,
+      req.body.userName,
+      req.body.userPhone,
+      req.body.userCountry,
+      req.body.userSubnational,
     ];
 
     const data = await db.one(query, params);
     // discard password hash
-    const { user_pw, ...userWithoutPassword } = data;
+    const { userPw, ...userWithoutPassword } = data;
     const response: ApiResponse = {
       success: true,
       data: userWithoutPassword,
