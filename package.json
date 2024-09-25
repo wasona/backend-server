@@ -22,5 +22,11 @@
     "@types/node": "^22.5.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "build": "git pull && yarn install && yarn run tsc && yarn run tsc-alias",
+    "dev": "yarn run build && node dist/app.js",
+    "up": "sudo systemctl start backend-server.service",
+    "up": "sudo systemctl stop backend-server.service"
   }
 }
