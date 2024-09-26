@@ -4,12 +4,12 @@ import { z, ZodError } from "zod";
 
 const SignupRequestSchema = z
   .object({
-    user_email: z.string().email(),
-    user_pw: z.string(),
-    user_name: z.string(),
-    user_phone: z.string(),
-    user_country: z.string().length(2), // bpchar(2)
-    user_subnational: z.string(),
+    userEmail: z.string().email(),
+    userPw: z.string(),
+    userName: z.string(),
+    userPhone: z.string(),
+    userCountry: z.string().length(2), // bpchar(2)
+    userSubnational: z.string(),
   })
   .strict(); // denote rejection of unknown fields this way
 
