@@ -3,6 +3,7 @@ import { db } from "@app";
 import { z } from "zod";
 import fs from "fs";
 import { ApiResponse } from "@models/app/response/response";
+import { hashPassword } from "@utils/cryptographic/hash_password";
 
 const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
 
@@ -10,7 +11,7 @@ export async function signup(req: Request, res: Response) {
   try {
     const params = [
       req.body.userEmail,
-      req.body.userPw,
+      await hashPassword(req.body.userPw),
       req.body.userName,
       req.body.userPhone,
       req.body.userCountry,
