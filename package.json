@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "repository": "git@github.com:collaborative-webdev-proj/backend-server-test.git",
   "author": "AcipenserSturio <AcipenserSturio@users.noreply.github.com>",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "//": {
     "argon2": "password hashing",
     "cors": "allowing CORS",
