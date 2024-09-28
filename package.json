@@ -5,6 +5,16 @@
   "repository": "git@github.com:collaborative-webdev-proj/backend-server-test.git",
   "author": "AcipenserSturio <AcipenserSturio@users.noreply.github.com>",
   "license": "MIT",
+  "//": {
+    "argon2": "password hashing",
+    "cors": "allowing CORS",
+    "dotenv": "importing env variables",
+    "express": "app framework",
+    "pg": "db interaction",
+    "pg-promise": "asynchronous db interaction",
+    "zod": "schemas for validating types in json",
+    "tsc-alias": "build step for aliasing paths in imports using @"
+  },
   "dependencies": {
     "argon2": "^0.41.1",
     "cors": "^2.8.5",
@@ -12,9 +22,7 @@
     "express": "^4.19.2",
     "pg": "^8.12.0",
     "pg-promise": "^11.9.1",
-    "tsc-alias": "^1.8.10",
-    "zod": "^3.23.8",
-    "zod-express-middleware": "^1.4.0"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -22,6 +30,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^22.5.3",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.5.4"
   },
   "scripts": {
