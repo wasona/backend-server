@@ -26,10 +26,16 @@ export default async function signup(req: Request, res: Response) {
       });
     }
 
+    // TODO: Validate username
+
     // Validate phone number
     if (!verifyPhoneNumber(req.body.userPhone)) {
       return apiError(res, 400, "Phone validation failed");
     }
+
+    // TODO: Validate country code
+    // TODO: Validate subnational
+    // TODO: Check if user already exists
 
     // Normalise params
     const params = [

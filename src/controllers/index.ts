@@ -19,6 +19,11 @@ export default function createRouter(serverState: ServerState) {
   // signup
   router.post("/auth/signup", signup);
 
+  // TODO: confirmation email
+  // TODO: delete users if they don't reply within 24 hours
+  // TODO: email verification related controllers
+  // TODO: OAuth
+
   // get all iso-639 codes
   router.get("/iso-639/get-all", (req: Request, res: Response) => {
     getAllIso639(req, res, serverState);
