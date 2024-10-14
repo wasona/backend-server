@@ -2,13 +2,20 @@ import { Router, Request, Response } from "express";
 import { db } from "@app";
 import { z } from "zod";
 import fs from "fs";
-import { ApiResponse } from "@models/app/response/response";
+import { apiSuccess, apiError } from "@utils/api/respond";
 import { hashPassword } from "@utils/cryptographic/hash_password";
+import { verifyEmail } from "@utils/regex/verify_email";
 
 const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
 
 export async function signup(req: Request, res: Response) {
   try {
+    let [emailValid, emailRejectReason] = await verifyEmail(req.body.userEmail);
+    if (!emailValid) {
+      return apiError(res, 400, "Email validation failed", {
+        reason: emailRejectReason,
+      });
+    }
     const params = [
       req.body.userEmail,
       await hashPassword(req.body.userPw),
@@ -21,29 +28,17 @@ export async function signup(req: Request, res: Response) {
     const data = await db.one(query, params);
     // discard password hash
     const { userPw, ...userWithoutPassword } = data;
-    const response: ApiResponse = {
-      success: true,
-      data: userWithoutPassword,
-      message: "Signup successful!",
-    };
-    return res.status(200).json(response);
+    return apiSuccess(res, 200, "Signup successful", userWithoutPassword);
   } catch (error) {
     console.log("ERROR:", error);
-
     if (error instanceof z.ZodError) {
-      const response: ApiResponse = {
-        success: false,
-        error: { validationErrors: error.errors },
-        message: "Validation failed",
-      };
-      return res.status(400).json(response);
+      return apiError(res, 400, "Validation failed", {
+        validationErrors: error.errors,
+      });
     } else {
-      const response: ApiResponse = {
-        success: false,
-        error: { message: (error as Error).message },
-        message: "Internal Server Error",
-      };
-      return res.status(500).json(response);
+      return apiError(res, 500, "Internal Server Error", {
+        message: (error as Error).message,
+      });
     }
   }
 }
