@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { db } from "@app";
 import { z, ZodError } from "zod";
-import fs from "fs";
 import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
+import readQuery from "@utils/fs/read_query";
 import hashPassword from "@utils/normalize/hash_password";
 import normalizePhoneNumber from "@utils/normalize/phone_number";
 import validateEmail from "@utils/validate/email";
 import validatePhoneNumber from "@utils/validate/phone_number";
 import { SignupRequestSchema } from "@models/app/auth/signup";
-
-const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
+const signupQuery = readQuery("@queries/auth/signup.sql");
 
 export default async function signup(req: Request, res: Response) {
   try {
@@ -48,7 +47,7 @@ export default async function signup(req: Request, res: Response) {
     ];
 
     // Insert into database
-    const data = await db.one(query, params);
+    const data = await db.one(signupQuery, params);
 
     // Return without hashed password
     const { userPw, ...userWithoutPassword } = data;
