@@ -4,11 +4,6 @@
 
 import { phone } from "phone";
 
-export function verifyPhoneNumber(phoneNumber: string): boolean {
+export default function validatePhoneNumber(phoneNumber: string): boolean {
   return phone(phoneNumber).isValid;
-}
-
-export function normalizePhoneNumber(phoneNumber: string): string {
-  // Only use after verification.
-  return phone(phoneNumber).phoneNumber!;
 }

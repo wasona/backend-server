@@ -3,12 +3,10 @@ import { db } from "@app";
 import { z, ZodError } from "zod";
 import fs from "fs";
 import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
-import hashPassword from "@utils/cryptographic/hash_password";
-import verifyEmail from "@utils/regex/verify_email";
-import {
-  verifyPhoneNumber,
-  normalizePhoneNumber,
-} from "@utils/regex/verify_phone_number";
+import hashPassword from "@utils/normalize/hash_password";
+import normalizePhoneNumber from "@utils/normalize/phone_number";
+import validateEmail from "@utils/validate/email";
+import validatePhoneNumber from "@utils/validate/phone_number";
 import { SignupRequestSchema } from "@models/app/auth/signup";
 
 const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
@@ -19,7 +17,9 @@ export default async function signup(req: Request, res: Response) {
     SignupRequestSchema.parse(req.body);
 
     // Validate email
-    let [emailValid, emailRejectReason] = await verifyEmail(req.body.userEmail);
+    let [emailValid, emailRejectReason] = await validateEmail(
+      req.body.userEmail,
+    );
     if (!emailValid) {
       return apiError(res, 400, "Email validation failed", {
         emailRejectionReason: emailRejectReason,
@@ -29,7 +29,7 @@ export default async function signup(req: Request, res: Response) {
     // TODO: Validate username
 
     // Validate phone number
-    if (!verifyPhoneNumber(req.body.userPhone)) {
+    if (!validatePhoneNumber(req.body.userPhone)) {
       return apiError(res, 400, "Phone validation failed");
     }
 
