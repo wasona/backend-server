@@ -1,6 +1,6 @@
 import { Iso_639, Iso_639T } from "@models/db/iso-639";
 
-export async function fetchIso639List(db: any): Promise<Iso_639T[]> {
+export default async function fetchIso639List(db: any): Promise<Iso_639T[]> {
   const startTime = Date.now();
   let data;
   try {

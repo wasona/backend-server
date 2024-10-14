@@ -12,7 +12,7 @@ import {
 
 const query = fs.readFileSync("src/queries/auth/signup.sql", "utf8");
 
-export async function signup(req: Request, res: Response) {
+export default async function signup(req: Request, res: Response) {
   try {
     let [emailValid, emailRejectReason] = await verifyEmail(req.body.userEmail);
     if (!emailValid) {

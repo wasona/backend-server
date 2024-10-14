@@ -1,10 +1,11 @@
 import express from "express"; // le web framework
 import serverConfig from "@init/server_config"; // initialize and bring over server config
 import router from "@controllers/index"; // import the default export 'router' at /src/controllers/index.ts
-import { createServerState } from "@init/server_state";
-import { fetchIso639List } from "@init/init_from_db/iso_639";
+import createServerState from "@init/server_state";
+import fetchIso639List from "@init/init_from_db/iso_639";
 import { ServerState } from "@models/app/server_state_model";
 import pgPromise from "pg-promise"; // Import pg-promise library
+import profileTime from "@utils/performance/timing";
 
 /*
  * Initialize the connection pool here.
@@ -32,9 +33,10 @@ const initializeServer = async () => {
     // Middleware to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
     app.use(express.urlencoded({ extended: true }));
     // Middleware to enable CORS
-    const cors = require('cors');
+    const cors = require("cors");
     app.use(cors());
     // Use the router; passing serverState to the routes
+    app.use("/", profileTime);
     app.use("/", router(serverState));
 
     // host port, server name, etc

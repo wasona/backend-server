@@ -1,26 +1,19 @@
 import { Router, Request, Response } from "express";
 import { db } from "@app";
 import fs from "fs";
+import { apiErrorGeneric, apiSuccess } from "@utils/api/respond";
 
 const query = fs.readFileSync(
   "src/queries/healthcheck/select_version.sql",
   "utf8",
 );
 
-export function getDatabaseVersion(req: Request, res: Response) {
-  const startTime = process.hrtime(); // Start timing
-
+export default function getDatabaseVersion(req: Request, res: Response) {
   db.one(query) // you use 'one' when only one row is expected to be returned
     .then(function (data: any) {
-      return res.json(data.version);
+      return apiSuccess(res, 400, data.version);
     })
     .catch(function (error: any) {
-      console.log("ERROR:", error);
-      return res.status(500).json({ error: "Internal Server Error" });
-    })
-    .finally(() => {
-      const endTime = process.hrtime(startTime); // End timing
-      const durationMs = endTime[0] * 1000 + endTime[1] / 1e6; // Convert to milliseconds
-      console.log(`getDatabaseVersion took ${durationMs.toFixed(3)} ms`);
+      return apiErrorGeneric(res, error as Error);
     });
 }

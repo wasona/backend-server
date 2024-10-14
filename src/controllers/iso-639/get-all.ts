@@ -3,7 +3,7 @@ import { db } from "@app";
 import { ServerState } from "@models/app/server_state_model";
 import { apiSuccess, apiErrorGeneric } from "@utils/api/respond";
 
-export function getAllIso639(
+export default function getAllIso639(
   req: Request,
   res: Response,
   serverState: ServerState,
