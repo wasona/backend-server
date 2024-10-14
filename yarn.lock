@@ -961,6 +961,11 @@ pgpass@1.x:
   dependencies:
     split2 "^4.1.0"
 
+phone@^3.1.50:
+  version "3.1.50"
+  resolved "https://registry.yarnpkg.com/phone/-/phone-3.1.50.tgz#2b97ea469ff4669fe9091da8ddc3671fc2b7823e"
+  integrity sha512-TRmb2bX3sX+rrOrc8FRd8hmy4exoH2Lu3vjBP/dLgwwci1lv7DbjJ2iHMe7X4Hm8Pa0rJcfqTbq/O1vjU4NgxQ==
+
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
