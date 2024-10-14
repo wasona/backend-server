@@ -13,26 +13,18 @@ export default function createRouter(serverState: ServerState) {
 
   // basic server healthcheck
   router.get("/healthcheck/app", (req: Request, res: Response) => {
-    return healthcheckApp(req, res, serverState);
+    healthcheckApp(req, res, serverState);
   });
 
   // database healthcheck
-  router.get("/healthcheck/db", (req: Request, res: Response) => {
-    return getDatabaseVersion(req, res);
-  });
+  router.get("/healthcheck/db", getDatabaseVersion);
 
   // signup
-  router.post(
-    "/auth/signup",
-    validateSignupRequest,
-    (req: Request, res: Response) => {
-      return signup(req, res);
-    },
-  );
+  router.post("/auth/signup", validateSignupRequest, signup);
 
   // get all iso-639 codes
   router.get("/iso-639/get-all", (req: Request, res: Response) => {
-    return getAllIso639(req, res, serverState);
+    getAllIso639(req, res, serverState);
   });
 
   return router;
