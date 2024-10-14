@@ -2,35 +2,33 @@ import { Router, Request, Response } from "express";
 import { signup } from "@controllers/auth/signup";
 import validateSignupRequest from "@models/app/auth/signup";
 import { getDatabaseVersion } from "@controllers/healthcheck/db";
-import { getAllIso639 } from "@controllers/iso-639/get-iso-639";
+import { getAllIso639 } from "@controllers/iso-639/get-all";
 import { ServerState } from "@models/app/server_state_model"; // Adjust import if necessary
+import { time } from "@utils/performance/timing";
+import { apiSuccess, apiErrorGeneric } from "@utils/api/respond";
 
-const createRouter = (serverState: ServerState) => {
+export default function createRouter(serverState: ServerState) {
   const router = Router();
 
   // basic server healthcheck
-  router.get("/healthcheck", (req: Request, res: Response) => {
-    const startTime = process.hrtime(); // Start timing
+  router.get("/healthcheck", time, (req: Request, res: Response) => {
     try {
-      res.send(`${serverState.serverConfig.serverName} up and good to go!`);
+      const message = `${serverState.serverConfig.serverName} up and good to go!`;
+      return apiSuccess(res, 400, message);
     } catch (error) {
-      console.log("ERROR:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    } finally {
-      const endTime = process.hrtime(startTime); // End timing
-      const durationMs = endTime[0] * 1000 + endTime[1] / 1e6; // Convert to milliseconds
-      console.log(`healthcheck took ${durationMs.toFixed(3)} ms`);
+      apiErrorGeneric(res, error as Error);
     }
   });
 
   // database healthcheck
-  router.get("/healthcheck/db", (req: Request, res: Response) => {
+  router.get("/healthcheck/db", time, (req: Request, res: Response) => {
     return getDatabaseVersion(req, res);
   });
 
   // signup
   router.post(
     "/auth/signup",
+    time,
     validateSignupRequest,
     (req: Request, res: Response) => {
       return signup(req, res);
@@ -38,11 +36,9 @@ const createRouter = (serverState: ServerState) => {
   );
 
   // get all iso-639 codes
-  router.get("/iso-639/get-all", (req: Request, res: Response) => {
+  router.get("/iso-639/get-all", time, (req: Request, res: Response) => {
     return getAllIso639(req, res, serverState);
   });
 
   return router;
-};
-
-export default createRouter;
+}

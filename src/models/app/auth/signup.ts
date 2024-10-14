@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { z, ZodError } from "zod";
-import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
+import { apiError, apiErrorGeneric } from "@utils/api/respond";
 
 const SignupRequestSchema = z
   .object({
