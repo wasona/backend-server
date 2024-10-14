@@ -1,0 +1,34 @@
+name: Build app
+
+on:
+  push:
+    branches-ignore: ["dist"]
+  pull_request:
+    branches-ignore: ["dist"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Yarn
+        uses: threeal/setup-yarn-action@v2.0.0
+
+      - name: Build app
+        run: yarn run build
+
+      - name: Commit dist
+        if: github.event_name != 'pull_request'
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Built app for ${{ github.sha }}"
+          new_branch: dist
