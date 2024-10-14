@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
 import signup from "@controllers/auth/signup";
-import validateSignupRequest from "@models/app/auth/signup";
 import getDatabaseVersion from "@controllers/healthcheck/db";
 import getAllIso639 from "@controllers/iso-639/get-all";
 import { ServerState } from "@models/app/server_state_model"; // Adjust import if necessary
@@ -18,7 +17,7 @@ export default function createRouter(serverState: ServerState) {
   router.get("/healthcheck/db", getDatabaseVersion);
 
   // signup
-  router.post("/auth/signup", validateSignupRequest, signup);
+  router.post("/auth/signup", signup);
 
   // get all iso-639 codes
   router.get("/iso-639/get-all", (req: Request, res: Response) => {
