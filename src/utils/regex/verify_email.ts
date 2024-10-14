@@ -4,7 +4,9 @@
 
 import { validate } from "deep-email-validator";
 
-export async function verifyEmail(email: string): Promise<[boolean, string?]> {
+export default async function verifyEmail(
+  email: string,
+): Promise<[boolean, string?]> {
   let res = await validate(email);
   return [res.valid, res.reason];
 }

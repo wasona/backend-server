@@ -4,8 +4,6 @@ import validateSignupRequest from "@models/app/auth/signup";
 import getDatabaseVersion from "@controllers/healthcheck/db";
 import getAllIso639 from "@controllers/iso-639/get-all";
 import { ServerState } from "@models/app/server_state_model"; // Adjust import if necessary
-import profileTime from "@utils/performance/timing";
-import { apiSuccess, apiErrorGeneric } from "@utils/api/respond";
 import healthcheckApp from "@controllers/healthcheck/app";
 
 export default function createRouter(serverState: ServerState) {

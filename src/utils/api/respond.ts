@@ -1,4 +1,4 @@
-import { ApiResponse } from "@models/app/response/response";
+import ApiResponse from "@models/app/response/response";
 import { Response } from "express";
 
 // Helper functions to make api responses easier to read.

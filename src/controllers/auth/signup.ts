@@ -3,8 +3,8 @@ import { db } from "@app";
 import { z } from "zod";
 import fs from "fs";
 import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
-import { hashPassword } from "@utils/cryptographic/hash_password";
-import { verifyEmail } from "@utils/regex/verify_email";
+import hashPassword from "@utils/cryptographic/hash_password";
+import verifyEmail from "@utils/regex/verify_email";
 import {
   verifyPhoneNumber,
   normalizePhoneNumber,
