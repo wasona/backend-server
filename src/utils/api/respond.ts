@@ -30,3 +30,12 @@ export async function apiError(
   };
   return res.status(status).json(response);
 }
+
+export async function apiErrorGeneric(res: Response, error: Error) {
+  const response: ApiResponse = {
+    success: false,
+    message: "Internal Server Error",
+    error: { error: error.message },
+  };
+  return res.status(500).json(response);
+}

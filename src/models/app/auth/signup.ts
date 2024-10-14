@@ -1,10 +1,11 @@
 import { UUID } from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { z, ZodError } from "zod";
+import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
 
 const SignupRequestSchema = z
   .object({
-    userEmail: z.string().email(),
+    userEmail: z.string(),
     userPw: z.string(),
     userName: z.string(),
     userPhone: z.string(),
@@ -23,9 +24,9 @@ const validateSignupRequest = (
     next(); // If validation passes, proceed to the next middleware/route handler
   } catch (error) {
     if (error instanceof ZodError) {
-      res.status(400).json({ error: error.errors }); // Return a 400 response with validation errors
+      apiError(res, 400, "Schema validation error", { schema: error.errors }); // Return a 400 response with validation errors
     } else {
-      res.status(500).json({ error: "Internal Server Error" }); // Return a 500 response for other errors
+      apiErrorGeneric(res, error as Error);
     }
   }
 };
