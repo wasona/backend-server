@@ -17,7 +17,9 @@ export default function createRouter(serverState: ServerState) {
   router.get("/healthcheck/db", getDatabaseVersion);
 
   // signup
-  router.post("/auth/signup", signup);
+  router.post("/auth/signup", (req: Request, res: Response) => {
+    signup(req, res);
+  });
 
   // TODO: confirmation email
   // TODO: delete users if they don't reply within 24 hours
