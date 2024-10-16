@@ -3,7 +3,7 @@
 import dotenv from "dotenv";
 dotenv.config(); // load them all
 
-import { generateKeyPair, exportJWK, exportPKCS8 } from 'jose';
+import { generateKeyPair, exportJWK, exportPKCS8 } from "jose";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 // this is where the server configuration's shape is defined as a class, and the possible types of databases defined as an enum. -jyh
@@ -26,8 +26,14 @@ export function ensureKeyFiles() {
   const publicKeyPath = getEnvVariable("PUBLIC_KEY_PATH");
 
   // Extract the directory path from the file paths
-  const privateKeyDir = privateKeyPath.substring(0, privateKeyPath.lastIndexOf('/'));
-  const publicKeyDir = publicKeyPath.substring(0, publicKeyPath.lastIndexOf('/'));
+  const privateKeyDir = privateKeyPath.substring(
+    0,
+    privateKeyPath.lastIndexOf("/"),
+  );
+  const publicKeyDir = publicKeyPath.substring(
+    0,
+    publicKeyPath.lastIndexOf("/"),
+  );
 
   // Create directories if they do not exist
   if (!existsSync(privateKeyDir)) {
@@ -38,16 +44,16 @@ export function ensureKeyFiles() {
   }
 
   if (!existsSync(privateKeyPath) || !existsSync(publicKeyPath)) {
-    const { privateKey, publicKey } = generateKeyPairSync('rsa', {
+    const { privateKey, publicKey } = generateKeyPairSync("rsa", {
       modulusLength: 4096,
       publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem',
+        type: "spki",
+        format: "pem",
       },
       privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem',
-        cipher: 'aes-256-cbc',
+        type: "pkcs8",
+        format: "pem",
+        cipher: "aes-256-cbc",
         passphrase: getEnvVariable("PRIVATE_KEY_PASSPHRASE"),
       },
     });
@@ -56,16 +62,16 @@ export function ensureKeyFiles() {
     writeFileSync(privateKeyPath, privateKey);
     writeFileSync(publicKeyPath, publicKey);
 
-    console.log('New key pair generated and saved.');
+    console.log("New key pair generated and saved.");
   } else {
-    console.log('Key files already exist.');
+    console.log("Key files already exist.");
   }
 }
 
 // holy - there's no way to have field names be visible in TS class constructors? -jyh
 // anyway, server config initializing here; ServerConfig class and DbType enum defined in
 // /src/models/app_models
-const serverConfig = new ServerConfig(
+export const serverConfig = new ServerConfig(
   "WPP Backend Server v0.1.0",
   getDatabaseType(),
   getEnvVariable("DB_USER"),
@@ -77,5 +83,3 @@ const serverConfig = new ServerConfig(
   getKeyFromEnvVariable("PRIVATE_KEY_PATH"),
   getKeyFromEnvVariable("PUBLIC_KEY_PATH"),
 );
-
-export default serverConfig;

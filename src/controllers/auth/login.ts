@@ -1,18 +1,14 @@
-import readQuery from "@utils/fs/read-query";
+import { readQuery } from "@utils/fs/read-query";
 import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
 import { apiError, apiErrorGeneric, apiSuccess } from "@utils/api/respond";
 import { Users } from "@models/db/users";
 import { LoginRequestSchema } from "@models/app/auth/login";
-import validatePasswordHash from "@utils/validate/password";
+import { validatePasswordHash } from "@utils/validate/password";
 import { ZodError } from "zod";
 const findEmail = readQuery("@queries/auth/find-email.sql");
 
-export default async function login(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export async function login(req: Request, res: Response, next: NextFunction) {
   // #1 extract IP and user-agent from header to persist to log
   const ipAddr = req.headers["x-forwarded-for"];
   const userAgent = req.headers["user-agent"];

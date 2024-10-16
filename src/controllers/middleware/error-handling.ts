@@ -2,7 +2,7 @@ import { apiError, apiErrorGeneric } from "@utils/api/respond";
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
 
-export default function handleErrors(
+export function handleErrors(
   error: Error,
   req: Request,
   res: Response,

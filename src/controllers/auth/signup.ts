@@ -2,19 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
 import { z, ZodError } from "zod";
 import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
-import readQuery from "@utils/fs/read-query";
-import hashPassword from "@utils/normalize/hash-password";
-import normalizePhoneNumber from "@utils/normalize/phone-number";
-import validateEmail from "@utils/validate/email";
-import validatePhoneNumber from "@utils/validate/phone-number";
+import { readQuery } from "@utils/fs/read-query";
+import { hashPassword } from "@utils/normalize/hash-password";
+import { normalizePhoneNumber } from "@utils/normalize/phone-number";
+import { validateEmail } from "@utils/validate/email";
+import { validatePhoneNumber } from "@utils/validate/phone-number";
 import { SignupRequestSchema } from "@models/app/auth/signup";
 const signupQuery = readQuery("@queries/auth/signup.sql");
 
-export default async function signup(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export async function signup(req: Request, res: Response, next: NextFunction) {
   // Validate the request body
   SignupRequestSchema.parse(req.body);
 

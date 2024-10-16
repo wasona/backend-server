@@ -1,5 +1,5 @@
 // universal interface for all API responses
-export default interface ApiResponse {
+export interface ApiResponse {
   success: boolean;
   data?: Record<string, unknown>;
   message?: string;

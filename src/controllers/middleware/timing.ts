@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export default function profileTime(
+export function profileTime(
   req: Request,
   res: Response,
   next: NextFunction,

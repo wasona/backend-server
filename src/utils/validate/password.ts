@@ -3,7 +3,7 @@
 
 import argon2 from "argon2";
 
-export default async function validatePasswordHash(
+export async function validatePasswordHash(
   hash: string,
   password: string,
 ): Promise<boolean> {

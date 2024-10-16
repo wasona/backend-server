@@ -4,6 +4,6 @@
 
 import { phone } from "phone";
 
-export default function validatePhoneNumber(phoneNumber: string): boolean {
+export function validatePhoneNumber(phoneNumber: string): boolean {
   return phone(phoneNumber).isValid;
 }

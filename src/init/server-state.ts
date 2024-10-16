@@ -2,7 +2,7 @@ import { ServerConfig, ServerState } from "@models/app/server-state";
 import { z } from "zod";
 import { Language, LanguageT } from "@models/db/languages";
 
-export default function createServerState(
+export function createServerState(
   config: ServerConfig,
   isoList: LanguageT[],
 ): ServerState {

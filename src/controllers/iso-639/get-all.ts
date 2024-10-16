@@ -1,9 +1,8 @@
-import { Router, Request, Response, NextFunction } from "express";
-import { db } from "@app";
+import { Request, Response, NextFunction } from "express";
 import { ServerState } from "@models/app/server-state";
 import { apiSuccess, apiErrorGeneric } from "@utils/api/respond";
 
-export default async function getAllIso639(
+export async function getAllIso639(
   req: Request,
   res: Response,
   next: NextFunction,
