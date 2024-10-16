@@ -14,14 +14,6 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
   // Validate the request body
   SignupRequestSchema.parse(req.body);
 
-  // Validate email
-  let [emailValid, emailRejectReason] = await validateEmail(req.body.userEmail);
-  if (!emailValid) {
-    return apiError(res, 400, ApiResponseCode.EmailValidationFailed, {
-      emailRejectionReason: emailRejectReason,
-    });
-  }
-
   // TODO: Validate username
 
   // Validate phone number
