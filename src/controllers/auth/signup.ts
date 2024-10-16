@@ -15,48 +15,42 @@ export default async function signup(
   res: Response,
   next: NextFunction,
 ) {
-  try {
-    // Validate the request body
-    SignupRequestSchema.parse(req.body);
+  // Validate the request body
+  SignupRequestSchema.parse(req.body);
 
-    // Validate email
-    let [emailValid, emailRejectReason] = await validateEmail(
-      req.body.userEmail,
-    );
-    if (!emailValid) {
-      return apiError(res, 400, "Email validation failed", {
-        emailRejectionReason: emailRejectReason,
-      });
-    }
-
-    // TODO: Validate username
-
-    // Validate phone number
-    if (!validatePhoneNumber(req.body.userPhone)) {
-      return apiError(res, 400, "Phone validation failed");
-    }
-
-    // TODO: Validate country code
-    // TODO: Validate subnational
-    // TODO: Check if user already exists
-
-    // Normalise params
-    const params = [
-      req.body.userEmail,
-      await hashPassword(req.body.userPw),
-      req.body.userName,
-      normalizePhoneNumber(req.body.userPhone),
-      req.body.userCountry,
-      req.body.userSubnational,
-    ];
-
-    // Insert into database
-    const data = await db.one(signupQuery, params);
-
-    // Return without hashed password
-    const { userPw, ...userWithoutPassword } = data;
-    return apiSuccess(res, 200, "Signup successful", userWithoutPassword);
-  } catch (error) {
-    next(error);
+  // Validate email
+  let [emailValid, emailRejectReason] = await validateEmail(req.body.userEmail);
+  if (!emailValid) {
+    return apiError(res, 400, "Email validation failed", {
+      emailRejectionReason: emailRejectReason,
+    });
   }
+
+  // TODO: Validate username
+
+  // Validate phone number
+  if (!validatePhoneNumber(req.body.userPhone)) {
+    return apiError(res, 400, "Phone validation failed");
+  }
+
+  // TODO: Validate country code
+  // TODO: Validate subnational
+  // TODO: Check if user already exists
+
+  // Normalise params
+  const params = [
+    req.body.userEmail,
+    await hashPassword(req.body.userPw),
+    req.body.userName,
+    normalizePhoneNumber(req.body.userPhone),
+    req.body.userCountry,
+    req.body.userSubnational,
+  ];
+
+  // Insert into database
+  const data = await db.one(signupQuery, params);
+
+  // Return without hashed password
+  const { userPw, ...userWithoutPassword } = data;
+  return apiSuccess(res, 200, "Signup successful", userWithoutPassword);
 }

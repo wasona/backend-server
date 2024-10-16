@@ -8,10 +8,6 @@ export default async function healthcheckApp(
   next: NextFunction,
   serverState: ServerState,
 ) {
-  try {
-    const message = `${serverState.serverConfig.serverName} up and good to go!`;
-    return apiSuccess(res, 400, message);
-  } catch (error) {
-    next(error);
-  }
+  const message = `${serverState.serverConfig.serverName} up and good to go!`;
+  return apiSuccess(res, 400, message);
 }

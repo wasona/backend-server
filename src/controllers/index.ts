@@ -8,27 +8,25 @@ import login from "@controllers/auth/login";
 import profileTime from "./middleware/timing";
 
 export default function createRouter(serverState: ServerState) {
-  let stateless = (fn: Function) => {
-    return async (...args: [Request, Response, NextFunction]) => {
-      await fn(...args);
-    };
-  };
-  let stateful = (fn: Function) => {
-    return async (...args: [Request, Response, NextFunction]) => {
-      await fn(...args, serverState);
+  let handler = (fn: Function) => {
+    // Wrapper function needed for:
+    // * Making sure function returns void
+    // * Forwarding errors to the error handler
+    return (req: Request, res: Response, next: NextFunction) => {
+      Promise.resolve(fn(req, res, next, serverState)).catch(next);
     };
   };
 
   return (
     Router()
       // basic server healthcheck
-      .get("/healthcheck/app", stateful(healthcheckApp))
+      .get("/healthcheck/app", handler(healthcheckApp))
 
       // database healthcheck
-      .get("/healthcheck/db", stateless(getDatabaseVersion))
+      .get("/healthcheck/db", handler(getDatabaseVersion))
 
       // signup
-      .post("/auth/signup", stateless(signup))
+      .post("/auth/signup", handler(signup))
 
       // TODO: confirmation email
       // TODO: delete users if they don't reply within 24 hours
@@ -36,9 +34,9 @@ export default function createRouter(serverState: ServerState) {
       // TODO: OAuth
 
       // login
-      .post("/auth/login", stateless(login))
+      .post("/auth/login", handler(login))
 
       // get all iso-639 codes
-      .get("/iso-639/get-all", stateful(getAllIso639))
+      .get("/iso-639/get-all", handler(getAllIso639))
   );
 }
