@@ -20,8 +20,6 @@ import { generateKeyPairSync } from "crypto";
 
 // checks if key files are there or not and generates them using jose if not
 export function ensureKeyFiles() {
-  console.log("Initializing keys...");
-
   const privateKeyPath = getEnvVariable("PRIVATE_KEY_PATH");
   const publicKeyPath = getEnvVariable("PUBLIC_KEY_PATH");
 
@@ -71,15 +69,17 @@ export function ensureKeyFiles() {
 // holy - there's no way to have field names be visible in TS class constructors? -jyh
 // anyway, server config initializing here; ServerConfig class and DbType enum defined in
 // /src/models/app_models
-export const serverConfig = new ServerConfig(
-  "WPP Backend Server v0.1.0",
-  getDatabaseType(),
-  getEnvVariable("DB_USER"),
-  getEnvVariable("DB_PWORD"),
-  getEnvVariable("DB_HOST"),
-  getEnvVariable("DB_PORT"),
-  getEnvVariable("DB_NAME"),
-  getServerPort(),
-  getKeyFromEnvVariable("PRIVATE_KEY_PATH"),
-  getKeyFromEnvVariable("PUBLIC_KEY_PATH"),
-);
+export function createServerConfig() {
+  return new ServerConfig(
+    "WPP Backend Server v0.1.0",
+    getDatabaseType(),
+    getEnvVariable("DB_USER"),
+    getEnvVariable("DB_PWORD"),
+    getEnvVariable("DB_HOST"),
+    getEnvVariable("DB_PORT"),
+    getEnvVariable("DB_NAME"),
+    getServerPort(),
+    getKeyFromEnvVariable("PRIVATE_KEY_PATH"),
+    getKeyFromEnvVariable("PUBLIC_KEY_PATH"),
+  );
+}

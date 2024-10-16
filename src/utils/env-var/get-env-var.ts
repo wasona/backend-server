@@ -1,6 +1,6 @@
 import { ensureKeyFiles } from "@init/server-config";
 import { DbType } from "@models/app/server-state";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 
 // TS is shockingly lax with error handling, but we're gonna do it anyway (hopefully) -jyh
 export function getEnvVariable(name: string): string {
@@ -40,20 +40,12 @@ export function getServerPort(): number {
 // reads key from filepath as supplied by env. var (reads string, really)
 export function getKeyFromEnvVariable(envVarName: string): Uint8Array {
   const keyPath: string = getEnvVariable(envVarName);
-
-  try {
-    const key: string = readFileSync(keyPath, "utf8");
-    const secretKey = new TextEncoder().encode(key);
-
-    return secretKey;
-  } catch (err) {
-    console.error("Error reading file:", err);
-    console.log("Initializing keys...");
+  if (!existsSync(keyPath)) {
+    console.error("JWT key not found, initialising keys:");
     ensureKeyFiles();
-
-    const key: string = readFileSync(keyPath, "utf8");
-    const secretKey = new TextEncoder().encode(key);
-
-    return secretKey;
   }
+  const key = readFileSync(keyPath, "utf8");
+  const secretKey = new TextEncoder().encode(key);
+
+  return secretKey;
 }
