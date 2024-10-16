@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config(); // load them all
 
 import { generateKeyPair, exportJWK, exportPKCS8 } from 'jose';
-import { existsSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 // this is where the server configuration's shape is defined as a class, and the possible types of databases defined as an enum. -jyh
 import {
@@ -20,21 +20,45 @@ import {
   getKeyFromEnvVariable,
   getServerPort,
 } from "@utils/env_var/get_env_var";
+import { generateKeyPairSync } from "crypto";
 
 // checks if key files are there or not and generates them using jose if not
-export async function ensureKeyFiles() {
+export function ensureKeyFiles() {
+  console.log("Initializing keys...");
+
   const privateKeyPath = getEnvVariable("PRIVATE_KEY_PATH");
   const publicKeyPath = getEnvVariable("PUBLIC_KEY_PATH");
 
+  // Extract the directory path from the file paths
+  const privateKeyDir = privateKeyPath.substring(0, privateKeyPath.lastIndexOf('/'));
+  const publicKeyDir = publicKeyPath.substring(0, publicKeyPath.lastIndexOf('/'));
+
+  // Create directories if they do not exist
+  if (!existsSync(privateKeyDir)) {
+    mkdirSync(privateKeyDir, { recursive: true });
+  }
+  if (!existsSync(publicKeyDir)) {
+    mkdirSync(publicKeyDir, { recursive: true });
+  }
+
   if (!existsSync(privateKeyPath) || !existsSync(publicKeyPath)) {
-    const { privateKey, publicKey } = await generateKeyPair('RS256');
+    const { privateKey, publicKey } = generateKeyPairSync('rsa', {
+      modulusLength: 4096,
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem',
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem',
+        cipher: 'aes-256-cbc',
+        passphrase: getEnvVariable("PRIVATE_KEY_PASSPHRASE"),
+      },
+    });
 
-    const privateKeyExport = await exportPKCS8(privateKey);
-    const publicKeyExport = await exportPKCS8(publicKey);
-
-    // Save keys to files as plain strings
-    writeFileSync(privateKeyPath, privateKeyExport);
-    writeFileSync(publicKeyPath, publicKeyExport);
+    // Save keys to files
+    writeFileSync(privateKeyPath, privateKey);
+    writeFileSync(publicKeyPath, publicKey);
 
     console.log('New key pair generated and saved.');
   } else {

@@ -24,7 +24,6 @@ let serverState: ServerState;
 const initializeServer = async () => {
   try {
     const iso639List = await fetchIso639List(db);
-    await ensureKeyFiles();
 
     serverState = createServerState(serverConfig, iso639List);
 

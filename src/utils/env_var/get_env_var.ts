@@ -1,3 +1,4 @@
+import { ensureKeyFiles } from "@init/server_config";
 import { DbType } from "@models/app/server_state_model";
 import { readFile, readFileSync } from "fs";
 
@@ -37,16 +38,22 @@ export function getServerPort(): number {
 }
 
 // reads key from filepath as supplied by env. var (reads string, really)
-export function getKeyFromEnvVariable(envVarName: string): Uint8Array | undefined {
+export function getKeyFromEnvVariable(envVarName: string): Uint8Array {
   const keyPath: string = getEnvVariable(envVarName);
 
   try {
     const key: string = readFileSync(keyPath, 'utf8');
-    const secretKey: Uint8Array<ArrayBufferLike> = new TextEncoder().encode(key);
+    const secretKey = new TextEncoder().encode(key);
 
     return secretKey;
   } catch (err) {
     console.error('Error reading file:', err);
-    return undefined;
+    console.log("Initializing keys...");
+    ensureKeyFiles();
+
+    const key: string = readFileSync(keyPath, 'utf8');
+    const secretKey = new TextEncoder().encode(key);
+
+    return secretKey;
   }
 }
