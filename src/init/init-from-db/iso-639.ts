@@ -1,10 +1,10 @@
-import { Iso_639, Iso_639T } from "@models/db/iso-639";
+import { Language, LanguageT } from "@models/db/languages";
 
-export default async function fetchIso639List(db: any): Promise<Iso_639T[]> {
+export default async function fetchIso639List(db: any): Promise<LanguageT[]> {
   const startTime = Date.now();
   let data;
   try {
-    data = await db.any("SELECT * FROM v1.countries;");
+    data = await db.any("SELECT * FROM v1.languages;");
   } catch (error) {
     console.error("Database Query Error:", error);
     throw new Error("Internal Server Error");
@@ -16,7 +16,7 @@ export default async function fetchIso639List(db: any): Promise<Iso_639T[]> {
   }
 
   const iso639List = data.map((item: any) => {
-    const parseResult = Iso_639.safeParse(item);
+    const parseResult = Language.safeParse(item);
     if (!parseResult.success) {
       console.error("Item validation failed:", parseResult.error);
       throw new Error("Validation Error");
