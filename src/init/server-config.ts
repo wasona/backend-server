@@ -15,7 +15,7 @@ import {
   getEnvVariable,
   getKeyFromEnvVariable,
   getServerPort,
-} from "@utils/env-var/get-env-var";
+} from "@utils/fs/get-env-var";
 import { generateKeyPairSync } from "crypto";
 
 // checks if key files are there or not and generates them using jose if not
