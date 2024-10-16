@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express"; // le web framework
-import serverConfig from "@init/server-config"; // initialize and bring over server config
+import serverConfig, { ensureKeyFiles } from "@init/server-config"; // initialize and bring over server config
 import createRouter from "@controllers/index"; // import the default export 'router' at /src/controllers/index.ts
 import createServerState from "@init/server-state";
 import fetchIso639List from "@init/init-from-db/iso-639";
@@ -24,6 +24,7 @@ let serverState: ServerState;
 const initializeServer = async () => {
   try {
     const iso639List = await fetchIso639List(db);
+
     serverState = createServerState(serverConfig, iso639List);
 
     // Initialize the Express application
