@@ -19,27 +19,19 @@ import {
 import { generateKeyPairSync } from "crypto";
 
 // checks if key files are there or not and generates them using jose if not
+
+// create directories recursively along the path if they do not exist.
+function ensureDir(path: string) {
+  const dir = path.substring(0, path.lastIndexOf("/"));
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
+  return path;
+}
+
 export function ensureKeyFiles() {
-  const privateKeyPath = getEnvVariable("PRIVATE_KEY_PATH");
-  const publicKeyPath = getEnvVariable("PUBLIC_KEY_PATH");
-
-  // Extract the directory path from the file paths
-  const privateKeyDir = privateKeyPath.substring(
-    0,
-    privateKeyPath.lastIndexOf("/"),
-  );
-  const publicKeyDir = publicKeyPath.substring(
-    0,
-    publicKeyPath.lastIndexOf("/"),
-  );
-
-  // Create directories if they do not exist
-  if (!existsSync(privateKeyDir)) {
-    mkdirSync(privateKeyDir, { recursive: true });
-  }
-  if (!existsSync(publicKeyDir)) {
-    mkdirSync(publicKeyDir, { recursive: true });
-  }
+  const privateKeyPath = ensureDir(getEnvVariable("PRIVATE_KEY_PATH"));
+  const publicKeyPath = ensureDir(getEnvVariable("PUBLIC_KEY_PATH"));
 
   if (!existsSync(privateKeyPath) || !existsSync(publicKeyPath)) {
     const { privateKey, publicKey } = generateKeyPairSync("rsa", {
