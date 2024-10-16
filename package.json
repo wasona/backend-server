@@ -18,14 +18,17 @@
     "tsc-alias": "build step for aliasing paths in imports using @"
   },
   "dependencies": {
+    "@types/uuid": "^10.0.0",
     "argon2": "^0.41.1",
     "cors": "^2.8.5",
     "deep-email-validator": "^0.1.21",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "jose": "^5.9.4",
     "pg": "^8.12.0",
     "pg-promise": "^11.10.1",
     "phone": "^3.1.51",
+    "uuid": "^10.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
