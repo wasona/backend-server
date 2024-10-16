@@ -4,7 +4,7 @@ export default async function fetchIso639List(db: any): Promise<LanguageT[]> {
   const startTime = Date.now();
   let data;
   try {
-    data = await db.any("SELECT * FROM v1.countries;");
+    data = await db.any("SELECT * FROM v1.languages;");
   } catch (error) {
     console.error("Database Query Error:", error);
     throw new Error("Internal Server Error");
