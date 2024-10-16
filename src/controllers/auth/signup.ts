@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { db } from "@app";
 import { z, ZodError } from "zod";
 import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";

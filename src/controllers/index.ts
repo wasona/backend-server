@@ -4,6 +4,7 @@ import getDatabaseVersion from "@controllers/healthcheck/db";
 import getAllIso639 from "@controllers/iso-639/get-all";
 import { ServerState } from "@models/app/server_state_model"; // Adjust import if necessary
 import healthcheckApp from "@controllers/healthcheck/app";
+import login from "@controllers/auth/login";
 
 export default function createRouter(serverState: ServerState) {
   const router = Router();
@@ -25,6 +26,11 @@ export default function createRouter(serverState: ServerState) {
   // TODO: delete users if they don't reply within 24 hours
   // TODO: email verification related controllers
   // TODO: OAuth
+
+  // login
+  router.post("/auth/login", (req: Request, res: Response) => {
+    login(req, res);
+  });
 
   // get all iso-639 codes
   router.get("/iso-639/get-all", (req: Request, res: Response) => {
