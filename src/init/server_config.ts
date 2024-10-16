@@ -3,6 +3,9 @@
 import dotenv from "dotenv";
 dotenv.config(); // load them all
 
+import { generateKeyPair, exportJWK, exportPKCS8 } from 'jose';
+import { existsSync, writeFileSync } from "fs";
+
 // this is where the server configuration's shape is defined as a class, and the possible types of databases defined as an enum. -jyh
 import {
   ServerConfig,
@@ -19,7 +22,25 @@ import {
 } from "@utils/env_var/get_env_var";
 
 // checks if key files are there or not and generates them using jose if not
+async function ensureKeyFiles() {
+  const privateKeyPath = getEnvVariable("PRIVATE_KEY_PATH");
+  const publicKeyPath = getEnvVariable("PUBLIC_KEY_PATH");
 
+  if (!existsSync(privateKeyPath) || !existsSync(publicKeyPath)) {
+    const { privateKey, publicKey } = await generateKeyPair('RS256');
+
+    const privateKeyExport = await exportPKCS8(privateKey);
+    const publicKeyExport = await exportPKCS8(publicKey);
+
+    // Save keys to files as plain strings
+    writeFileSync(privateKeyPath, privateKeyExport);
+    writeFileSync(publicKeyPath, publicKeyExport);
+
+    console.log('New key pair generated and saved.');
+  } else {
+    console.log('Key files already exist.');
+  }
+}
 
 // holy - there's no way to have field names be visible in TS class constructors? -jyh
 // anyway, server config initializing here; ServerConfig class and DbType enum defined in
