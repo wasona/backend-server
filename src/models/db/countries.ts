@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const Countries = z.object({
   country_iso_3166_1_alpha3: z.string(),

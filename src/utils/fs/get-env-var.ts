@@ -1,6 +1,6 @@
 import { ensureKeyFiles } from "@init/server-config";
 import { DbType } from "@models/app/server-state";
-import { readFileSync, existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 
 // TS is shockingly lax with error handling, but we're gonna do it anyway (hopefully) -jyh
 export function getEnvVariable(name: string): string {

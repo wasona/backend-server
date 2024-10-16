@@ -1,5 +1,5 @@
-import { ApiResponseCode } from "@models/app/api/response-code";
 import { ApiResponse } from "@models/app/api/response";
+import { ApiResponseCode } from "@models/app/api/response-code";
 import { Response } from "express";
 
 // Helper functions to make api responses easier to read.

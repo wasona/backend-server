@@ -1,11 +1,10 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { login } from "@controllers/auth/login";
 import { signup } from "@controllers/auth/signup";
+import { healthcheckApp } from "@controllers/healthcheck/app";
 import { getDatabaseVersion } from "@controllers/healthcheck/db";
 import { getAllIso639 } from "@controllers/iso-639/get-all";
 import { ServerState } from "@models/app/server-state"; // Adjust import if necessary
-import { healthcheckApp } from "@controllers/healthcheck/app";
-import { login } from "@controllers/auth/login";
-import { profileTime } from "./middleware/timing";
+import { NextFunction, Request, Response, Router } from "express";
 
 export function createRouter(serverState: ServerState) {
   let handler = (fn: Function) => {

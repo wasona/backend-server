@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import { apiSuccess } from "@utils/api/respond";
 import { ServerState } from "@models/app/server-state";
+import { apiSuccess } from "@utils/api/respond";
+import { NextFunction, Request, Response } from "express";
 
 export async function healthcheckApp(
   req: Request,

@@ -1,11 +1,11 @@
-import { readQuery } from "@utils/fs/read-query";
-import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
-import { apiError, apiSuccess } from "@utils/api/respond";
-import { Users } from "@models/db/users";
-import { LoginRequestSchema } from "@models/app/auth/login";
-import { validatePasswordHash } from "@utils/validate/password";
 import { ApiResponseCode } from "@models/app/api/response-code";
+import { LoginRequestSchema } from "@models/app/auth/login";
+import { Users } from "@models/db/users";
+import { apiError, apiSuccess } from "@utils/api/respond";
+import { readQuery } from "@utils/fs/read-query";
+import { validatePasswordHash } from "@utils/validate/password";
+import { NextFunction, Request, Response } from "express";
 const findEmail = readQuery("@queries/auth/find-email.sql");
 
 export async function login(req: Request, res: Response, next: NextFunction) {

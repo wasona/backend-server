@@ -3,7 +3,6 @@
 import dotenv from "dotenv";
 dotenv.config(); // load them all
 
-import { generateKeyPair, exportJWK, exportPKCS8 } from "jose";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 // this is where the server configuration's shape is defined as a class, and the possible types of databases defined as an enum. -jyh

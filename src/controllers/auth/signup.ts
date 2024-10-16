@@ -1,13 +1,12 @@
-import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
-import { apiSuccess, apiError } from "@utils/api/respond";
+import { ApiResponseCode } from "@models/app/api/response-code";
+import { SignupRequestSchema } from "@models/app/auth/signup";
+import { apiError, apiSuccess } from "@utils/api/respond";
 import { readQuery } from "@utils/fs/read-query";
 import { hashPassword } from "@utils/normalize/hash-password";
 import { normalizePhoneNumber } from "@utils/normalize/phone-number";
-import { validateEmail } from "@utils/validate/email";
 import { validatePhoneNumber } from "@utils/validate/phone-number";
-import { SignupRequestSchema } from "@models/app/auth/signup";
-import { ApiResponseCode } from "@models/app/api/response-code";
+import { NextFunction, Request, Response } from "express";
 const signupQuery = readQuery("@queries/auth/signup.sql");
 
 export async function signup(req: Request, res: Response, next: NextFunction) {
