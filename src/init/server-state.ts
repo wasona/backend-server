@@ -1,13 +1,13 @@
 import { ServerConfig, ServerState } from "@models/app/server-state";
 import { z } from "zod";
-import { Iso_639, Iso_639T } from "@models/db/iso-639";
+import { Language, LanguageT } from "@models/db/languages";
 
 export default function createServerState(
   config: ServerConfig,
-  isoList: Iso_639T[],
+  isoList: LanguageT[],
 ): ServerState {
   // Validate the isoList against the Zod schema
-  const validatedIsoList = isoList.map((item) => Iso_639.parse(item));
+  const validatedIsoList = isoList.map((item) => Language.parse(item));
 
   const serverState: ServerState = {
     serverConfig: config,

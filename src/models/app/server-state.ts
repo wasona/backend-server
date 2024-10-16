@@ -1,3 +1,4 @@
+import { LanguageT } from "@models/db/languages";
 import { z } from "zod";
 
 // possible database types and their string equivalents. just lowercase everything -jyh
@@ -31,18 +32,9 @@ export class ServerConfig {
   }
 }
 
-export const Iso_639 = z.object({
-  iso_639_2: z.string(),
-  iso_639_english_name: z.string(),
-  iso_639_korean_name: z.string(),
-  iso_639_1: z.string().nullable().optional(),
-});
-
-export type Iso_639T = z.infer<typeof Iso_639>;
-
 export class ServerState {
   constructor(
     public serverConfig: ServerConfig,
-    public iso639List: Iso_639T[],
+    public iso639List: LanguageT[],
   ) {}
 }
