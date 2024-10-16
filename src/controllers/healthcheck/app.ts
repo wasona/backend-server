@@ -9,5 +9,5 @@ export async function healthcheckApp(
   serverState: ServerState,
 ) {
   const message = `${serverState.serverConfig.serverName} up and good to go!`;
-  return apiSuccess(res, 400, message);
+  return apiSuccess(res, 400, { message: message });
 }

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
-import { z, ZodError } from "zod";
 import { apiSuccess, apiError } from "@utils/api/respond";
 import { readQuery } from "@utils/fs/read-query";
 import { hashPassword } from "@utils/normalize/hash-password";
@@ -8,6 +7,7 @@ import { normalizePhoneNumber } from "@utils/normalize/phone-number";
 import { validateEmail } from "@utils/validate/email";
 import { validatePhoneNumber } from "@utils/validate/phone-number";
 import { SignupRequestSchema } from "@models/app/auth/signup";
+import { ApiResponseCode } from "@models/app/api/response-code";
 const signupQuery = readQuery("@queries/auth/signup.sql");
 
 export async function signup(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +17,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
   // Validate email
   let [emailValid, emailRejectReason] = await validateEmail(req.body.userEmail);
   if (!emailValid) {
-    return apiError(res, 400, "Email validation failed", {
+    return apiError(res, 400, ApiResponseCode.EmailValidationFailed, {
       emailRejectionReason: emailRejectReason,
     });
   }
@@ -26,7 +26,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
 
   // Validate phone number
   if (!validatePhoneNumber(req.body.userPhone)) {
-    return apiError(res, 400, "Phone validation failed");
+    return apiError(res, 400, ApiResponseCode.PhoneValidationFailed);
   }
 
   // TODO: Validate country code
@@ -48,5 +48,5 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
 
   // Return without hashed password
   const { userPw, ...userWithoutPassword } = data;
-  return apiSuccess(res, 200, "Signup successful", userWithoutPassword);
+  return apiSuccess(res, 200, userWithoutPassword);
 }

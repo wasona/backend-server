@@ -5,7 +5,8 @@ export function profileTime(req: Request, res: Response, next: NextFunction) {
   res.on("finish", () => {
     const endTime = process.hrtime(startTime); // End timing
     const durationMs = endTime[0] * 1000 + endTime[1] / 1e6; // Convert to milliseconds
-    console.log(`${req.route.path} took ${durationMs.toFixed(3)} ms`);
+    const path = req.route ? req.route.path : "unregistered path";
+    console.log(`${path} took ${durationMs.toFixed(3)} ms`);
   });
   next();
 }

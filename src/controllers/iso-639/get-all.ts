@@ -9,7 +9,7 @@ export async function getAllIso639(
   serverState: ServerState,
 ) {
   // Returning the JSON response with the list of Iso639 instances from serverState
-  return apiSuccess(res, 200, "ISO 639 codes found successfully", {
+  return apiSuccess(res, 200, {
     iso639List: serverState.iso639List,
   });
 }

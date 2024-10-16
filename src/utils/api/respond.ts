@@ -1,18 +1,23 @@
-import { ApiResponse } from "@models/app/response/response";
+import { ApiResponseCode } from "@models/app/api/response-code";
+import { ApiResponse } from "@models/app/api/response";
 import { Response } from "express";
 
 // Helper functions to make api responses easier to read.
 
+function codeName(code: ApiResponseCode) {
+  return ApiResponseCode[code];
+}
+
 export async function apiSuccess(
   res: Response,
   status: number,
-  message: string,
   data?: Record<string, unknown>,
 ) {
   const response: ApiResponse = {
     success: true,
     data: data,
-    message: message,
+    code: ApiResponseCode.Success,
+    codeName: codeName(ApiResponseCode.Success),
   };
   res.status(status).json(response);
 }
@@ -20,13 +25,14 @@ export async function apiSuccess(
 export async function apiError(
   res: Response,
   status: number,
-  message: string,
+  code: ApiResponseCode,
   error?: Record<string, unknown>,
 ) {
   const response: ApiResponse = {
     success: false,
     error: error,
-    message: message,
+    code: code,
+    codeName: codeName(code),
   };
   res.status(status).json(response);
 }
