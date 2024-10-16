@@ -1,4 +1,4 @@
-import { apiError, apiErrorGeneric } from "@utils/api/respond";
+import { apiError } from "@utils/api/respond";
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
 
@@ -15,6 +15,8 @@ export function handleErrors(
       schema: error.errors,
     });
   } else {
-    return apiErrorGeneric(res, error as Error);
+    return apiError(res, 500, "Internal Server Error", {
+      error: error.message,
+    });
   }
 }

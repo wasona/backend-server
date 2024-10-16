@@ -1,10 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
-export function profileTime(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export function profileTime(req: Request, res: Response, next: NextFunction) {
   const startTime = process.hrtime(); // Start timing
   res.on("finish", () => {
     const endTime = process.hrtime(startTime); // End timing

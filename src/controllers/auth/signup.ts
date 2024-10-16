@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
 import { z, ZodError } from "zod";
-import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
+import { apiSuccess, apiError } from "@utils/api/respond";
 import { readQuery } from "@utils/fs/read-query";
 import { hashPassword } from "@utils/normalize/hash-password";
 import { normalizePhoneNumber } from "@utils/normalize/phone-number";

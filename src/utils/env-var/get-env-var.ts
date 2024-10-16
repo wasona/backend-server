@@ -1,6 +1,6 @@
 import { ensureKeyFiles } from "@init/server-config";
 import { DbType } from "@models/app/server-state";
-import { readFile, readFileSync } from "fs";
+import { readFileSync } from "fs";
 
 // TS is shockingly lax with error handling, but we're gonna do it anyway (hopefully) -jyh
 export function getEnvVariable(name: string): string {
@@ -42,16 +42,16 @@ export function getKeyFromEnvVariable(envVarName: string): Uint8Array {
   const keyPath: string = getEnvVariable(envVarName);
 
   try {
-    const key: string = readFileSync(keyPath, 'utf8');
+    const key: string = readFileSync(keyPath, "utf8");
     const secretKey = new TextEncoder().encode(key);
 
     return secretKey;
   } catch (err) {
-    console.error('Error reading file:', err);
+    console.error("Error reading file:", err);
     console.log("Initializing keys...");
     ensureKeyFiles();
 
-    const key: string = readFileSync(keyPath, 'utf8');
+    const key: string = readFileSync(keyPath, "utf8");
     const secretKey = new TextEncoder().encode(key);
 
     return secretKey;

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ServerState } from "@models/app/server-state";
-import { apiSuccess, apiErrorGeneric } from "@utils/api/respond";
+import { apiSuccess } from "@utils/api/respond";
 
 export async function getAllIso639(
   req: Request,

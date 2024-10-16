@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express"; // le web framework
-import { serverConfig, ensureKeyFiles } from "@init/server-config"; // initialize and bring over server config
+import { serverConfig } from "@init/server-config"; // initialize and bring over server config
 import { createRouter } from "@controllers/index"; // import the export 'router' at /src/controllers/index.ts
 import { createServerState } from "@init/server-state";
 import { fetchIso639List } from "@init/init-from-db/iso-639";
