@@ -22,7 +22,7 @@ import {
 } from "@utils/env_var/get_env_var";
 
 // checks if key files are there or not and generates them using jose if not
-async function ensureKeyFiles() {
+export async function ensureKeyFiles() {
   const privateKeyPath = getEnvVariable("PRIVATE_KEY_PATH");
   const publicKeyPath = getEnvVariable("PUBLIC_KEY_PATH");
 
