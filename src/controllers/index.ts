@@ -1,41 +1,44 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import signup from "@controllers/auth/signup";
 import getDatabaseVersion from "@controllers/healthcheck/db";
 import getAllIso639 from "@controllers/iso-639/get-all";
 import { ServerState } from "@models/app/server_state_model"; // Adjust import if necessary
 import healthcheckApp from "@controllers/healthcheck/app";
 import login from "@controllers/auth/login";
+import profileTime from "./middleware/timing";
 
 export default function createRouter(serverState: ServerState) {
-  const router = Router();
+  let stateless = (fn: Function) => {
+    return async (...args: [Request, Response, NextFunction]) => {
+      await fn(...args);
+    };
+  };
+  let stateful = (fn: Function) => {
+    return async (...args: [Request, Response, NextFunction]) => {
+      await fn(...args, serverState);
+    };
+  };
 
-  // basic server healthcheck
-  router.get("/healthcheck/app", (req: Request, res: Response) => {
-    healthcheckApp(req, res, serverState);
-  });
+  return (
+    Router()
+      // basic server healthcheck
+      .get("/healthcheck/app", stateful(healthcheckApp))
 
-  // database healthcheck
-  router.get("/healthcheck/db", getDatabaseVersion);
+      // database healthcheck
+      .get("/healthcheck/db", stateless(getDatabaseVersion))
 
-  // signup
-  router.post("/auth/signup", (req: Request, res: Response) => {
-    signup(req, res);
-  });
+      // signup
+      .post("/auth/signup", stateless(signup))
 
-  // TODO: confirmation email
-  // TODO: delete users if they don't reply within 24 hours
-  // TODO: email verification related controllers
-  // TODO: OAuth
+      // TODO: confirmation email
+      // TODO: delete users if they don't reply within 24 hours
+      // TODO: email verification related controllers
+      // TODO: OAuth
 
-  // login
-  router.post("/auth/login", (req: Request, res: Response) => {
-    login(req, res);
-  });
+      // login
+      .post("/auth/login", stateless(login))
 
-  // get all iso-639 codes
-  router.get("/iso-639/get-all", (req: Request, res: Response) => {
-    getAllIso639(req, res, serverState);
-  });
-
-  return router;
+      // get all iso-639 codes
+      .get("/iso-639/get-all", stateful(getAllIso639))
+  );
 }

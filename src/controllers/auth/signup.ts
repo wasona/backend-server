@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
 import { z, ZodError } from "zod";
 import { apiSuccess, apiError, apiErrorGeneric } from "@utils/api/respond";
@@ -10,7 +10,11 @@ import validatePhoneNumber from "@utils/validate/phone_number";
 import { SignupRequestSchema } from "@models/app/auth/signup";
 const signupQuery = readQuery("@queries/auth/signup.sql");
 
-export default async function signup(req: Request, res: Response) {
+export default async function signup(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     // Validate the request body
     SignupRequestSchema.parse(req.body);
@@ -53,13 +57,6 @@ export default async function signup(req: Request, res: Response) {
     const { userPw, ...userWithoutPassword } = data;
     return apiSuccess(res, 200, "Signup successful", userWithoutPassword);
   } catch (error) {
-    if (error instanceof ZodError) {
-      // Handle SignupRequestSchema validation error
-      return apiError(res, 400, "Schema validation error", {
-        schema: error.errors,
-      });
-    } else {
-      return apiErrorGeneric(res, error as Error);
-    }
+    next(error);
   }
 }

@@ -1,11 +1,12 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { db } from "@app";
 import { ServerState } from "@models/app/server_state_model";
 import { apiSuccess, apiErrorGeneric } from "@utils/api/respond";
 
-export default function getAllIso639(
+export default async function getAllIso639(
   req: Request,
   res: Response,
+  next: NextFunction,
   serverState: ServerState,
 ) {
   try {
@@ -14,6 +15,6 @@ export default function getAllIso639(
       iso639List: serverState.iso639List,
     });
   } catch (error) {
-    apiErrorGeneric(res, error as Error);
+    next(error);
   }
 }

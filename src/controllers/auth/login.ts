@@ -1,5 +1,5 @@
 import readQuery from "@utils/fs/read_query";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
 import { apiError, apiErrorGeneric, apiSuccess } from "@utils/api/respond";
 import { Users } from "@models/db/users";
@@ -8,7 +8,11 @@ import validatePasswordHash from "@utils/validate/password";
 import { ZodError } from "zod";
 const findEmail = readQuery("@queries/auth/find-email.sql");
 
-export default async function login(req: Request, res: Response) {
+export default async function login(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     // #1 extract IP and user-agent from header to persist to log
     const ipAddr = req.headers["x-forwarded-for"];
@@ -52,14 +56,6 @@ export default async function login(req: Request, res: Response) {
     // #9 in the case of success, refill their login attempts quota
     return apiSuccess(res, 200, "Login successful");
   } catch (error) {
-    if (error instanceof ZodError) {
-      // Handle LoginRequestSchema validation error
-      // Handle Users validation error
-      return apiError(res, 400, "Schema validation error", {
-        schema: error.errors,
-      });
-    } else {
-      return apiErrorGeneric(res, error as Error);
-    }
+    next(error);
   }
 }

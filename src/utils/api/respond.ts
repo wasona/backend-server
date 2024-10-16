@@ -14,7 +14,7 @@ export async function apiSuccess(
     data: data,
     message: message,
   };
-  return res.status(status).json(response);
+  res.status(status).json(response);
 }
 
 export async function apiError(
@@ -28,14 +28,9 @@ export async function apiError(
     error: error,
     message: message,
   };
-  return res.status(status).json(response);
+  res.status(status).json(response);
 }
 
 export async function apiErrorGeneric(res: Response, error: Error) {
-  const response: ApiResponse = {
-    success: false,
-    message: "Internal Server Error",
-    error: { error: error.message },
-  };
-  return res.status(500).json(response);
+  apiError(res, 500, "Internal Server Error", { error: error.message });
 }
