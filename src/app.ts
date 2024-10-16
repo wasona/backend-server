@@ -1,9 +1,9 @@
 import express, { Request, Response, NextFunction } from "express"; // le web framework
-import serverConfig, { ensureKeyFiles } from "@init/server_config"; // initialize and bring over server config
+import serverConfig, { ensureKeyFiles } from "@init/server-config"; // initialize and bring over server config
 import createRouter from "@controllers/index"; // import the default export 'router' at /src/controllers/index.ts
-import createServerState from "@init/server_state";
-import fetchIso639List from "@init/init_from_db/iso_639";
-import { ServerState } from "@models/app/server_state_model";
+import createServerState from "@init/server-state";
+import fetchIso639List from "@init/init-from-db/iso-639";
+import { ServerState } from "@models/app/server-state";
 import pgPromise from "pg-promise"; // Import pg-promise library
 import profileTime from "@controllers/middleware/timing";
 import handleErrors from "@controllers/middleware/error-handling";

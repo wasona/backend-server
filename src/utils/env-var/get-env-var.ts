@@ -1,5 +1,5 @@
-import { ensureKeyFiles } from "@init/server_config";
-import { DbType } from "@models/app/server_state_model";
+import { ensureKeyFiles } from "@init/server-config";
+import { DbType } from "@models/app/server-state";
 import { readFile, readFileSync } from "fs";
 
 // TS is shockingly lax with error handling, but we're gonna do it anyway (hopefully) -jyh

@@ -1,4 +1,4 @@
-import readQuery from "@utils/fs/read_query";
+import readQuery from "@utils/fs/read-query";
 import { NextFunction, Request, Response } from "express";
 import { db } from "@app";
 import { apiError, apiErrorGeneric, apiSuccess } from "@utils/api/respond";

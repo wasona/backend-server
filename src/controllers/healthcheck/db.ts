@@ -1,8 +1,8 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { db } from "@app";
 import { apiErrorGeneric, apiSuccess } from "@utils/api/respond";
-import readQuery from "@utils/fs/read_query";
-const selectVersion = readQuery("@queries/healthcheck/select_version.sql");
+import readQuery from "@utils/fs/read-query";
+const selectVersion = readQuery("@queries/healthcheck/select-version.sql");
 
 export default async function getDatabaseVersion(
   req: Request,

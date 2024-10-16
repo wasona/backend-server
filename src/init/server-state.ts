@@ -1,4 +1,4 @@
-import { ServerConfig, ServerState } from "@models/app/server_state_model";
+import { ServerConfig, ServerState } from "@models/app/server-state";
 import { z } from "zod";
 import { Iso_639, Iso_639T } from "@models/db/iso-639";
 

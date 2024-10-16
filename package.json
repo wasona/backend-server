@@ -18,6 +18,7 @@
     "tsc-alias": "build step for aliasing paths in imports using @"
   },
   "dependencies": {
+    "@types/uuid": "^10.0.0",
     "argon2": "^0.41.1",
     "cors": "^2.8.5",
     "deep-email-validator": "^0.1.21",

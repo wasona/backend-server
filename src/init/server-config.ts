@@ -7,11 +7,7 @@ import { generateKeyPair, exportJWK, exportPKCS8 } from 'jose';
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 // this is where the server configuration's shape is defined as a class, and the possible types of databases defined as an enum. -jyh
-import {
-  ServerConfig,
-  ServerState,
-  DbType,
-} from "@models/app/server_state_model";
+import { ServerConfig, ServerState, DbType } from "@models/app/server-state";
 
 // we're going to push as much of the utility functions out of the way into /src/util_functions
 import {
@@ -19,7 +15,7 @@ import {
   getEnvVariable,
   getKeyFromEnvVariable,
   getServerPort,
-} from "@utils/env_var/get_env_var";
+} from "@utils/env-var/get-env-var";
 import { generateKeyPairSync } from "crypto";
 
 // checks if key files are there or not and generates them using jose if not

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { apiSuccess, apiErrorGeneric } from "@utils/api/respond";
-import { ServerState } from "@models/app/server_state_model";
+import { ServerState } from "@models/app/server-state";
 
 export default async function healthcheckApp(
   req: Request,
