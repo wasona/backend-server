@@ -14,10 +14,14 @@ import {
 import {
   getDatabaseType,
   getEnvVariable,
+  getKeyFromEnvVariable,
   getServerPort,
 } from "@utils/env_var/get_env_var";
 
-// holy fuddles, there's no way to have field names be visible in TS class constructors? -jyh
+// checks if key files are there or not and generates them using jose if not
+
+
+// holy - there's no way to have field names be visible in TS class constructors? -jyh
 // anyway, server config initializing here; ServerConfig class and DbType enum defined in
 // /src/models/app_models
 const serverConfig = new ServerConfig(
@@ -29,5 +33,8 @@ const serverConfig = new ServerConfig(
   getEnvVariable("DB_PORT"),
   getEnvVariable("DB_NAME"),
   getServerPort(),
+  getKeyFromEnvVariable("PRIVATE_KEY_PATH"),
+  getKeyFromEnvVariable("PUBLIC_KEY_PATH"),
 );
+
 export default serverConfig;

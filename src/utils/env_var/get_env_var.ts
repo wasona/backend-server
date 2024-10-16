@@ -1,4 +1,5 @@
 import { DbType } from "@models/app/server_state_model";
+import { readFile, readFileSync } from "fs";
 
 // TS is shockingly lax with error handling, but we're gonna do it anyway (hopefully) -jyh
 export function getEnvVariable(name: string): string {
@@ -33,4 +34,19 @@ export function getServerPort(): number {
     throw new Error(`Invalid HOST_PORT value: ${serverPortStr}`);
   }
   return serverPort;
+}
+
+// reads key from filepath as supplied by env. var (reads string, really)
+export function getKeyFromEnvVariable(envVarName: string): Uint8Array | undefined {
+  const keyPath: string = getEnvVariable(envVarName);
+
+  try {
+    const key: string = readFileSync(keyPath, 'utf8');
+    const secretKey: Uint8Array<ArrayBufferLike> = new TextEncoder().encode(key);
+
+    return secretKey;
+  } catch (err) {
+    console.error('Error reading file:', err);
+    return undefined;
+  }
 }

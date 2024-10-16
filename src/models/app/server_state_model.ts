@@ -18,6 +18,8 @@ export class ServerConfig {
     public dbPort: string,
     public dbName: string,
     public hostPort: number,
+    public privateKey: Uint8Array | undefined,
+    public publicKey: Uint8Array | undefined,
   ) {}
 
   // if dbType is postgreSQL (some apps need to be portable across multiple types of DBs, so best practice)
