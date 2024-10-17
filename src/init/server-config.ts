@@ -63,14 +63,21 @@ export function ensureKeyFiles() {
 export function createServerConfig() {
   return new ServerConfig(
     "WPP Backend Server v0.1.0",
-    getDatabaseType(),
-    getEnvVariable("DB_USER"),
-    getEnvVariable("DB_PWORD"),
+
     getEnvVariable("DB_HOST"),
     getEnvVariable("DB_PORT"),
-    getEnvVariable("DB_NAME"),
     getServerPort(),
+
+    getDatabaseType(),
+    getEnvVariable("DB_NAME"),
+    getEnvVariable("DB_USER"),
+    getEnvVariable("DB_PWORD"),
+
     getKeyFromEnvVariable("PRIVATE_KEY_PATH"),
     getKeyFromEnvVariable("PUBLIC_KEY_PATH"),
+
+    getEnvVariable("IAM_USERNAME"),
+    getEnvVariable("SMTP_SERVER_USERNAME"),
+    getEnvVariable("SMTP_SERVER_PASSWORD"),
   );
 }
