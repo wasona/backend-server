@@ -10,4 +10,6 @@ export enum ApiResponseCode {
   InternalServerError,
   UserAlreadyExists,
   SendingEmailFailed,
+  UserTokenNotFound,
+  UserTokenExpired,
 }
