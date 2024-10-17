@@ -1,9 +1,9 @@
 import { db } from "@app";
 import { ApiResponseCode } from "@models/app/api/response-code";
 import { SignupRequestSchema } from "@models/app/auth/signup";
+import { ServerState } from "@models/app/server-state";
 import { UserTokenTypes } from "@models/db/user-token-types";
 import { UsersT } from "@models/db/users";
-import { ServerState } from "@models/app/server-state";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
 import { readQuery } from "@utils/fs/read-query";
@@ -16,7 +16,7 @@ import { NextFunction, Request, Response } from "express";
 
 const signupQuery = readQuery("@queries/auth/signup.sql");
 const findEmail = readQuery("@queries/auth/find-email.sql");
-const persistUserToken = readQuery("@queries/auth/persist-email-validation-token.sql")
+const persistUserToken = readQuery("@queries/auth/persist-user-token.sql");
 
 const EMAIL_VALIDATION_DAY_LIMIT: number = 1;
 
@@ -50,7 +50,7 @@ export async function signup(
   ];
 
   // TODO: Check if user already exists
-  if ((await getUserByEmail(params[0])) != undefined) {
+  if ((await getUserByEmail(normalizeEmail(body.userEmail))) != undefined) {
     return apiError(res, 400, ApiResponseCode.UserAlreadyExists);
   }
 
@@ -62,15 +62,19 @@ export async function signup(
   const genTime = new Date();
   const expiryTime = new Date(genTime);
   expiryTime.setDate(expiryTime.getDate() + EMAIL_VALIDATION_DAY_LIMIT);
-  
+
   const userTokenParams = [
     user.user_id,
     UserTokenTypes.EMAIL_VALIDATE_TOKEN_TYPE,
-    genTime.toISOString,
-    expiryTime.toISOString,
+    genTime.toISOString(),
+    expiryTime.toISOString(),
   ];
 
+  console.log(userTokenParams);
+
+  console.log("Got to here without issues!");
   const user_token_id: UUID = await db.one(persistUserToken, userTokenParams);
+  console.log("Got to here without issues! 2");
 
   // Send email with token id
 
