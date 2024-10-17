@@ -84,6 +84,11 @@ export async function signup(
       subject: "Confirm your email address",
       text: "This is where we will attach a link with an email confirmation token.",
     })
+    .then(() => {
+      console.log(
+        `Email to ${normalizeEmail(body.userEmail)} sent successfully!`,
+      );
+    })
     .catch((error) => {
       // It takes too long to send an email, so we would
       // rather let user try again, rather than keep them
