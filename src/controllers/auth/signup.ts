@@ -1,6 +1,8 @@
 import { db } from "@app";
 import { ApiResponseCode } from "@models/app/api/response-code";
 import { SignupRequestSchema } from "@models/app/auth/signup";
+import { UserTokenTypes } from "@models/db/user-token-types";
+import { UsersT } from "@models/db/users";
 import { ServerState } from "@models/app/server-state";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
@@ -9,9 +11,14 @@ import { normalizeEmail } from "@utils/normalize/email";
 import { hashPassword } from "@utils/normalize/hash-password";
 import { normalizePhoneNumber } from "@utils/normalize/phone-number";
 import { validatePhoneNumber } from "@utils/validate/phone-number";
+import { randomUUID, UUID } from "crypto";
 import { NextFunction, Request, Response } from "express";
+
 const signupQuery = readQuery("@queries/auth/signup.sql");
 const findEmail = readQuery("@queries/auth/find-email.sql");
+const persistUserToken = readQuery("@queries/auth/persist-email-validation-token.sql")
+
+const EMAIL_VALIDATION_DAY_LIMIT: number = 1;
 
 export async function signup(
   req: Request,
@@ -48,10 +55,27 @@ export async function signup(
   }
 
   // Insert into database
-  const data = await db.one(signupQuery, params);
+  const user: UsersT = await db.one(signupQuery, params);
+
+  // Generate user_token and persist it to database
+  const userTokenId: UUID = randomUUID();
+  const genTime = new Date();
+  const expiryTime = new Date(genTime);
+  expiryTime.setDate(expiryTime.getDate() + EMAIL_VALIDATION_DAY_LIMIT);
+  
+  const userTokenParams = [
+    user.user_id,
+    UserTokenTypes.EMAIL_VALIDATE_TOKEN_TYPE,
+    genTime.toISOString,
+    expiryTime.toISOString,
+  ];
+
+  const user_token_id: UUID = await db.one(persistUserToken, userTokenParams);
+
+  // Send email with token id
 
   // Return without hashed password
-  const { user_pw, ...userWithoutPassword } = data;
+  const { user_pw, ...userWithoutPassword } = user;
 
   serverState.transporter
     .sendMail({
