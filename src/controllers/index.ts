@@ -1,5 +1,6 @@
 import { login } from "@controllers/auth/login";
 import { signup } from "@controllers/auth/signup";
+import { verifyEmail } from "@controllers/auth/verify-email";
 import { healthcheckApp } from "@controllers/healthcheck/app";
 import { getDatabaseVersion } from "@controllers/healthcheck/db";
 import { getAllIso639 } from "@controllers/iso-639/get-all";
@@ -34,6 +35,9 @@ export function createRouter(serverState: ServerState) {
 
       // login
       .post("/auth/login", handler(login))
+
+      // verify email
+      .get("/auth/verify-email", handler(verifyEmail))
 
       // get all iso-639 codes
       .get("/iso-639/get-all", handler(getAllIso639))
