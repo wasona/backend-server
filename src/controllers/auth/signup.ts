@@ -4,8 +4,6 @@ import { SignupRequestSchema } from "@models/app/auth/signup";
 import { UserTokenTypes } from "@models/db/user-token-types";
 import { UsersT } from "@models/db/users";
 import { ServerState } from "@models/app/server-state";
-import { UserTokenTypes } from "@models/db/user-token-types";
-import { UsersT } from "@models/db/users";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
 import { readQuery } from "@utils/fs/read-query";
