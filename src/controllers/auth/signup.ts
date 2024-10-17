@@ -1,6 +1,7 @@
 import { db } from "@app";
 import { ApiResponseCode } from "@models/app/api/response-code";
 import { SignupRequestSchema } from "@models/app/auth/signup";
+import { ServerState } from "@models/app/server-state";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
 import { readQuery } from "@utils/fs/read-query";
@@ -12,7 +13,12 @@ import { NextFunction, Request, Response } from "express";
 const signupQuery = readQuery("@queries/auth/signup.sql");
 const findEmail = readQuery("@queries/auth/find-email.sql");
 
-export async function signup(req: Request, res: Response, next: NextFunction) {
+export async function signup(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  serverState: ServerState,
+) {
   // Validate the request body
   const body = SignupRequestSchema.parse(req.body);
 
@@ -46,5 +52,20 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
 
   // Return without hashed password
   const { user_pw, ...userWithoutPassword } = data;
+
+  serverState.transporter
+    .sendMail({
+      from: "Wasona Authorisation <auth@noreply.wasona.com>",
+      to: normalizeEmail(body.userEmail),
+      subject: "Confirm your email address",
+      text: "This is where we will attach a link with an email confirmation token.",
+    })
+    .catch((error) => {
+      // It takes too long to send an email, so we would
+      // rather let user try again, rather than keep them
+      // waiting. Hence, no apiError
+      console.log("Sending mail failed!", error);
+    });
+
   return apiSuccess(res, 200, userWithoutPassword);
 }

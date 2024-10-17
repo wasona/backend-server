@@ -1,4 +1,5 @@
 import { LanguageT } from "@models/db/languages";
+import { Transporter } from "nodemailer";
 
 // possible database types and their string equivalents. just lowercase everything -jyh
 export enum DbType {
@@ -25,7 +26,7 @@ export class ServerConfig {
     public publicKey: Uint8Array | undefined,
     // passphrase not included; it is read during key generation
 
-    public iamUsername: string,
+    public smtpEndpoint: string,
     public smtpServerUsername: string,
     public smtpServerPassword: string,
   ) {}
@@ -44,5 +45,6 @@ export class ServerState {
   constructor(
     public serverConfig: ServerConfig,
     public iso639List: LanguageT[],
+    public transporter: Transporter,
   ) {}
 }
