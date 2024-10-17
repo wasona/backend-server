@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const Users = z.object({
-  user_id: z.string().uuid().optional(),
+  user_id: z.string().uuid(),
   user_invitee_id: z.string().uuid().nullable().optional(),
   user_authority_id: z.number().optional(),
   user_email: z.string(),

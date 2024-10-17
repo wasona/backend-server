@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const secretKey = new TextEncoder().encode("your-256-bit-secret");
 
-async function createJWT(userId: string): Promise<string> {
+export async function createJWT(userId: string): Promise<string> {
   const payload: JWTPayload = {
     iss: "wasona",
     sub: userId,
