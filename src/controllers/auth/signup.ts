@@ -12,7 +12,7 @@ const signupQuery = readQuery("@queries/auth/signup.sql");
 
 export async function signup(req: Request, res: Response, next: NextFunction) {
   // Validate the request body
-  SignupRequestSchema.parse(req.body);
+  const body = SignupRequestSchema.parse(req.body);
 
   // TODO: Validate username
 
@@ -27,18 +27,18 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
 
   // Normalise params
   const params = [
-    normalizeEmail(req.body.userEmail),
-    await hashPassword(req.body.userPw),
-    req.body.userName,
-    normalizePhoneNumber(req.body.userPhone),
-    req.body.userCountry,
-    req.body.userSubnational,
+    normalizeEmail(body.userEmail),
+    await hashPassword(body.userPw),
+    body.userName,
+    normalizePhoneNumber(body.userPhone),
+    body.userCountry,
+    body.userSubnational,
   ];
 
   // Insert into database
   const data = await db.one(signupQuery, params);
 
   // Return without hashed password
-  const { userPw, ...userWithoutPassword } = data;
+  const { user_pw, ...userWithoutPassword } = data;
   return apiSuccess(res, 200, userWithoutPassword);
 }
