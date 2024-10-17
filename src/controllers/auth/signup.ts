@@ -3,6 +3,7 @@ import { ApiResponseCode } from "@models/app/api/response-code";
 import { SignupRequestSchema } from "@models/app/auth/signup";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { readQuery } from "@utils/fs/read-query";
+import { normalizeEmail } from "@utils/normalize/email";
 import { hashPassword } from "@utils/normalize/hash-password";
 import { normalizePhoneNumber } from "@utils/normalize/phone-number";
 import { validatePhoneNumber } from "@utils/validate/phone-number";
@@ -26,7 +27,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
 
   // Normalise params
   const params = [
-    req.body.userEmail,
+    normalizeEmail(req.body.userEmail),
     await hashPassword(req.body.userPw),
     req.body.userName,
     normalizePhoneNumber(req.body.userPhone),
