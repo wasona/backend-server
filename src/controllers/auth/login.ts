@@ -1,12 +1,9 @@
-import { db } from "@app";
 import { ApiResponseCode } from "@models/app/api/response-code";
 import { LoginRequestSchema } from "@models/app/auth/login";
-import { Users } from "@models/db/users";
 import { apiError, apiSuccess } from "@utils/api/respond";
-import { readQuery } from "@utils/fs/read-query";
+import { getUserByEmail } from "@utils/db/get-user";
 import { validatePasswordHash } from "@utils/validate/password";
 import { NextFunction, Request, Response } from "express";
-const findEmail = readQuery("@queries/auth/find-email.sql");
 
 export async function login(req: Request, res: Response, next: NextFunction) {
   // #1 extract IP and user-agent from header to persist to log
@@ -18,17 +15,10 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   const body = LoginRequestSchema.parse(req.body);
 
   // #2 check if the email/id exists at all by querying DB
-  let data = await db.any(findEmail, body.userEmail);
-  if (data.length == 0) {
+  let user = await getUserByEmail(body.userEmail);
+  if (!user) {
     return apiError(res, 400, ApiResponseCode.UserEmailNotFound);
   }
-
-  // ideally, the db should only contain 1 user of any given email,
-  // but i haven't done that yet
-  data = data[0];
-
-  // parse db row as ts type
-  let user = Users.parse(data);
 
   // #3 check if the user is verified (email-verified)
   if (!user.user_verified) {

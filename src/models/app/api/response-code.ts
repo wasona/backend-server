@@ -8,4 +8,5 @@ export enum ApiResponseCode {
   SchemaValidationFailed,
   PhoneValidationFailed,
   InternalServerError,
+  UserAlreadyExists,
 }
