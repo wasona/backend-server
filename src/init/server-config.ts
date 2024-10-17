@@ -76,7 +76,7 @@ export function createServerConfig() {
     getKeyFromEnvVariable("PRIVATE_KEY_PATH"),
     getKeyFromEnvVariable("PUBLIC_KEY_PATH"),
 
-    getEnvVariable("IAM_USERNAME"),
+    getEnvVariable("SMTP_ENDPOINT"),
     getEnvVariable("SMTP_SERVER_USERNAME"),
     getEnvVariable("SMTP_SERVER_PASSWORD"),
   );
