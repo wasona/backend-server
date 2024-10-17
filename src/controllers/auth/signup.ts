@@ -70,11 +70,7 @@ export async function signup(
     expiryTime.toISOString(),
   ];
 
-  console.log(userTokenParams);
-
-  console.log("Got to here without issues!");
   const user_token_id: UUID = await db.one(persistUserToken, userTokenParams);
-  console.log("Got to here without issues! 2");
 
   // Send email with token id
 
