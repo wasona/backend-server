@@ -13,20 +13,20 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   const userAgent = req.headers["user-agent"];
   console.log(ipAddr, userAgent);
 
-  // validate body schema
-  const body = LoginRequestSchema.parse(req.body);
+  // Validate the request body
+  let body = LoginRequestSchema.parse(req.body);
+  body.userEmail = normalizeEmail(body.userEmail);
 
   // #2 check if the email/id exists at all by querying DB
-  let user = await getUserByEmail(normalizeEmail(body.userEmail));
+  let user = await getUserByEmail(body.userEmail);
   if (!user) {
     return apiError(res, 400, ApiResponseCode.UserEmailNotFound);
   }
-  user = user!;
 
   // #3 check if the user is verified (email-verified)
-  // if (!user.user_verified) {
-  // return apiError(res, 400, ApiResponseCode.UserNotVerified);
-  // }
+  if (!user.user_verified) {
+    return apiError(res, 400, ApiResponseCode.UserNotVerified);
+  }
 
   // #4 check if the user has valid login attempts left (five wrong password inputs and you get your account disabled)
   if (user.user_login_attempts_left == 0) {

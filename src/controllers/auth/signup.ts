@@ -66,19 +66,21 @@ export async function signup(
     body.userSubnational,
   ]);
 
-  // Create user token for email validation
+  // Create user token for email verification
   const userToken = setUserToken(
     user.user_id,
     UserTokenTypes.EMAIL_VALIDATE_TOKEN_TYPE,
     EMAIL_VALIDATION_DAY_LIMIT,
   );
+  // TODO: replace with a link to the frontend.
+  const emailLink = `https://api.wasona.com/auth/verify-email?id=${userToken}`;
 
-  // Send email with token id
+  // Send email with verification link
   sendMail(serverState.transporter, {
     from: "Wasona Authorisation <auth@noreply.wasona.com>",
     to: body.userEmail,
     subject: "Confirm your email address",
-    text: "This is where we will attach a link with an email confirmation token.",
+    text: `You have just registered on Wasona. Please click the following link to verify your email address. \n\n${emailLink}`,
   });
 
   // Return without hashed password
