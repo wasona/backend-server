@@ -1,4 +1,5 @@
-import { LanguageT } from "@models/tables/languages";
+import { CountriesT } from "@models/tables/countries";
+import { LanguageT as LanguagesT } from "@models/tables/languages";
 import { Transporter } from "nodemailer";
 
 // possible database types and their string equivalents. just lowercase everything -jyh
@@ -44,7 +45,8 @@ export class ServerConfig {
 export class ServerState {
   constructor(
     public serverConfig: ServerConfig,
-    public iso639List: LanguageT[],
+    public languagesList: LanguagesT[],
+    public countriesList: CountriesT[],
     public transporter: Transporter,
   ) {}
 }

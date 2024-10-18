@@ -1,13 +1,15 @@
 import { db } from "@app";
-import { fetchIso639List } from "@init/init-from-db/iso-639";
+import { fetchLanguagesList } from "@init/init-from-db/languages";
 import { ServerConfig, ServerState } from "@models/internal/server-state";
 import { createTransport } from "nodemailer";
+import { fetchCountriesList } from "./init-from-db/countries";
 
 export async function createServerState(
   config: ServerConfig,
 ): Promise<ServerState> {
   // Validate the isoList against the Zod schema
-  const validatedIsoList = await fetchIso639List(db);
+  const languagesList = await fetchLanguagesList(db);
+  const countriesList = await fetchCountriesList(db);
 
   const transporter = createTransport({
     host: config.smtpEndpoint,
@@ -21,7 +23,8 @@ export async function createServerState(
 
   const serverState: ServerState = {
     serverConfig: config,
-    iso639List: validatedIsoList,
+    languagesList: languagesList,
+    countriesList: countriesList,
     transporter: transporter,
   };
   return serverState;

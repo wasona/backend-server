@@ -4,7 +4,8 @@ import { signup } from "@controllers/auth/signup";
 import { verifyEmail } from "@controllers/auth/verify-email";
 import { healthcheckApp } from "@controllers/healthcheck/app";
 import { getDatabaseVersion } from "@controllers/healthcheck/db";
-import { getAllIso639 } from "@controllers/iso-639/get-all";
+import { getCountries } from "@controllers/iso/countries";
+import { getLanguages } from "@controllers/iso/languages";
 import { ServerState } from "@models/internal/server-state";
 import { NextFunction, Request, Response, Router } from "express";
 
@@ -44,6 +45,9 @@ export function createRouter(serverState: ServerState) {
       .get("/auth/refresh-token", handler(refreshToken))
 
       // get all iso-639 codes
-      .get("/iso-639/get-all", handler(getAllIso639))
+      .get("/iso/languages", handler(getLanguages))
+
+      // get all iso-639 codes
+      .get("/iso/countries", handler(getCountries))
   );
 }

@@ -1,6 +1,6 @@
 import { Language, LanguageT } from "@models/tables/languages";
 
-export async function fetchIso639List(db: any): Promise<LanguageT[]> {
+export async function fetchLanguagesList(db: any): Promise<LanguageT[]> {
   const startTime = Date.now();
   let data;
   try {
@@ -15,17 +15,9 @@ export async function fetchIso639List(db: any): Promise<LanguageT[]> {
     throw new Error("Data is not an array");
   }
 
-  const iso639List = data.map((item: any) => {
-    const parseResult = Language.safeParse(item);
-    if (!parseResult.success) {
-      console.error("Item validation failed:", parseResult.error);
-      throw new Error("Validation Error");
-    }
-
-    return parseResult.data;
-  });
+  const languagesList = data.map((item: any) => Language.parse(item));
 
   const endTime = Date.now();
-  console.log(`Iso639List initiated in ${endTime - startTime}ms`);
-  return iso639List;
+  console.log(`Languages initiated in ${endTime - startTime}ms`);
+  return languagesList;
 }
