@@ -1,8 +1,10 @@
 import { db } from "@app";
 import { ApiResponseCode } from "@models/internal/response-code";
 import { VerifyEmailRequestSchema } from "@models/request/auth/verify-email";
+import { UserLogTypes } from "@models/tables/user-log-types";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
+import { logUserAction } from "@utils/db/log-user-action";
 import { readQuery } from "@utils/fs/read-query";
 import {
   isUserTokenAlreadyUsed,
@@ -30,10 +32,6 @@ export async function verifyEmail(
     return apiError(res, 400, ApiResponseCode.UserTokenNotFound);
   }
 
-  // if it does, then update the users table's row using the FKEY in the user_tokens row
-  // user_verified to true
-  await db.one(setUserVerified, userToken.user_id);
-
   // also, check the expiry date on the token itself
   // and separate out an error for that case
   if (isUserTokenExpired(userToken)) {
@@ -44,6 +42,12 @@ export async function verifyEmail(
   if (isUserTokenAlreadyUsed(userToken)) {
     return apiError(res, 400, ApiResponseCode.UserTokenAlreadyUsed);
   }
+
+  // if it does, then update the users table's row using the FKEY in the user_tokens row
+  // user_verified to true
+  await db.one(setUserVerified, userToken.user_id);
+
+  logUserAction(userToken.user_id, UserLogTypes.VERIFY_EMAIL);
 
   // verified
   return apiSuccess(res, 200);

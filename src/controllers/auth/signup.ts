@@ -2,10 +2,12 @@ import { db } from "@app";
 import { ApiResponseCode } from "@models/internal/response-code";
 import { ServerState } from "@models/internal/server-state";
 import { SignupRequestSchema } from "@models/request/auth/signup";
+import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
 import { UsersT } from "@models/tables/users";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
+import { logUserAction } from "@utils/db/log-user-action";
 import { setUserToken } from "@utils/db/set-user-token";
 import { readQuery } from "@utils/fs/read-query";
 import { sendMail } from "@utils/generate/mail";
@@ -69,7 +71,7 @@ export async function signup(
   // Create user token for email verification
   const userToken = setUserToken(
     user.user_id,
-    UserTokenTypes.EMAIL_VALIDATE_TOKEN_TYPE,
+    UserTokenTypes.EMAIL_VALIDATE,
     EMAIL_VALIDATION_DAY_LIMIT,
   );
   // TODO: replace with a link to the frontend.
@@ -82,6 +84,8 @@ export async function signup(
     subject: "Confirm your email address",
     text: `You have just registered on Wasona. Please click the following link to verify your email address. \n\n${emailLink}`,
   });
+
+  logUserAction(user.user_id, UserLogTypes.SIGNUP);
 
   // Return without hashed password
   const { user_pw, ...userWithoutPassword } = user;

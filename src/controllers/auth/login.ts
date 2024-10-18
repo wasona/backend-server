@@ -1,11 +1,18 @@
 import { ApiResponseCode } from "@models/internal/response-code";
 import { LoginRequestSchema } from "@models/request/auth/login";
+import { UserLogTypes } from "@models/tables/user-log-types";
+import { UserTokenTypes } from "@models/tables/user-token-types";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
+import { logUserAction } from "@utils/db/log-user-action";
+import { setUserToken } from "@utils/db/set-user-token";
 import { createJWT } from "@utils/generate/jwt";
 import { normalizeEmail } from "@utils/normalize/email";
 import { validatePasswordHash } from "@utils/validate/password";
 import { NextFunction, Request, Response } from "express";
+
+const LOGIN_COOKIE_EXPIRES_IN_DAYS = 1;
+const REFRESH_LOGIN_TOKEN_EXPIRES_IN_DAYS = 1;
 
 export async function login(req: Request, res: Response, next: NextFunction) {
   // #1 extract IP and user-agent from header to persist to log
@@ -41,9 +48,22 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   // #6 generate and issue the appropriate JWT
   const jwt = await createJWT(user.user_id);
 
+  // Put as cookie
+  const expiryTime = new Date();
+  expiryTime.setDate(expiryTime.getDate() + LOGIN_COOKIE_EXPIRES_IN_DAYS);
+  res.cookie("login", jwt, { httpOnly: true, expires: expiryTime });
+  // get a cookie: req.cookies['cookie-name']
+
   // #7 generate and issue the appropriate refresh token
+  const refreshToken = setUserToken(
+    user.user_id,
+    UserTokenTypes.REFRESH_LOGIN,
+    REFRESH_LOGIN_TOKEN_EXPIRES_IN_DAYS,
+  );
+
   // #8 log the login event asynchronously
-  console.log(`/auth/login: generated jwt token ${jwt}`);
+  logUserAction(user.user_id, UserLogTypes.LOGIN);
+
   // #9 in the case of success, refill their login attempts quota
   return apiSuccess(res, 200, { jwt: jwt });
 }

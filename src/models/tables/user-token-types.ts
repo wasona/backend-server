@@ -1,3 +1,4 @@
 export enum UserTokenTypes {
-    EMAIL_VALIDATE_TOKEN_TYPE = 1
+  EMAIL_VALIDATE = 1,
+  REFRESH_LOGIN,
 }
