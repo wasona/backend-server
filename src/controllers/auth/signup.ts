@@ -14,6 +14,7 @@ import { sendMail } from "@utils/generate/mail";
 import { normalizeEmail } from "@utils/normalize/email";
 import { hashPassword } from "@utils/normalize/hash-password";
 import { normalizePhoneNumber } from "@utils/normalize/phone-number";
+import { validateCountryCode } from "@utils/validate/country-code";
 import { validatePhoneNumber } from "@utils/validate/phone-number";
 import { NextFunction, Request, Response } from "express";
 
@@ -49,6 +50,9 @@ export async function signup(
 
   // 5: userCountry
   // TODO: validate against serverState.countries
+  if (!validateCountryCode(body.userCountry, serverState.countriesList)) {
+    return apiError(res, 400, ApiResponseCode.CountryCodeValidationFailed);
+  }
 
   // 6: userSubnational
   // TODO: validate somehow

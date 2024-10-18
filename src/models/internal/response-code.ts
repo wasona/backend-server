@@ -13,4 +13,5 @@ export enum ApiResponseCode {
   UserTokenNotFound,
   UserTokenExpired,
   UserTokenAlreadyUsed,
+  CountryCodeValidationFailed,
 }
