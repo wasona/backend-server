@@ -6,6 +6,7 @@ import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
 import { logUserAction } from "@utils/db/log-user-action";
 import { setUserToken } from "@utils/db/set-user-token";
+import { setUserTokenUsed } from "@utils/db/set-user-token-used";
 import {
   isUserTokenAlreadyUsed,
   isUserTokenExpired,
@@ -49,6 +50,7 @@ export async function refreshToken(
     NEW_REFRESH_TOKEN_EXPIRES_IN_DAYS,
   );
 
+  setUserTokenUsed(userToken.user_token_id);
   logUserAction(userToken.user_id, UserLogTypes.REFRESH_TOKEN);
 
   // verified

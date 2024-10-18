@@ -41,7 +41,7 @@ export function createRouter(serverState: ServerState) {
       .get("/auth/verify-email", handler(verifyEmail))
 
       // refresh token
-      .post("/auth/refresh-token", handler(refreshToken))
+      .get("/auth/refresh-token", handler(refreshToken))
 
       // get all iso-639 codes
       .get("/iso-639/get-all", handler(getAllIso639))

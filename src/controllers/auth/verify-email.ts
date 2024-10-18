@@ -5,6 +5,7 @@ import { UserLogTypes } from "@models/tables/user-log-types";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
 import { logUserAction } from "@utils/db/log-user-action";
+import { setUserTokenUsed } from "@utils/db/set-user-token-used";
 import { readQuery } from "@utils/fs/read-query";
 import {
   isUserTokenAlreadyUsed,
@@ -47,6 +48,7 @@ export async function verifyEmail(
   // user_verified to true
   await db.one(setUserVerified, userToken.user_id);
 
+  setUserTokenUsed(userToken.user_token_id);
   logUserAction(userToken.user_id, UserLogTypes.VERIFY_EMAIL);
 
   // verified
