@@ -1,7 +1,7 @@
 {
-  "name": "backend-server-test",
+  "name": "backend-server",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/app.js",
   "repository": "git@github.com:wasona/backend-server.git",
   "author": "AcipenserSturio <AcipenserSturio@users.noreply.github.com>",
   "license": "AGPL-3.0-or-later",
@@ -10,15 +10,16 @@
     "cors": "allowing CORS",
     "dotenv": "importing env variables",
     "express": "app framework",
+    "jose": "generating web tokens",
+    "nodemailer": "sending mail",
     "pg": "db interaction",
     "pg-promise": "asynchronous db interaction",
     "phone": "normalise phone numbers to standard form and validate",
+    "uuid": "uuid type",
     "zod": "schemas for validating types in json",
     "tsc-alias": "build step for aliasing paths in imports using @"
   },
   "dependencies": {
-    "@types/nodemailer": "^6.4.16",
-    "@types/uuid": "^10.0.0",
     "argon2": "^0.41.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -36,13 +37,15 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
+    "@types/nodemailer": "^6.4.16",
+    "@types/uuid": "^10.0.0",
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.10",
     "typescript": "^5.6.3"
   },
   "scripts": {
-    "build": "yarn install && yarn run tsc && yarn run tsc-alias",
-    "dev": "git pull && yarn run build && node dist/app.js",
+    "build": "yarn run tsc && yarn run tsc-alias",
+    "dev": "rm -rf ./dist && mkdir ./dist && yarn run build && node dist/app.js",
     "up": "sudo systemctl stop backend-server.service"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
