@@ -12,4 +12,5 @@ export enum ApiResponseCode {
   SendingEmailFailed,
   UserTokenNotFound,
   UserTokenExpired,
+  UserTokenAlreadyUsed,
 }

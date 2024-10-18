@@ -4,6 +4,10 @@ import { VerifyEmailRequestSchema } from "@models/request/auth/verify-email";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
 import { readQuery } from "@utils/fs/read-query";
+import {
+  isUserTokenAlreadyUsed,
+  isUserTokenExpired,
+} from "@utils/validate/user-token";
 import { NextFunction, Request, Response } from "express";
 
 const setUserVerified = readQuery("src/queries/auth/set-user-verified.sql");
@@ -25,8 +29,6 @@ export async function verifyEmail(
   if (!userToken) {
     return apiError(res, 400, ApiResponseCode.UserTokenNotFound);
   }
-  userToken = userToken!;
-  userToken.user_id;
 
   // if it does, then update the users table's row using the FKEY in the user_tokens row
   // user_verified to true
@@ -34,9 +36,13 @@ export async function verifyEmail(
 
   // also, check the expiry date on the token itself
   // and separate out an error for that case
-  if (new Date(userToken.user_token_expires_on) < new Date()) {
+  if (isUserTokenExpired(userToken)) {
     // TODO: confirm this comparison works
     return apiError(res, 400, ApiResponseCode.UserTokenExpired);
+  }
+  // is this step needed?
+  if (isUserTokenAlreadyUsed(userToken)) {
+    return apiError(res, 400, ApiResponseCode.UserTokenAlreadyUsed);
   }
 
   // verified
