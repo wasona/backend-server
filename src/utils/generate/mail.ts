@@ -14,6 +14,7 @@ export function sendMail(
       // It takes too long to send an email, so we would
       // rather let user try again, rather than keep them
       // waiting. Hence, error is only logged
-      console.log("Sending mail failed!", error);
+      console.log("Sending mail failed!");
+      // console.log(error);
     });
 }

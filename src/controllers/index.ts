@@ -1,4 +1,5 @@
 import { login } from "@controllers/auth/login";
+import { refreshToken } from "@controllers/auth/refresh-token";
 import { signup } from "@controllers/auth/signup";
 import { verifyEmail } from "@controllers/auth/verify-email";
 import { healthcheckApp } from "@controllers/healthcheck/app";
@@ -38,6 +39,9 @@ export function createRouter(serverState: ServerState) {
 
       // verify email
       .get("/auth/verify-email", handler(verifyEmail))
+
+      // refresh token
+      .post("/auth/refresh-token", handler(refreshToken))
 
       // get all iso-639 codes
       .get("/iso-639/get-all", handler(getAllIso639))
