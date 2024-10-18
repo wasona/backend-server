@@ -5,7 +5,8 @@ import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
 import { readQuery } from "@utils/fs/read-query";
 import { NextFunction, Request, Response } from "express";
-const setUserVerified = readQuery("@queries/auth/set-user-verified.sql");
+
+const setUserVerified = readQuery("src/queries/auth/set-user-verified.sql");
 
 export async function verifyEmail(
   req: Request,

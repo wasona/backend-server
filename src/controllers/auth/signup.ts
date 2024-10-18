@@ -14,9 +14,9 @@ import { validatePhoneNumber } from "@utils/validate/phone-number";
 import { randomUUID, UUID } from "crypto";
 import { NextFunction, Request, Response } from "express";
 
-const signupQuery = readQuery("@queries/auth/signup.sql");
-const findEmail = readQuery("@queries/auth/find-email.sql");
-const persistUserToken = readQuery("@queries/auth/persist-user-token.sql");
+const signupQuery = readQuery("src/queries/auth/signup.sql");
+const findEmail = readQuery("src/queries/auth/find-email.sql");
+const persistUserToken = readQuery("src/queries/auth/persist-user-token.sql");
 
 const EMAIL_VALIDATION_DAY_LIMIT: number = 1;
 

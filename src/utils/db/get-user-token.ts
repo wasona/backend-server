@@ -1,7 +1,8 @@
 import { db } from "@app";
 import { UserTokens, UserTokensT } from "@models/tables/user-tokens";
 import { readQuery } from "@utils/fs/read-query";
-const getUserToken = readQuery("@queries/auth/get-user-token-by-id.sql");
+
+const getUserToken = readQuery("src/queries/auth/get-user-token-by-id.sql");
 
 export async function getUserTokenById(
   id: string, // TODO: uuid
