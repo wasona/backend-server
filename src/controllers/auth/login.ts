@@ -1,5 +1,5 @@
-import { ApiResponseCode } from "@models/app/api/response-code";
-import { LoginRequestSchema } from "@models/app/auth/login";
+import { ApiResponseCode } from "@models/internal/response-code";
+import { LoginRequestSchema } from "@models/request/auth/login";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
 import { createJWT } from "@utils/generate/jwt";

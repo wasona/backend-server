@@ -1,5 +1,5 @@
-import { ServerConfig, ServerState } from "@models/app/server-state";
-import { Language, LanguageT } from "@models/db/languages";
+import { ServerConfig, ServerState } from "@models/internal/server-state";
+import { Language, LanguageT } from "@models/tables/languages";
 import { createTransport } from "nodemailer";
 
 export function createServerState(

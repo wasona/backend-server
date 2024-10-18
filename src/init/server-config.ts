@@ -6,7 +6,7 @@ dotenv.config(); // load them all
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 // this is where the server configuration's shape is defined as a class, and the possible types of databases defined as an enum. -jyh
-import { ServerConfig } from "@models/app/server-state";
+import { ServerConfig } from "@models/internal/server-state";
 
 // we're going to push as much of the utility functions out of the way into /src/util_functions
 import {

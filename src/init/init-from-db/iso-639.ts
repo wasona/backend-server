@@ -1,4 +1,4 @@
-import { Language, LanguageT } from "@models/db/languages";
+import { Language, LanguageT } from "@models/tables/languages";
 
 export async function fetchIso639List(db: any): Promise<LanguageT[]> {
   const startTime = Date.now();

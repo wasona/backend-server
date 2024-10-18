@@ -1,6 +1,6 @@
 import { db } from "@app";
-import { ApiResponseCode } from "@models/app/api/response-code";
-import { VerifyEmailRequestSchema } from "@models/app/auth/verify-email";
+import { ApiResponseCode } from "@models/internal/response-code";
+import { VerifyEmailRequestSchema } from "@models/request/auth/verify-email";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
 import { readQuery } from "@utils/fs/read-query";

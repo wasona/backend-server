@@ -4,7 +4,7 @@ import { profileTime } from "@controllers/middleware/timing";
 import { fetchIso639List } from "@init/init-from-db/iso-639";
 import { createServerConfig } from "@init/server-config"; // initialize and bring over server config
 import { createServerState } from "@init/server-state";
-import { ServerState } from "@models/app/server-state";
+import { ServerState } from "@models/internal/server-state";
 import express from "express"; // le web framework
 import pgPromise from "pg-promise"; // Import pg-promise library
 

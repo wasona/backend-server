@@ -1,4 +1,4 @@
-import { LanguageT } from "@models/db/languages";
+import { LanguageT } from "@models/tables/languages";
 import { Transporter } from "nodemailer";
 
 // possible database types and their string equivalents. just lowercase everything -jyh

@@ -1,9 +1,9 @@
 import { db } from "@app";
-import { ApiResponseCode } from "@models/app/api/response-code";
-import { SignupRequestSchema } from "@models/app/auth/signup";
-import { ServerState } from "@models/app/server-state";
-import { UserTokenTypes } from "@models/db/user-token-types";
-import { UsersT } from "@models/db/users";
+import { ApiResponseCode } from "@models/internal/response-code";
+import { ServerState } from "@models/internal/server-state";
+import { SignupRequestSchema } from "@models/request/auth/signup";
+import { UserTokenTypes } from "@models/tables/user-token-types";
+import { UsersT } from "@models/tables/users";
 import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
 import { readQuery } from "@utils/fs/read-query";

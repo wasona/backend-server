@@ -1,4 +1,4 @@
-import { ApiResponseCode } from "@models/app/api/response-code";
+import { ApiResponseCode } from "@models/internal/response-code";
 
 // universal interface for all API responses
 export interface ApiResponse {

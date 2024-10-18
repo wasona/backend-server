@@ -1,5 +1,5 @@
 import { db } from "@app";
-import { UserTokens, UserTokensT } from "@models/db/user-tokens";
+import { UserTokens, UserTokensT } from "@models/tables/user-tokens";
 import { readQuery } from "@utils/fs/read-query";
 const getUserToken = readQuery("@queries/auth/get-user-token-by-id.sql");
 

@@ -4,7 +4,7 @@ import { verifyEmail } from "@controllers/auth/verify-email";
 import { healthcheckApp } from "@controllers/healthcheck/app";
 import { getDatabaseVersion } from "@controllers/healthcheck/db";
 import { getAllIso639 } from "@controllers/iso-639/get-all";
-import { ServerState } from "@models/app/server-state"; // Adjust import if necessary
+import { ServerState } from "@models/internal/server-state";
 import { NextFunction, Request, Response, Router } from "express";
 
 export function createRouter(serverState: ServerState) {
