@@ -1,10 +1,9 @@
 import { createRouter } from "@controllers/index"; // import the export 'router' at /src/controllers/index.ts
 import { handleErrors } from "@controllers/middleware/error-handling";
 import { profileTime } from "@controllers/middleware/timing";
-import { fetchIso639List } from "@init/init-from-db/iso-639";
 import { createServerConfig } from "@init/server-config"; // initialize and bring over server config
 import { createServerState } from "@init/server-state";
-import { ServerState } from "@models/internal/server-state";
+import cors from "cors";
 import express from "express"; // le web framework
 import pgPromise from "pg-promise"; // Import pg-promise library
 
@@ -20,24 +19,21 @@ const connection = {
 };
 export const db = pgp(connection); // create and export the database connection pool to be used across the app
 
-let serverState: ServerState;
-
-const initializeServer = async () => {
+async function initializeServer() {
   try {
-    const iso639List = await fetchIso639List(db);
-
-    serverState = createServerState(serverConfig, iso639List);
+    const serverState = await createServerState(serverConfig);
 
     // Initialize the Express application
-    const app: express.Application = express();
+    const app = express();
 
-    // Middleware to parse incoming JSON requests
+    // Use middleware:
+    // * to parse incoming JSON requests
     app.use(express.json());
-    // Middleware to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
+    // * to parse URL-encoded data with the querystring library (extended: true uses the qs library instead)
     app.use(express.urlencoded({ extended: true }));
-    // Middleware to enable CORS
-    const cors = require("cors");
+    // * to enable CORS
     app.use(cors());
+
     // Use the router; passing serverState to the routes
     app.use("/", profileTime);
     app.use("/", createRouter(serverState));
@@ -59,6 +55,6 @@ const initializeServer = async () => {
     console.error("Failed to initialize server state:", error);
     process.exit(1); // Exit the process with an error code
   }
-};
+}
 
 initializeServer(); // Start the initialization process
