@@ -5,6 +5,7 @@ import { createServerConfig } from "@init/server-config"; // initialize and brin
 import { createServerState } from "@init/server-state";
 import cors from "cors";
 import express from "express"; // le web framework
+import { initNodeCron } from "jobs/cron";
 import pgPromise from "pg-promise"; // Import pg-promise library
 
 /*
@@ -17,11 +18,15 @@ const connection = {
   connectionString: serverConfig.getPgDatabaseConnStr(),
   allowExitOnIdle: false,
 };
+
 export const db = pgp(connection); // create and export the database connection pool to be used across the app
 
 async function initializeServer() {
   try {
     const serverState = await createServerState(serverConfig);
+
+    // Initialize job scheduler
+    await initNodeCron();
 
     // Initialize the Express application
     const app = express();
