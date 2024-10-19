@@ -18,6 +18,7 @@ const connection = {
   connectionString: serverConfig.getPgDatabaseConnStr(),
   allowExitOnIdle: false,
 };
+
 export const db = pgp(connection); // create and export the database connection pool to be used across the app
 
 async function initializeServer() {
