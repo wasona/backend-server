@@ -1,6 +1,6 @@
 import { db } from "@app";
 import { UserTokensT } from "@models/tables/user-tokens";
-import { readQuery } from "@utils/fs/read-query";
+import { readQuery } from "@utils/internal/read-query";
 
 const getUserToken = readQuery("src/queries/auth/get-user-token-by-id.sql");
 

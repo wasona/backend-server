@@ -5,12 +5,12 @@ import { SignupRequestSchema } from "@models/request/auth/signup";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
 import { UsersT } from "@models/tables/users";
-import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserByEmail } from "@utils/db/get-user";
 import { logUserAction } from "@utils/db/log-user-action";
 import { setUserToken } from "@utils/db/set-user-token";
-import { readQuery } from "@utils/fs/read-query";
 import { sendMail } from "@utils/generate/mail";
+import { readQuery } from "@utils/internal/read-query";
+import { apiError, apiSuccess } from "@utils/internal/respond";
 import { normalizeEmail } from "@utils/normalize/email";
 import { hashPassword } from "@utils/normalize/hash-password";
 import { normalizePhoneNumber } from "@utils/normalize/phone-number";
@@ -49,7 +49,6 @@ export async function signup(
   body.userPhone = normalizePhoneNumber(body.userPhone);
 
   // 5: userCountry
-  // TODO: validate against serverState.countries
   if (!validateCountryCode(body.userCountry, serverState.countriesList)) {
     return apiError(res, 400, ApiResponseCode.CountryCodeValidationFailed);
   }

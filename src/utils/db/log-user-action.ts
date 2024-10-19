@@ -1,6 +1,6 @@
 import { db } from "@app";
 import { UserLogTypes } from "@models/tables/user-log-types";
-import { readQuery } from "@utils/fs/read-query";
+import { readQuery } from "@utils/internal/read-query";
 import { UUID } from "crypto";
 
 const persistUserLog = readQuery("src/queries/auth/persist-user-log.sql");

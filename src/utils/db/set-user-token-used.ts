@@ -1,5 +1,5 @@
 import { db } from "@app";
-import { readQuery } from "@utils/fs/read-query";
+import { readQuery } from "@utils/internal/read-query";
 
 const setUserTokenUsedQuery = readQuery(
   "src/queries/auth/set-user-token-used.sql",

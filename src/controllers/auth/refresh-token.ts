@@ -2,11 +2,11 @@ import { ApiResponseCode } from "@models/internal/response-code";
 import { RefreshTokenRequestSchema } from "@models/request/auth/refresh-token";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
-import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
 import { logUserAction } from "@utils/db/log-user-action";
 import { setUserToken } from "@utils/db/set-user-token";
 import { setUserTokenUsed } from "@utils/db/set-user-token-used";
+import { apiError, apiSuccess } from "@utils/internal/respond";
 import {
   isUserTokenAlreadyUsed,
   isUserTokenExpired,

@@ -1,5 +1,5 @@
 import { ApiResponseCode } from "@models/internal/response-code";
-import { apiError } from "@utils/api/respond";
+import { apiError } from "@utils/internal/respond";
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 

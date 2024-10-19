@@ -1,6 +1,6 @@
 import { db } from "@app";
-import { apiSuccess } from "@utils/api/respond";
-import { readQuery } from "@utils/fs/read-query";
+import { readQuery } from "@utils/internal/read-query";
+import { apiSuccess } from "@utils/internal/respond";
 import { NextFunction, Request, Response } from "express";
 
 const selectVersion = readQuery("src/queries/healthcheck/select-version.sql");

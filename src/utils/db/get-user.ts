@@ -1,6 +1,6 @@
 import { db } from "@app";
 import { Users, UsersT } from "@models/tables/users";
-import { readQuery } from "@utils/fs/read-query";
+import { readQuery } from "@utils/internal/read-query";
 
 const findEmail = readQuery("src/queries/auth/find-email.sql");
 

@@ -1,6 +1,6 @@
 import { db } from "@app";
 import { UserTokenTypes } from "@models/tables/user-token-types";
-import { readQuery } from "@utils/fs/read-query";
+import { readQuery } from "@utils/internal/read-query";
 import { UUID } from "crypto";
 
 const persistUserToken = readQuery("src/queries/auth/persist-user-token.sql");

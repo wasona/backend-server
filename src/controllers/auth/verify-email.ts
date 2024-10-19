@@ -2,11 +2,11 @@ import { db } from "@app";
 import { ApiResponseCode } from "@models/internal/response-code";
 import { VerifyEmailRequestSchema } from "@models/request/auth/verify-email";
 import { UserLogTypes } from "@models/tables/user-log-types";
-import { apiError, apiSuccess } from "@utils/api/respond";
 import { getUserTokenById } from "@utils/db/get-user-token";
 import { logUserAction } from "@utils/db/log-user-action";
 import { setUserTokenUsed } from "@utils/db/set-user-token-used";
-import { readQuery } from "@utils/fs/read-query";
+import { readQuery } from "@utils/internal/read-query";
+import { apiError, apiSuccess } from "@utils/internal/respond";
 import {
   isUserTokenAlreadyUsed,
   isUserTokenExpired,
