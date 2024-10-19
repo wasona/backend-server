@@ -1,11 +1,11 @@
-import { login } from "@controllers/auth/login";
-import { refreshToken } from "@controllers/auth/refresh-token";
-import { signup } from "@controllers/auth/signup";
-import { verifyEmail } from "@controllers/auth/verify-email";
-import { healthcheckApp } from "@controllers/healthcheck/app";
-import { getDatabaseVersion } from "@controllers/healthcheck/db";
-import { getCountries } from "@controllers/iso/countries";
-import { getLanguages } from "@controllers/iso/languages";
+import { login } from "@routes/auth/login";
+import { refreshToken } from "@routes/auth/refresh-token";
+import { signup } from "@routes/auth/signup";
+import { verifyEmail } from "@routes/auth/verify-email";
+import { healthcheckApp } from "@routes/healthcheck/app";
+import { getDatabaseVersion } from "@routes/healthcheck/db";
+import { getCountries } from "@routes/iso/countries";
+import { getLanguages } from "@routes/iso/languages";
 import { ServerState } from "@models/internal/server-state";
 import { NextFunction, Request, Response, Router } from "express";
 

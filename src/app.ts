@@ -1,6 +1,6 @@
-import { createRouter } from "@controllers/index"; // import the export 'router' at /src/controllers/index.ts
-import { handleErrors } from "@controllers/middleware/error-handling";
-import { profileTime } from "@controllers/middleware/timing";
+import { createRouter } from "@routes/index"; // import the export 'router' at /src/controllers/index.ts
+import { handleErrors } from "@routes/middleware/error-handling";
+import { profileTime } from "@routes/middleware/timing";
 import { createServerConfig } from "@init/server-config"; // initialize and bring over server config
 import { createServerState } from "@init/server-state";
 import cors from "cors";
