@@ -1,4 +1,4 @@
-name: Build app
+name: Build and deploy app
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
 
 jobs:
   build:
+    name: Build and deploy app
     runs-on: ubuntu-latest
-    name: Build app
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,3 +24,15 @@ jobs:
 
       - name: Build app
         run: yarn run build
+
+      # If the app builds successfully, and is not a PR:
+      # Deploy to production
+      - name: Deploy with ssh
+        if: github.event_name != 'pull_request'
+        uses: sebastianjnuwu/ssh-action-deploy@v3
+        with:
+          IP: ${{ secrets.SSH_DEPLOY_IP }}
+          USER: ${{ secrets.SSH_DEPLOY_USER }}
+          KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+          FOLDER: "~/backend-server/dist/"
+          RUN: "cd ~/backend-server && git pull && yarn run build && yarn run up"
