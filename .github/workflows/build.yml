@@ -34,5 +34,5 @@ jobs:
           IP: ${{ secrets.SSH_DEPLOY_IP }}
           USER: ${{ secrets.SSH_DEPLOY_USER }}
           KEY: ${{ secrets.SSH_DEPLOY_KEY }}
-          FOLDER: "/home/${USER}/backend-server/dist/"
+          FOLDER: "/home/${secrets.SSH_DEPLOY_USER}/backend-server/dist/"
           RUN: "cd ~/backend-server && git pull && yarn run build && yarn run up"
