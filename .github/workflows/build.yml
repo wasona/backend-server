@@ -29,10 +29,13 @@ jobs:
       # Deploy to production
       - name: Deploy with ssh
         if: github.event_name != 'pull_request'
-        uses: sebastianjnuwu/ssh-action-deploy@v3
+        uses: appleboy/ssh-action@v1.1.0
         with:
-          IP: ${{ secrets.SSH_DEPLOY_IP }}
-          USER: ${{ secrets.SSH_DEPLOY_USER }}
-          KEY: ${{ secrets.SSH_DEPLOY_KEY }}
-          FOLDER: "/home/${secrets.SSH_DEPLOY_USER}/backend-server/dist/"
-          RUN: "cd ~/backend-server && git pull && yarn run build && yarn run up"
+          host: ${{ secrets.SSH_DEPLOY_IP }}
+          username: ${{ secrets.SSH_DEPLOY_USER }}
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          script: |
+            cd ~/backend-server &&
+            git pull &&
+            yarn run build &&
+            yarn run up
