@@ -35,6 +35,7 @@ jobs:
           username: ${{ secrets.SSH_DEPLOY_USER }}
           key: ${{ secrets.SSH_DEPLOY_KEY }}
           script: |
+            source ~/.zshrc &&
             cd ~/backend-server &&
             git pull &&
             yarn run build &&
