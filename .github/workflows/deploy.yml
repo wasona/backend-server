@@ -1,0 +1,28 @@
+name: Deploy app
+
+# Only trigger, when the build workflow succeeded
+on:
+  workflow_run:
+    workflows: ["Build app"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Deploy with ssh
+        uses: sebastianjnuwu/ssh-action-deploy@v3
+        with:
+          IP: ${{ secrets.SSH_DEPLOY_IP }}
+          USER: ${{ secrets.SSH_DEPLOY_USER }}
+          KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+          FOLDER: "~/backend-server/"
+          RUN: "git pull && yarn run build && yarn run up"
