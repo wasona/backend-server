@@ -1,7 +1,8 @@
 import { Language, LanguageT } from "@models/tables/languages";
+import { Temporal } from "temporal-polyfill";
 
 export async function fetchLanguagesList(db: any): Promise<LanguageT[]> {
-  const startTime = Date.now();
+  const startTime = Temporal.Now.instant().epochMilliseconds;
   let data;
   try {
     data = await db.any("SELECT * FROM v1.languages;");
@@ -17,7 +18,7 @@ export async function fetchLanguagesList(db: any): Promise<LanguageT[]> {
 
   const languagesList = data.map((item: any) => Language.parse(item));
 
-  const endTime = Date.now();
+  const endTime = Temporal.Now.instant().epochMilliseconds;
   console.log(`Languages initiated in ${endTime - startTime}ms`);
   return languagesList;
 }

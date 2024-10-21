@@ -6,7 +6,7 @@ const secretKey = new TextEncoder().encode("your-256-bit-secret");
 
 export async function createJWT(userId: string): Promise<string> {
   // Expire in an hour
-  const soon = Temporal.Now.instant().add({ hours: 1 });
+  const soon = Temporal.Now.instant().add({ hours: 1 }).epochSeconds;
 
   return await new SignJWT({
     // Custom fields go here
@@ -21,7 +21,7 @@ export async function createJWT(userId: string): Promise<string> {
     // aud
     .setAudience("api.wasona.com")
     // exp
-    .setExpirationTime(Math.floor(soon.epochMilliseconds / 1000))
+    .setExpirationTime(soon)
     // iat
     .setIssuedAt()
 

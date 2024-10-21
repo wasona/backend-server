@@ -1,7 +1,8 @@
 import { Countries, CountriesT } from "@models/tables/countries";
+import { Temporal } from "temporal-polyfill";
 
 export async function fetchCountriesList(db: any): Promise<CountriesT[]> {
-  const startTime = Date.now();
+  const startTime = Temporal.Now.instant().epochMilliseconds;
   let data;
   try {
     data = await db.any("SELECT * FROM v1.countries;");
@@ -17,7 +18,7 @@ export async function fetchCountriesList(db: any): Promise<CountriesT[]> {
 
   const countriesList = data.map((item: any) => Countries.parse(item));
 
-  const endTime = Date.now();
+  const endTime = Temporal.Now.instant().epochMilliseconds;
   console.log(`Countries initiated in ${endTime - startTime}ms`);
   return countriesList;
 }
