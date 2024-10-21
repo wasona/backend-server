@@ -5,7 +5,7 @@ import { UserTokenTypes } from "@models/tables/user-token-types";
 import { getUserByEmail } from "@utils/db/get-user";
 import { logUserAction } from "@utils/db/log-user-action";
 import { setUserToken } from "@utils/db/set-user-token";
-import { createJWT } from "@utils/generate/jwt";
+import { createJWT } from "@utils/generate/web-token";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import { normalizeEmail } from "@utils/normalize/email";
 import { validatePasswordHash } from "@utils/validate/password";

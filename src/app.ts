@@ -1,8 +1,9 @@
+import { createServerConfig } from "@init/server-config"; // initialize and bring over server config
+import { createServerState } from "@init/server-state";
 import { createRouter } from "@routes/index"; // import the export 'router' at /src/controllers/index.ts
 import { handleErrors } from "@routes/middleware/error-handling";
 import { profileTime } from "@routes/middleware/timing";
-import { createServerConfig } from "@init/server-config"; // initialize and bring over server config
-import { createServerState } from "@init/server-state";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express"; // le web framework
 import { initNodeCron } from "jobs/cron";
@@ -38,6 +39,8 @@ async function initializeServer() {
     app.use(express.urlencoded({ extended: true }));
     // * to enable CORS
     app.use(cors());
+    // * to automatically populate req.cookies
+    app.use(cookieParser());
 
     // Use the router; passing serverState to the routes
     app.use("/", profileTime);

@@ -16,6 +16,8 @@ export function handleErrors(
       schema: error.errors,
     });
   } else {
+    // Likely an unexpected error!
+    console.log(error);
     return apiError(res, 500, ApiResponseCode.InternalServerError, {
       error: error.message,
     });
