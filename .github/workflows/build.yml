@@ -38,5 +38,6 @@ jobs:
             source ~/.zshrc &&
             cd ~/backend-server &&
             git pull &&
+            yarn install &&
             yarn run build &&
             yarn run up
