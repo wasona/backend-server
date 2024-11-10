@@ -1,6 +1,7 @@
 import { ServerState } from "@models/internal/server-state";
 import { getCourses } from "@routes/app/courses";
 import { getLessons } from "@routes/app/lessons";
+import { getTasks } from "@routes/app/tasks";
 import { login } from "@routes/auth/login";
 import { refreshToken } from "@routes/auth/refresh-token";
 import { signup } from "@routes/auth/signup";
@@ -57,5 +58,8 @@ export function createRouter(serverState: ServerState) {
 
       // get lessons
       .get("/app/lessons", handler(getLessons))
+
+      // get tasks
+      .get("/app/tasks", handler(getTasks))
   );
 }
