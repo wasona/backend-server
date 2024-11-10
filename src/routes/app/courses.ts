@@ -9,11 +9,13 @@ export async function getCourses(
   serverState: ServerState,
 ) {
   // TODO: say how many lessons are currently completed by the user?
-  const courses = Object.entries(serverState.courses).map(([name, course]) => ({
-    name: name,
-    lessons: course.lessons.length,
-    sourceLanguage: course.source_language,
-    targetLanguage: course.target_language,
-  }));
-  return apiSuccess(res, 400, { courses: courses });
+  const coursesInfo = Object.entries(serverState.courses).map(
+    ([name, course]) => ({
+      name: name,
+      lessons: course.lessons.length,
+      sourceLanguage: course.source_language,
+      targetLanguage: course.target_language,
+    }),
+  );
+  return apiSuccess(res, 200, { courses: coursesInfo });
 }

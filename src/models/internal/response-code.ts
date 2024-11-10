@@ -15,4 +15,5 @@ export enum ApiResponseCode {
   UserTokenAlreadyUsed,
   CountryCodeValidationFailed,
   AuthenticationRequired,
+  CourseNotFound,
 }

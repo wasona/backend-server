@@ -1,5 +1,6 @@
 import { ServerState } from "@models/internal/server-state";
 import { getCourses } from "@routes/app/courses";
+import { getLessons } from "@routes/app/lessons";
 import { login } from "@routes/auth/login";
 import { refreshToken } from "@routes/auth/refresh-token";
 import { signup } from "@routes/auth/signup";
@@ -53,5 +54,8 @@ export function createRouter(serverState: ServerState) {
 
       // get courses
       .get("/app/courses", handler(getCourses))
+
+      // get lessons
+      .get("/app/lessons", handler(getLessons))
   );
 }
