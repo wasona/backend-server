@@ -1,8 +1,9 @@
 import { db } from "@app";
+import { fetchCoursesList } from "@init/courses/courses";
+import { fetchCountriesList } from "@init/init-from-db/countries";
 import { fetchLanguagesList } from "@init/init-from-db/languages";
 import { ServerConfig, ServerState } from "@models/internal/server-state";
 import { createTransport } from "nodemailer";
-import { fetchCountriesList } from "./init-from-db/countries";
 
 export async function createServerState(
   config: ServerConfig,
@@ -10,6 +11,7 @@ export async function createServerState(
   // Validate the isoList against the Zod schema
   const languagesList = await fetchLanguagesList(db);
   const countriesList = await fetchCountriesList(db);
+  const courses = await fetchCoursesList(db);
 
   const transporter = createTransport({
     host: config.smtpEndpoint,
@@ -21,11 +23,11 @@ export async function createServerState(
     },
   });
 
-  const serverState: ServerState = {
+  return {
     serverConfig: config,
     languagesList: languagesList,
     countriesList: countriesList,
     transporter: transporter,
-  };
-  return serverState;
+    courses: courses,
+  } as ServerState;
 }

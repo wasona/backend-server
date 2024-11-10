@@ -1,4 +1,5 @@
 import { ServerState } from "@models/internal/server-state";
+import { getCourses } from "@routes/app/courses";
 import { login } from "@routes/auth/login";
 import { refreshToken } from "@routes/auth/refresh-token";
 import { signup } from "@routes/auth/signup";
@@ -49,5 +50,8 @@ export function createRouter(serverState: ServerState) {
 
       // get all iso-639 codes
       .get("/iso/countries", handler(getCountries))
+
+      // get courses
+      .get("/app/courses", handler(getCourses))
   );
 }
