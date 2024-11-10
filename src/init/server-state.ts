@@ -11,7 +11,7 @@ export async function createServerState(
   // Validate the isoList against the Zod schema
   const languagesList = await fetchLanguagesList(db);
   const countriesList = await fetchCountriesList(db);
-  const courses = await fetchCoursesList(db);
+  const courses = await fetchCoursesList();
 
   const transporter = createTransport({
     host: config.smtpEndpoint,

@@ -4,14 +4,14 @@ import { glob } from "glob";
 import fs from "node:fs";
 import toml from "toml";
 
-export async function fetchCoursesList(db: any): Promise<CourseT[]> {
+export async function fetchCoursesList(): Promise<Record<string, CourseT>> {
   // TODO: support loading arbitrary courses
   let courseDir = "courses/course-eng-tok/";
   let course = Course.parse({
     ...toml.parse(fs.readFileSync(`${courseDir}/course.toml`, "utf8")),
     lessons: await fetchLessons(courseDir),
   });
-  return [course];
+  return { "eng-tok": course };
 }
 
 async function fetchLessons(courseDir: string): Promise<LessonT[]> {

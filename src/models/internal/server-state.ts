@@ -49,6 +49,6 @@ export class ServerState {
     public languagesList: LanguagesT[],
     public countriesList: CountriesT[],
     public transporter: Transporter,
-    public courses: CourseT[],
+    public courses: Record<string, CourseT>,
   ) {}
 }
