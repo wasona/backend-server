@@ -1,0 +1,3 @@
+[submodule "courses/course-eng-tok"]
+	path = courses/course-eng-tok
+	url = git@github.com:wasona/course-eng-tok.git
