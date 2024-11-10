@@ -38,6 +38,8 @@ jobs:
             source ~/.zshrc &&
             cd ~/backend-server &&
             git pull &&
+            git submodule update --init --recursive &&
+            git pull --recurse-submodules &&
             yarn install &&
             yarn run build &&
             yarn run up
