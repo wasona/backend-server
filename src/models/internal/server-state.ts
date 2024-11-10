@@ -1,4 +1,4 @@
-import { Course } from "@models/internal/course";
+import { CourseT } from "@models/internal/course";
 import { CountriesT } from "@models/tables/countries";
 import { LanguageT as LanguagesT } from "@models/tables/languages";
 import { Transporter } from "nodemailer";
@@ -49,6 +49,6 @@ export class ServerState {
     public languagesList: LanguagesT[],
     public countriesList: CountriesT[],
     public transporter: Transporter,
-    public courses: Course[],
+    public courses: CourseT[],
   ) {}
 }

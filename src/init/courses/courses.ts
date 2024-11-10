@@ -1,24 +1,26 @@
-import { Course, Lesson } from "@models/internal/course";
+import { Course, CourseT } from "@models/internal/course";
+import { Lesson, LessonT } from "@models/internal/lesson";
 import { glob } from "glob";
 import fs from "node:fs";
 import toml from "toml";
 
-export async function fetchCoursesList(db: any): Promise<Course[]> {
+export async function fetchCoursesList(db: any): Promise<CourseT[]> {
   // TODO: support loading arbitrary courses
   let courseDir = "courses/course-eng-tok/";
-  let courseMetadata = fs.readFileSync(`${courseDir}/course.toml`, "utf8");
-  let course = toml.parse(courseMetadata);
-  return [{ ...course, lessons: await fetchLessons(courseDir) }];
+  let course = Course.parse({
+    ...toml.parse(fs.readFileSync(`${courseDir}/course.toml`, "utf8")),
+    lessons: await fetchLessons(courseDir),
+  });
+  return [course];
 }
 
-async function fetchLessons(courseDir: string): Promise<Lesson[]> {
-  let lessons = [];
+async function fetchLessons(courseDir: string): Promise<LessonT[]> {
+  let lessons: LessonT[] = [];
   let lessonPaths = (
     await glob("courses/course-eng-tok/lessons/*.toml")
   ).sort();
   for (let lessonPath of lessonPaths) {
-    let lesson: Lesson = toml.parse(fs.readFileSync(lessonPath, "utf8"));
-    lessons.push(lesson);
+    lessons.push(Lesson.parse(toml.parse(fs.readFileSync(lessonPath, "utf8"))));
   }
   return lessons;
 }

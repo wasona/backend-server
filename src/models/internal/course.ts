@@ -1,17 +1,12 @@
-export interface Course {
-  source_language: string;
-  target_language: string;
-  lessons?: Lesson[];
-}
+import { Lesson } from "@models/internal/lesson";
+import { z } from "zod";
 
-export interface Lesson {
-  title?: string;
-  task: Task[];
-}
+export const Course = z
+  .object({
+    source_language: z.string(),
+    target_language: z.string(),
+    lessons: z.array(Lesson),
+  })
+  .strict();
 
-export interface Task {
-  type: "short input" | "listen"; // TODO more types
-  give: string;
-  accept: string[];
-  reject: string[];
-}
+export type CourseT = z.infer<typeof Course>;
