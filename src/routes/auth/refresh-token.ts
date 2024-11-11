@@ -1,11 +1,9 @@
+import { db } from "@app";
 import { ApiResponseCode } from "@models/internal/response-code";
 import { RefreshTokenRequestSchema } from "@models/request/auth/refresh-token";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
 import { getUserTokenById } from "@utils/db/get-user-token";
-import { logUserAction } from "@utils/db/log-user-action";
-import { setUserToken } from "@utils/db/set-user-token";
-import { setUserTokenUsed } from "@utils/db/set-user-token-used";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import {
   isUserTokenAlreadyUsed,
@@ -44,14 +42,13 @@ export async function refreshToken(
     return apiError(res, 400, ApiResponseCode.UserTokenAlreadyUsed);
   }
 
-  const newUserToken = setUserToken(
+  const newUserToken = await db.userTokens.add(
     userToken.user_id,
     UserTokenTypes.REFRESH_LOGIN,
     NEW_REFRESH_TOKEN_EXPIRES_IN_DAYS,
   );
-
-  setUserTokenUsed(userToken.user_token_id);
-  logUserAction(userToken.user_id, UserLogTypes.REFRESH_TOKEN);
+  await db.userTokens.setUsed(userToken.user_token_id);
+  await db.userLogs.add(userToken.user_id, UserLogTypes.REFRESH_TOKEN);
 
   // verified
   return apiSuccess(res, 200);

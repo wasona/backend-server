@@ -3,17 +3,12 @@ import { ApiResponseCode } from "@models/internal/response-code";
 import { VerifyEmailRequestSchema } from "@models/request/auth/verify-email";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { getUserTokenById } from "@utils/db/get-user-token";
-import { logUserAction } from "@utils/db/log-user-action";
-import { setUserTokenUsed } from "@utils/db/set-user-token-used";
-import { readQuery } from "@utils/internal/read-query";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import {
   isUserTokenAlreadyUsed,
   isUserTokenExpired,
 } from "@utils/validate/user-token";
 import { NextFunction, Request, Response } from "express";
-
-const setUserVerified = readQuery("src/queries/auth/set-user-verified.sql");
 
 export async function verifyEmail(
   req: Request,
@@ -46,10 +41,9 @@ export async function verifyEmail(
 
   // if it does, then update the users table's row using the FKEY in the user_tokens row
   // user_verified to true
-  await db.one(setUserVerified, userToken.user_id);
-
-  setUserTokenUsed(userToken.user_token_id);
-  logUserAction(userToken.user_id, UserLogTypes.VERIFY_EMAIL);
+  await db.users.setVerified(userToken.user_id);
+  await db.userTokens.setUsed(userToken.user_token_id);
+  await db.userLogs.add(userToken.user_id, UserLogTypes.VERIFY_EMAIL);
 
   // verified
   return apiSuccess(res, 200);

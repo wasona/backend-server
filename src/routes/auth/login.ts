@@ -1,10 +1,9 @@
+import { db } from "@app";
 import { ApiResponseCode } from "@models/internal/response-code";
 import { LoginRequestSchema } from "@models/request/auth/login";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
 import { getUserByEmail } from "@utils/db/get-user";
-import { logUserAction } from "@utils/db/log-user-action";
-import { setUserToken } from "@utils/db/set-user-token";
 import { createJWT } from "@utils/generate/web-token";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import { normalizeEmail } from "@utils/normalize/email";
@@ -55,14 +54,14 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   // get a cookie: req.cookies['cookie-name']
 
   // #7 generate and issue the appropriate refresh token
-  const refreshToken = setUserToken(
+  await db.userTokens.add(
     user.user_id,
     UserTokenTypes.REFRESH_LOGIN,
     REFRESH_LOGIN_TOKEN_EXPIRES_IN_DAYS,
   );
 
   // #8 log the login event asynchronously
-  logUserAction(user.user_id, UserLogTypes.LOGIN);
+  await db.userLogs.add(user.user_id, UserLogTypes.LOGIN);
 
   // #9 in the case of success, refill their login attempts quota
   return apiSuccess(res, 200, { jwt: jwt });

@@ -1,26 +1,28 @@
-import { createServerConfig } from "@init/server-config"; // initialize and bring over server config
+import { initOptions } from "@init/db";
+import { createServerConfig } from "@init/server-config";
 import { createServerState } from "@init/server-state";
-import { createRouter } from "@routes/index"; // import the export 'router' at /src/controllers/index.ts
+import { createRouter } from "@routes/index";
 import { handleErrors } from "@routes/middleware/error-handling";
 import { profileTime } from "@routes/middleware/timing";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express"; // le web framework
+import express from "express";
 import { initNodeCron } from "jobs/cron";
-import pgPromise from "pg-promise"; // Import pg-promise library
+import pgPromise from "pg-promise";
 
 /*
  * Initialize the connection pool here.
  */
 const initStartTime = Date.now();
-const pgp = pgPromise(); // Initialize pg-promise
+const pgp = pgPromise(initOptions); // Initialize pg-promise
 const serverConfig = createServerConfig();
 const connection = {
   connectionString: serverConfig.getPgDatabaseConnStr(),
   allowExitOnIdle: false,
 };
 
-export const db = pgp(connection); // create and export the database connection pool to be used across the app
+// create and export the database connection pool to be used across the app
+export const db = pgp(connection);
 
 async function initializeServer() {
   try {

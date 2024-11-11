@@ -4,12 +4,8 @@ import { ServerState } from "@models/internal/server-state";
 import { SignupRequestSchema } from "@models/request/auth/signup";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
-import { UsersT } from "@models/tables/users";
 import { getUserByEmail } from "@utils/db/get-user";
-import { logUserAction } from "@utils/db/log-user-action";
-import { setUserToken } from "@utils/db/set-user-token";
 import { sendMail } from "@utils/generate/mail";
-import { readQuery } from "@utils/internal/read-query";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import { normalizeEmail } from "@utils/normalize/email";
 import { hashPassword } from "@utils/normalize/hash-password";
@@ -17,8 +13,6 @@ import { normalizePhoneNumber } from "@utils/normalize/phone-number";
 import { validateCountryCode } from "@utils/validate/country-code";
 import { validatePhoneNumber } from "@utils/validate/phone-number";
 import { NextFunction, Request, Response } from "express";
-
-const signupQuery = readQuery("src/queries/auth/signup.sql");
 
 const EMAIL_VALIDATION_DAY_LIMIT: number = 1;
 
@@ -62,23 +56,24 @@ export async function signup(
   }
 
   // Insert into database
-  const user: UsersT = await db.one(signupQuery, [
+  const user = await db.users.add(
     body.userEmail,
     body.userPw,
     body.userName,
     body.userPhone,
     body.userCountry,
     body.userSubnational,
-  ]);
+  );
 
   // Create user token for email verification
-  const userToken = setUserToken(
+  const userToken = await db.userTokens.add(
     user.user_id,
     UserTokenTypes.EMAIL_VALIDATE,
     EMAIL_VALIDATION_DAY_LIMIT,
   );
+
   // TODO: replace with a link to the frontend.
-  const emailLink = `https://api.wasona.com/auth/verify-email?id=${userToken}`;
+  const emailLink = `https://api.wasona.com/auth/verify-email?id=${userToken.user_token_id}`;
 
   // Send email with verification link
   sendMail(serverState.transporter, {
@@ -88,7 +83,7 @@ export async function signup(
     text: `You have just registered on Wasona. Please click the following link to verify your email address. \n\n${emailLink}`,
   });
 
-  logUserAction(user.user_id, UserLogTypes.SIGNUP);
+  await db.userLogs.add(user.user_id, UserLogTypes.SIGNUP);
 
   // Return without hashed password
   const { user_pw, ...userWithoutPassword } = user;
