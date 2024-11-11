@@ -4,7 +4,6 @@ import { ServerState } from "@models/internal/server-state";
 import { SignupRequestSchema } from "@models/request/auth/signup";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
-import { getUserByEmail } from "@utils/db/get-user";
 import { sendMail } from "@utils/generate/mail";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import { normalizeEmail } from "@utils/normalize/email";
@@ -51,7 +50,7 @@ export async function signup(
   // TODO: validate somehow
 
   // signup: Check if user already exists
-  if ((await getUserByEmail(body.userEmail)) != undefined) {
+  if ((await db.users.getByEmail(body.userEmail)) != null) {
     return apiError(res, 400, ApiResponseCode.UserAlreadyExists);
   }
 

@@ -3,7 +3,6 @@ import { ApiResponseCode } from "@models/internal/response-code";
 import { RefreshTokenRequestSchema } from "@models/request/auth/refresh-token";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
-import { getUserTokenById } from "@utils/db/get-user-token";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import {
   isUserTokenAlreadyUsed,
@@ -24,7 +23,7 @@ export async function refreshToken(
   const id = body.id;
 
   // query the DB's user_tokens table to see if any row with that PKEY exists
-  let userToken = await getUserTokenById(body.id);
+  let userToken = await db.userTokens.get(body.id);
   console.log("refreshToken found user token", userToken);
   // if not, error
   if (!userToken) {

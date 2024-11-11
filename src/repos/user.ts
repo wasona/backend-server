@@ -27,6 +27,14 @@ const SET_VERIFIED = `
   RETURNING *;
 `;
 
+// deletes from users all accounts that haven't verified email within 24 hours
+const PURGE = `
+  DELETE FROM v1.users
+  WHERE
+      user_verified = false
+      AND user_created_at < (NOW() - INTERVAL '24 hours');
+`;
+
 export class UsersRepository {
   constructor(
     private db: IDatabase<any>,
@@ -57,5 +65,10 @@ export class UsersRepository {
 
   async setVerified(id: string): Promise<UsersT> {
     return await this.db.one(SET_VERIFIED, id);
+  }
+
+  // Returns how many users have been purged
+  async purge(): Promise<number> {
+    return await this.db.one<number>(PURGE);
   }
 }

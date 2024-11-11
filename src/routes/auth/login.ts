@@ -3,7 +3,6 @@ import { ApiResponseCode } from "@models/internal/response-code";
 import { LoginRequestSchema } from "@models/request/auth/login";
 import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserTokenTypes } from "@models/tables/user-token-types";
-import { getUserByEmail } from "@utils/db/get-user";
 import { createJWT } from "@utils/generate/web-token";
 import { apiError, apiSuccess } from "@utils/internal/respond";
 import { normalizeEmail } from "@utils/normalize/email";
@@ -24,7 +23,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   body.userEmail = normalizeEmail(body.userEmail);
 
   // #2 check if the email/id exists at all by querying DB
-  let user = await getUserByEmail(body.userEmail);
+  let user = await db.users.getByEmail(body.userEmail);
   if (!user) {
     return apiError(res, 400, ApiResponseCode.UserEmailNotFound);
   }
