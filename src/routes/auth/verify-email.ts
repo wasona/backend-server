@@ -20,7 +20,7 @@ export async function verifyEmail(
   const id = body.id;
 
   // query the DB's user_tokens table to see if any row with that PKEY exists
-  let userToken = await db.userTokens.get(body.id);
+  let userToken = await db.userTokens.read(body.id);
   console.log("verifyEmail found user token", userToken);
   // if not, error
   if (!userToken) {
@@ -40,9 +40,9 @@ export async function verifyEmail(
 
   // if it does, then update the users table's row using the FKEY in the user_tokens row
   // user_verified to true
-  await db.users.setVerified(userToken.user_id);
-  await db.userTokens.setUsed(userToken.user_token_id);
-  await db.userLogs.add(userToken.user_id, UserLogTypes.VERIFY_EMAIL);
+  await db.users.updateVerified(userToken.user_id);
+  await db.userTokens.updateUsed(userToken.user_token_id);
+  await db.userLogs.create(userToken.user_id, UserLogTypes.VERIFY_EMAIL);
 
   // verified
   return apiSuccess(res, 200);

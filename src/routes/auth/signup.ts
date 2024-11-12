@@ -50,12 +50,12 @@ export async function signup(
   // TODO: validate somehow
 
   // signup: Check if user already exists
-  if ((await db.users.getByEmail(body.userEmail)) != null) {
+  if ((await db.users.readByEmail(body.userEmail)) != null) {
     return apiError(res, 400, ApiResponseCode.UserAlreadyExists);
   }
 
   // Insert into database
-  const user = await db.users.add(
+  const user = await db.users.create(
     body.userEmail,
     body.userPw,
     body.userName,
@@ -65,7 +65,7 @@ export async function signup(
   );
 
   // Create user token for email verification
-  const userToken = await db.userTokens.add(
+  const userToken = await db.userTokens.create(
     user.user_id,
     UserTokenTypes.EMAIL_VALIDATE,
     EMAIL_VALIDATION_DAY_LIMIT,
@@ -82,7 +82,7 @@ export async function signup(
     text: `You have just registered on Wasona. Please click the following link to verify your email address. \n\n${emailLink}`,
   });
 
-  await db.userLogs.add(user.user_id, UserLogTypes.SIGNUP);
+  await db.userLogs.create(user.user_id, UserLogTypes.SIGNUP);
 
   // Return without hashed password
   const { user_pw, ...userWithoutPassword } = user;

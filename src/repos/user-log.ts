@@ -2,7 +2,7 @@ import { UserLogTypes } from "@models/tables/user-log-types";
 import { UserLogsT } from "@models/tables/user-logs";
 import { IDatabase, IMain } from "pg-promise";
 
-const ADD = `
+const READ = `
   INSERT INTO v1.user_logs (
     user_id,
     user_log_type,
@@ -18,10 +18,10 @@ export class UserLogsRepository {
     private pgp: IMain,
   ) {}
 
-  async add(userId: string, userLogType: UserLogTypes): Promise<UserLogsT> {
+  async create(userId: string, userLogType: UserLogTypes): Promise<UserLogsT> {
     const genTime = new Date();
 
-    const userLog = await this.db.one(ADD, [
+    const userLog = await this.db.one(READ, [
       userId,
       userLogType,
       genTime.toISOString(),

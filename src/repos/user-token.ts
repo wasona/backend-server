@@ -2,13 +2,13 @@ import { UserTokenTypes } from "@models/tables/user-token-types";
 import { UserTokensT } from "@models/tables/user-tokens";
 import { IDatabase, IMain } from "pg-promise";
 
-const GET = `
+const READ = `
   SELECT *
   FROM v1.user_tokens
   WHERE user_token_id = ($1);
 `;
 
-const ADD = `
+const CREATE = `
   INSERT INTO v1.user_tokens (
     user_id,
     user_token_type,
@@ -19,7 +19,7 @@ const ADD = `
   RETURNING *;
 `;
 
-const SET_USED = `
+const UPDATE_USED = `
   UPDATE v1.user_tokens
   SET user_token_used_on = ($2)
   WHERE user_token_id = ($1)
@@ -33,13 +33,13 @@ export class UserTokensRepository {
   ) {}
 
   // TODO: id -> uuid
-  async get(id: string): Promise<UserTokensT | null> {
-    return await this.db.oneOrNone(GET, id);
+  async read(id: string): Promise<UserTokensT | null> {
+    return await this.db.oneOrNone(READ, id);
   }
 
   // TODO: userId is a uuid but a zod-y uuid.
   // crypto UUID doesn't like that
-  async add(
+  async create(
     userId: string,
     userTokenType: UserTokenTypes,
     expiresInDays: number,
@@ -49,7 +49,7 @@ export class UserTokensRepository {
     const expiryTime = new Date(genTime);
     expiryTime.setDate(expiryTime.getDate() + expiresInDays);
 
-    return await this.db.one(ADD, [
+    return await this.db.one(CREATE, [
       userId,
       userTokenType,
       genTime.toISOString(),
@@ -57,8 +57,8 @@ export class UserTokensRepository {
     ]);
   }
 
-  async setUsed(id: string): Promise<UserTokensT> {
+  async updateUsed(id: string): Promise<UserTokensT> {
     const usedOn = new Date().toISOString();
-    return await this.db.one(SET_USED, [id, usedOn]);
+    return await this.db.one(UPDATE_USED, [id, usedOn]);
   }
 }

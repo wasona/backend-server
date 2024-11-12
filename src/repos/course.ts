@@ -1,19 +1,23 @@
 import { CoursesT } from "@models/tables/courses";
 import { IDatabase, IMain } from "pg-promise";
 
-const GET = `
+const READ = `
   SELECT *
   FROM v1.courses
   WHERE course_id = ($1);
 `;
 
-const ADD = `
+const CREATE = `
   INSERT INTO v1.courses (
-    source_language,
-    target_language,
+    course_source_language,
+    course_target_language
   )
   VALUES ($1, $2)
   RETURNING *;
+`;
+
+const DELETE_ALL = `
+  DELETE FROM v1.courses;
 `;
 
 export class CoursesRepository {
@@ -22,11 +26,19 @@ export class CoursesRepository {
     private pgp: IMain,
   ) {}
 
-  async get(id: string): Promise<CoursesT | null> {
-    return await this.db.oneOrNone(GET, id);
+  async read(id: string): Promise<CoursesT | null> {
+    return await this.db.oneOrNone(READ, id);
   }
 
-  async add(sourceLanguage: string, targetLanguage: string): Promise<CoursesT> {
-    return await this.db.one(ADD, [sourceLanguage, targetLanguage]);
+  async create(
+    sourceLanguage: string,
+    targetLanguage: string,
+  ): Promise<CoursesT> {
+    return await this.db.one(CREATE, [sourceLanguage, targetLanguage]);
+  }
+
+  // TODO
+  async deleteAll() {
+    return await this.db.none(DELETE_ALL);
   }
 }

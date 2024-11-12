@@ -1,13 +1,13 @@
 import { UsersT } from "@models/tables/users";
 import { IDatabase, IMain } from "pg-promise";
 
-const GET_BY_EMAIL = `
+const READ_BY_EMAIL = `
   SELECT *
   FROM v1.users
   WHERE user_email = ($1);
 `;
 
-const ADD = `
+const CREATE = `
   INSERT INTO v1.users (
     user_email,
     user_pw,
@@ -20,7 +20,7 @@ const ADD = `
   RETURNING *;
 `;
 
-const SET_VERIFIED = `
+const UPDATE_VERIFIED = `
   UPDATE v1.users
   SET user_verified = true
   WHERE user_id = ($1)
@@ -28,7 +28,7 @@ const SET_VERIFIED = `
 `;
 
 // deletes from users all accounts that haven't verified email within 24 hours
-const PURGE = `
+const DELETE_UNVERIFIED = `
   DELETE FROM v1.users
   WHERE
       user_verified = false
@@ -41,11 +41,11 @@ export class UsersRepository {
     private pgp: IMain,
   ) {}
 
-  async getByEmail(email: string): Promise<UsersT | null> {
-    return await this.db.oneOrNone(GET_BY_EMAIL, email);
+  async readByEmail(email: string): Promise<UsersT | null> {
+    return await this.db.oneOrNone(READ_BY_EMAIL, email);
   }
 
-  async add(
+  async create(
     userEmail: string,
     userPw: string,
     userName: string,
@@ -53,7 +53,7 @@ export class UsersRepository {
     userCountry: string,
     userSubnational: string,
   ): Promise<UsersT> {
-    return await this.db.one(ADD, [
+    return await this.db.one(CREATE, [
       userEmail,
       userPw,
       userName,
@@ -63,12 +63,12 @@ export class UsersRepository {
     ]);
   }
 
-  async setVerified(id: string): Promise<UsersT> {
-    return await this.db.one(SET_VERIFIED, id);
+  async updateVerified(id: string): Promise<UsersT> {
+    return await this.db.one(UPDATE_VERIFIED, id);
   }
 
   // Returns how many users have been purged
-  async purge(): Promise<number> {
-    return await this.db.one<number>(PURGE);
+  async deleteUnverified(): Promise<number> {
+    return await this.db.one<number>(DELETE_UNVERIFIED);
   }
 }

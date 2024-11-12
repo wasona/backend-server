@@ -23,7 +23,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   body.userEmail = normalizeEmail(body.userEmail);
 
   // #2 check if the email/id exists at all by querying DB
-  let user = await db.users.getByEmail(body.userEmail);
+  let user = await db.users.readByEmail(body.userEmail);
   if (!user) {
     return apiError(res, 400, ApiResponseCode.UserEmailNotFound);
   }
@@ -53,14 +53,14 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   // get a cookie: req.cookies['cookie-name']
 
   // #7 generate and issue the appropriate refresh token
-  await db.userTokens.add(
+  await db.userTokens.create(
     user.user_id,
     UserTokenTypes.REFRESH_LOGIN,
     REFRESH_LOGIN_TOKEN_EXPIRES_IN_DAYS,
   );
 
   // #8 log the login event asynchronously
-  await db.userLogs.add(user.user_id, UserLogTypes.LOGIN);
+  await db.userLogs.create(user.user_id, UserLogTypes.LOGIN);
 
   // #9 in the case of success, refill their login attempts quota
   return apiSuccess(res, 200, { jwt: jwt });

@@ -1,3 +1,4 @@
+import { loadCourse, unloadCourses } from "@init/courses/courses-v2";
 import { initOptions } from "@init/db";
 import { createServerConfig } from "@init/server-config";
 import { createServerState } from "@init/server-state";
@@ -26,6 +27,11 @@ export const db = pgp(connection);
 
 async function initializeServer() {
   try {
+    await unloadCourses();
+    console.log("Courses unloaded");
+    await loadCourse("courses/course-eng-tok/");
+    console.log("Course loaded");
+
     const serverState = await createServerState(serverConfig);
 
     // Initialize job scheduler

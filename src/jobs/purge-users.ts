@@ -10,7 +10,7 @@ export async function purgeUsers() {
 
   try {
     // purge users that haven't validated their emails within 24 hours
-    affectedRows = await db.users.purge();
+    affectedRows = await db.users.deleteUnverified();
   } catch (e) {
     logElapsedTimeError(startTime, "purgeUsers", e);
   }
