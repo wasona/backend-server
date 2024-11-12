@@ -7,6 +7,11 @@ const READ = `
   WHERE course_id = ($1);
 `;
 
+const READ_ALL = `
+  SELECT *
+  FROM v1.courses;
+`;
+
 const CREATE = `
   INSERT INTO v1.courses (
     course_source_language,
@@ -28,6 +33,10 @@ export class CoursesRepository {
 
   async read(id: string): Promise<CoursesT | null> {
     return await this.db.oneOrNone(READ, id);
+  }
+
+  async readAll(): Promise<CoursesT[] | null> {
+    return await this.db.any(READ_ALL);
   }
 
   async create(

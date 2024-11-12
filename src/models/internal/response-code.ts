@@ -16,5 +16,5 @@ export enum ApiResponseCode {
   CountryCodeValidationFailed,
   AuthenticationRequired,
   CourseNotFound,
-  InvalidLessonId,
+  LessonNotFound,
 }

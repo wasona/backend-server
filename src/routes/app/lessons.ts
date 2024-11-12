@@ -1,3 +1,4 @@
+import { db } from "@app";
 import { ApiResponseCode } from "@models/internal/response-code";
 import { ServerState } from "@models/internal/server-state";
 import { LessonsRequestSchema } from "@models/request/app/lessons";
@@ -13,16 +14,11 @@ export async function getLessons(
   // Validate the request body
   const body = LessonsRequestSchema.parse(req.body);
 
-  if (!(body.course in serverState.courses)) {
+  if (!(await db.courses.read(body.courseId))) {
     return apiError(res, 400, ApiResponseCode.CourseNotFound);
   }
-  const lessons = serverState.courses[body.course].lessons;
 
-  // TODO: require lessons to have a title
   // TODO: implement availability based on user progress
-  const lessonsInfo = Object.entries(lessons).map(([name, lesson]) => ({
-    title: lesson.title || "unknown",
-    available: true,
-  }));
-  return apiSuccess(res, 200, { lessons: lessonsInfo });
+  let lessons = await db.lessons.readAll();
+  return apiSuccess(res, 200, { lessons: lessons });
 }

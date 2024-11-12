@@ -1,3 +1,4 @@
+import { db } from "@app";
 import { ApiResponseCode } from "@models/internal/response-code";
 import { ServerState } from "@models/internal/server-state";
 import { TasksRequestSchema } from "@models/request/app/task";
@@ -13,16 +14,11 @@ export async function getTasks(
   // Validate the request body
   const body = TasksRequestSchema.parse(req.body);
 
-  if (!(body.course in serverState.courses)) {
-    return apiError(res, 400, ApiResponseCode.CourseNotFound);
+  if (!(await db.lessons.read(body.lessonId))) {
+    return apiError(res, 400, ApiResponseCode.LessonNotFound);
   }
-  const lessons = serverState.courses[body.course].lessons;
 
-  if (body.lessonId >= lessons.length) {
-    return apiError(res, 400, ApiResponseCode.InvalidLessonId);
-  }
-  const tasks = lessons[body.lessonId].task;
-
+  let tasks = await db.tasks.readAll();
   // TODO: figure out what data to show/hide.
   // TODO: Handle task types.
   return apiSuccess(res, 200, { tasks: tasks });

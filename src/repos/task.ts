@@ -7,6 +7,11 @@ const READ = `
   WHERE task_id = ($1);
 `;
 
+const READ_ALL = `
+  SELECT *
+  FROM v1.tasks;
+`;
+
 const CREATE = `
   INSERT INTO v1.tasks (
     task_lesson,
@@ -27,6 +32,10 @@ export class TasksRepository {
 
   async read(id: string): Promise<TasksT | null> {
     return await this.db.oneOrNone(READ, id);
+  }
+
+  async readAll(): Promise<TasksT[] | null> {
+    return await this.db.any(READ_ALL);
   }
 
   async create(

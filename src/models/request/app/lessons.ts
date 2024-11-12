@@ -2,6 +2,6 @@ import { z } from "zod";
 
 export const LessonsRequestSchema = z
   .object({
-    course: z.string(),
+    courseId: z.string(),
   })
   .strict();

@@ -7,6 +7,11 @@ const READ = `
   WHERE lesson_id = ($1);
 `;
 
+const READ_ALL = `
+  SELECT *
+  FROM v1.lessons;
+`;
+
 const CREATE = `
   INSERT INTO v1.lessons (
     lesson_course,
@@ -25,6 +30,10 @@ export class LessonsRepository {
 
   async read(id: string): Promise<LessonsT | null> {
     return await this.db.oneOrNone(READ, id);
+  }
+
+  async readAll(): Promise<LessonsT[] | null> {
+    return await this.db.any(READ_ALL);
   }
 
   async create(

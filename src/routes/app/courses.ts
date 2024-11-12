@@ -1,3 +1,4 @@
+import { db } from "@app";
 import { ServerState } from "@models/internal/server-state";
 import { apiSuccess } from "@utils/internal/respond";
 import { NextFunction, Request, Response } from "express";
@@ -8,14 +9,8 @@ export async function getCourses(
   next: NextFunction,
   serverState: ServerState,
 ) {
-  // TODO: say how many lessons are currently completed by the user?
-  const coursesInfo = Object.entries(serverState.courses).map(
-    ([name, course]) => ({
-      name: name,
-      lessons: course.lessons.length,
-      sourceLanguage: course.source_language,
-      targetLanguage: course.target_language,
-    }),
-  );
-  return apiSuccess(res, 200, { courses: coursesInfo });
+  // TODO: any additional data?
+  // e.g. say how many lessons are currently completed by the user?
+  let courses = await db.courses.readAll();
+  return apiSuccess(res, 200, { courses: courses });
 }
