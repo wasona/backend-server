@@ -18,7 +18,7 @@ export async function getTasks(
     return apiError(res, 400, ApiResponseCode.LessonNotFound);
   }
 
-  let tasks = await db.tasks.readAll();
+  let tasks = await db.tasks.readByLesson(body.lessonId);
   // TODO: figure out what data to show/hide.
   // TODO: Handle task types.
   return apiSuccess(res, 200, { tasks: tasks });

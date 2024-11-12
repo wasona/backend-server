@@ -19,6 +19,6 @@ export async function getLessons(
   }
 
   // TODO: implement availability based on user progress
-  let lessons = await db.lessons.readAll();
+  let lessons = await db.lessons.readByCourse(body.courseId);
   return apiSuccess(res, 200, { lessons: lessons });
 }

@@ -7,6 +7,12 @@ const READ = `
   WHERE lesson_id = ($1);
 `;
 
+const READ_BY_COURSE = `
+  SELECT *
+  FROM v1.lessons
+  WHERE lesson_course = ($1);
+`;
+
 const READ_ALL = `
   SELECT *
   FROM v1.lessons;
@@ -30,6 +36,10 @@ export class LessonsRepository {
 
   async read(id: string): Promise<LessonsT | null> {
     return await this.db.oneOrNone(READ, id);
+  }
+
+  async readByCourse(courseId: string): Promise<LessonsT[] | null> {
+    return await this.db.manyOrNone(READ_BY_COURSE, courseId);
   }
 
   async readAll(): Promise<LessonsT[] | null> {
