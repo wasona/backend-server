@@ -1,5 +1,5 @@
-import { loadCourse, unloadCourses } from "@init/courses/courses-v2";
 import { initOptions } from "@init/db";
+import { loadCourse, unloadCourses } from "@init/init-db/courses";
 import { createServerConfig } from "@init/server-config";
 import { createServerState } from "@init/server-state";
 import { createRouter } from "@routes/index";
