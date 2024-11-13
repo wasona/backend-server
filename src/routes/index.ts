@@ -1,6 +1,8 @@
 import { ServerState } from "@models/internal/server-state";
 import { getCourses } from "@routes/app/courses";
 import { getLessons } from "@routes/app/lessons";
+import { taskAnswer } from "@routes/app/task-answer";
+import { taskQuestion } from "@routes/app/task-question";
 import { getTasks } from "@routes/app/tasks";
 import { login } from "@routes/auth/login";
 import { refreshToken } from "@routes/auth/refresh-token";
@@ -33,9 +35,6 @@ export function createRouter(serverState: ServerState) {
       // signup
       .post("/auth/signup", handler(signup))
 
-      // TODO: confirmation email
-      // TODO: delete users if they don't reply within 24 hours
-      // TODO: email verification related controllers
       // TODO: OAuth
 
       // login
@@ -61,5 +60,11 @@ export function createRouter(serverState: ServerState) {
 
       // get tasks
       .get("/app/tasks", handler(getTasks))
+
+      // task: get question
+      .get("/app/task-question", handler(taskQuestion))
+
+      // task: get answer
+      .get("/app/task-answer", handler(taskAnswer))
   );
 }

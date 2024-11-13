@@ -19,7 +19,6 @@ export async function getTasks(
   }
 
   let tasks = await db.tasks.readByLesson(body.lessonId);
-  // TODO: figure out what data to show/hide.
-  // TODO: Handle task types.
-  return apiSuccess(res, 200, { tasks: tasks });
+  let taskIds = tasks?.map((task) => task.task_id);
+  return apiSuccess(res, 200, { tasks: taskIds });
 }

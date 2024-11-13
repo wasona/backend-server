@@ -17,4 +17,6 @@ export enum ApiResponseCode {
   AuthenticationRequired,
   CourseNotFound,
   LessonNotFound,
+  TaskNotFound,
+  NotImplemented,
 }
