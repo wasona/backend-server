@@ -15,9 +15,10 @@ const READ_ALL = `
 const CREATE = `
   INSERT INTO v1.courses (
     course_source_language,
-    course_target_language
+    course_target_language,
+    course_title
   )
-  VALUES ($1, $2)
+  VALUES ($1, $2, $3)
   RETURNING *;
 `;
 
@@ -42,8 +43,9 @@ export class CoursesRepository {
   async create(
     sourceLanguage: string,
     targetLanguage: string,
+    title: string,
   ): Promise<CoursesT> {
-    return await this.db.one(CREATE, [sourceLanguage, targetLanguage]);
+    return await this.db.one(CREATE, [sourceLanguage, targetLanguage, title]);
   }
 
   // TODO

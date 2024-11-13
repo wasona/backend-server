@@ -14,6 +14,7 @@ export async function loadCourse(courseDir: string) {
   let course = await db.courses.create(
     courseToml.source_language,
     courseToml.target_language,
+    courseToml.title,
   );
 
   // TODO: TOML validation
@@ -23,15 +24,16 @@ export async function loadCourse(courseDir: string) {
     let lesson = await db.lessons.create(
       course.course_id,
       lessonIndex,
-      lessonToml.title || "unknown", // TODO: force titles
+      lessonToml.title,
     );
-    for (let [taskIndex, task] of lessonToml.task.entries()) {
+    for (let [taskIndex, task] of lessonToml.tasks.entries()) {
       await db.tasks.create(
         lesson.lesson_id,
         0, // TODO: replace with enum
         task.give,
         task.accept,
         task.reject,
+        taskIndex,
       );
     }
   }

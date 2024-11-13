@@ -10,7 +10,8 @@ const READ = `
 const READ_BY_LESSON = `
   SELECT *
   FROM v1.tasks
-  WHERE task_lesson = ($1);
+  WHERE task_lesson = ($1)
+  ORDER BY task_index ASC;
 `;
 
 const READ_ALL = `
@@ -24,9 +25,10 @@ const CREATE = `
     task_type,
     task_give,
     task_accept,
-    task_reject
+    task_reject,
+    task_index
   )
-  VALUES ($1, $2, $3, $4, $5)
+  VALUES ($1, $2, $3, $4, $5, $6)
   RETURNING *;
 `;
 
@@ -54,6 +56,7 @@ export class TasksRepository {
     taskGive: string,
     taskAccept: string[],
     taskReject: string[],
+    taskIndex: number,
   ): Promise<TasksT> {
     return await this.db.one(CREATE, [
       taskLesson,
@@ -61,6 +64,7 @@ export class TasksRepository {
       taskGive,
       taskAccept,
       taskReject,
+      taskIndex,
     ]);
   }
 }

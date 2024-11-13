@@ -7,6 +7,7 @@ export const Tasks = z.object({
   task_give: z.string(),
   task_accept: z.array(z.string()),
   task_reject: z.array(z.string()),
+  task_index: z.number().int().min(0),
 });
 
 export type TasksT = z.infer<typeof Tasks>;

@@ -10,7 +10,8 @@ const READ = `
 const READ_BY_COURSE = `
   SELECT *
   FROM v1.lessons
-  WHERE lesson_course = ($1);
+  WHERE lesson_course = ($1)
+  ORDER BY lesson_index ASC;
 `;
 
 const READ_ALL = `
