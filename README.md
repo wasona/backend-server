@@ -1,10 +1,10 @@
 # backend-server
 
-The WIP backend for Wasona. Uses Express + Postgres. Currently implementing auth. 
+The WIP backend for Wasona. Uses Express, pg-promise, and Postgres. Currently mostly done with auth, and implementing application logic. 
 
 ## Requirements
 
-* Yarn (>= 1.22)
+* Yarn (>= 4.5.1)
 
 * Postgres
 
