@@ -11,10 +11,10 @@ export async function taskQuestion(
   next: NextFunction,
   serverState: ServerState,
 ) {
-  // Validate the request body
-  const body = TaskQuestionRequestSchema.parse(req.body);
+  // Validate the query
+  const query = TaskQuestionRequestSchema.parse(req.query);
 
-  let task = await db.tasks.read(body.taskId);
+  let task = await db.tasks.read(query.taskId);
   if (!task) {
     return apiError(res, 400, ApiResponseCode.TaskNotFound);
   }

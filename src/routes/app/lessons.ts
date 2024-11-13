@@ -11,14 +11,15 @@ export async function getLessons(
   next: NextFunction,
   serverState: ServerState,
 ) {
-  // Validate the request body
-  const body = LessonsRequestSchema.parse(req.body);
+  console.log(req.query);
+  // Validate the query
+  const query = LessonsRequestSchema.parse(req.query);
 
-  if (!(await db.courses.read(body.courseId))) {
+  if (!(await db.courses.read(query.courseId))) {
     return apiError(res, 400, ApiResponseCode.CourseNotFound);
   }
 
   // TODO: implement availability based on user progress
-  let lessons = await db.lessons.readByCourse(body.courseId);
+  let lessons = await db.lessons.readByCourse(query.courseId);
   return apiSuccess(res, 200, { lessons: lessons });
 }

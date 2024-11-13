@@ -11,16 +11,16 @@ export async function taskAnswer(
   next: NextFunction,
   serverState: ServerState,
 ) {
-  // Validate the request body
-  const body = TaskAnswerRequestSchema.parse(req.body);
+  // Validate the query
+  const query = TaskAnswerRequestSchema.parse(req.query);
 
-  let task = await db.tasks.read(body.taskId);
+  let task = await db.tasks.read(query.taskId);
   if (!task) {
     return apiError(res, 400, ApiResponseCode.TaskNotFound);
   }
 
   // TODO: handle mismatches in strings, e.g. punctuation, capitalisation
-  let correct = task!.task_accept.includes(body.reply);
+  let correct = task!.task_accept.includes(query.reply);
 
   return apiSuccess(res, 200, { correct: correct });
 }

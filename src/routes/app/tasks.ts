@@ -11,14 +11,14 @@ export async function getTasks(
   next: NextFunction,
   serverState: ServerState,
 ) {
-  // Validate the request body
-  const body = TasksRequestSchema.parse(req.body);
+  // Validate the query
+  const query = TasksRequestSchema.parse(req.query);
 
-  if (!(await db.lessons.read(body.lessonId))) {
+  if (!(await db.lessons.read(query.lessonId))) {
     return apiError(res, 400, ApiResponseCode.LessonNotFound);
   }
 
-  let tasks = await db.tasks.readByLesson(body.lessonId);
+  let tasks = await db.tasks.readByLesson(query.lessonId);
   let taskIds = tasks?.map((task) => task.task_id);
   return apiSuccess(res, 200, { tasks: taskIds });
 }
