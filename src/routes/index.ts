@@ -26,6 +26,13 @@ export function createRouter(serverState: ServerState) {
 
   return (
     Router()
+      // redirect root to github to avoid anyone getting
+      // confused at api.wasona.com being "down"
+      // if we ever document the routes, redirect to docs
+      .get("/", (_, res) => {
+        res.redirect("https://github.com/wasona/backend-server");
+      })
+
       // basic server healthcheck
       .get("/healthcheck/app", handler(healthcheckApp))
 
