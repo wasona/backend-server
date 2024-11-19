@@ -3,9 +3,11 @@
 // validation for all server-db interactions all the time, always -jyh
 import { z } from "zod";
 
-export const Language = z.object({
-  language_iso_639_3: z.string(),
-  language_name_english: z.string(),
-});
+export const Language = z
+  .object({
+    language_iso_639_3: z.string(),
+    language_name_english: z.string(),
+  })
+  .strict();
 
 export type LanguageT = z.infer<typeof Language>;
