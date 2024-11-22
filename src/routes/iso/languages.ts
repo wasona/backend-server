@@ -9,7 +9,5 @@ export async function getLanguages(
   serverState: ServerState,
 ) {
   // Returning the JSON response with the list of Iso639 instances from serverState
-  return apiSuccess(res, 200, {
-    languagesList: serverState.languagesList,
-  });
+  return apiSuccess(res, 200, serverState.languagesList);
 }

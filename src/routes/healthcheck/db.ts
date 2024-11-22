@@ -9,5 +9,5 @@ export async function getDatabaseVersion(
 ) {
   // you use 'one' when only one row is expected to be returned
   let data = await db.one("SELECT VERSION();");
-  return apiSuccess(res, 200, { version: data.version });
+  return apiSuccess(res, 200, data.version);
 }

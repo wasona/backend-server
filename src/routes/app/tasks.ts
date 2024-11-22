@@ -20,5 +20,5 @@ export async function getTasks(
 
   let tasks = await db.tasks.readByLesson(query.lessonId);
   let taskIds = tasks?.map((task) => task.task_id);
-  return apiSuccess(res, 200, { tasks: taskIds });
+  return apiSuccess(res, 200, taskIds);
 }

@@ -22,5 +22,5 @@ export async function taskAnswer(
   // TODO: handle mismatches in strings, e.g. punctuation, capitalisation
   let correct = task!.task_accept.includes(query.reply);
 
-  return apiSuccess(res, 200, { correct: correct });
+  return apiSuccess(res, 200, correct);
 }

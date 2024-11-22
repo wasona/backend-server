@@ -63,5 +63,5 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   await db.userLogs.create(user.user_id, UserLogTypes.LOGIN);
 
   // #9 in the case of success, refill their login attempts quota
-  return apiSuccess(res, 200, { jwt: jwt });
+  return apiSuccess(res, 200, jwt);
 }

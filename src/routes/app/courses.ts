@@ -12,5 +12,5 @@ export async function getCourses(
   // TODO: any additional data?
   // e.g. say how many lessons are currently completed by the user?
   let courses = await db.courses.readAll();
-  return apiSuccess(res, 200, { courses: courses });
+  return apiSuccess(res, 200, courses);
 }

@@ -11,7 +11,7 @@ function codeName(code: ApiResponseCode) {
 export async function apiSuccess(
   res: Response,
   status: number,
-  data?: Record<string, unknown>,
+  data?: unknown,
 ) {
   const response: ApiResponse = {
     success: true,

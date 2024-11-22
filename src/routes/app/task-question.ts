@@ -26,5 +26,5 @@ export async function taskQuestion(
   } else {
     return apiError(res, 400, ApiResponseCode.NotImplemented);
   }
-  return apiSuccess(res, 200, { task: response });
+  return apiSuccess(res, 200, response);
 }

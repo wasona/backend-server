@@ -9,7 +9,5 @@ export async function getCountries(
   serverState: ServerState,
 ) {
   // Returning the JSON response with the list of Iso639 instances from serverState
-  return apiSuccess(res, 200, {
-    countriesList: serverState.countriesList,
-  });
+  return apiSuccess(res, 200, serverState.countriesList);
 }
