@@ -17,13 +17,13 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Setup Yarn
-        uses: threeal/setup-yarn-action@v2.0.0
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          cache: false
+          node-version: latest
 
       - name: Build app
-        run: yarn run build
+        run: npm run build
 
       # If the app builds successfully, and is not a PR:
       # Deploy to production
@@ -40,6 +40,6 @@ jobs:
             git pull &&
             git submodule update --init --recursive &&
             git pull --recurse-submodules &&
-            yarn install &&
-            yarn run build &&
-            yarn run up
+            npm i &&
+            npm run build &&
+            npm run up
