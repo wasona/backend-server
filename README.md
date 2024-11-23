@@ -1,10 +1,6 @@
 # backend-server
 
-The WIP backend for Wasona. Uses Express, pg-promise, and Postgres. Currently mostly done with auth, and implementing application logic. 
-
-## Requirements
-
-* Yarn (>= 4.5.1)
+The WIP backend for Wasona. Uses Express, pg-promise, and Postgres. Currently mostly done with auth, and implementing application logic.
 
 * Postgres
 
@@ -13,12 +9,12 @@ The WIP backend for Wasona. Uses Express, pg-promise, and Postgres. Currently mo
 ```
 git clone https://github.com/wasona/backend-server
 mv sample.env .env  # And populate it with real authorisation
-yarn run build
+npm x build
 ```
 
 ## Usage
 ```
-yarn run dev
+npm x dev
 ```
 Setting up a systemd service, docker etc is up to you.
 
