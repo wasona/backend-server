@@ -23,7 +23,9 @@ jobs:
           node-version: latest
 
       - name: Build app
-        run: npm run build
+        run: |
+          npm i
+          npm run build
 
       # If the app builds successfully, and is not a PR:
       # Deploy to production
