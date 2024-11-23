@@ -9,7 +9,6 @@ import { apiError, apiSuccess } from "@utils/internal/respond";
 import { normalizeEmail } from "@utils/normalize/email";
 import { hashPassword } from "@utils/normalize/hash-password";
 import { normalizePhoneNumber } from "@utils/normalize/phone-number";
-import { validateCountryCode } from "@utils/validate/country-code";
 import { validatePhoneNumber } from "@utils/validate/phone-number";
 import { NextFunction, Request, Response } from "express";
 
@@ -42,7 +41,7 @@ export async function signup(
   body.userPhone = normalizePhoneNumber(body.userPhone);
 
   // 5: userCountry
-  if (!validateCountryCode(body.userCountry, serverState.countriesList)) {
+  if (!(await db.countries.isValidCode(body.userCountry))) {
     return apiError(res, 400, ApiResponseCode.CountryCodeValidationFailed);
   }
 
