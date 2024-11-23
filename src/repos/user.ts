@@ -13,10 +13,9 @@ const CREATE = `
     user_pw,
     user_name,
     user_phone,
-    user_country,
-    user_subnational
+    user_country
   )
-  VALUES ($1, $2, $3, $4, $5, $6)
+  VALUES ($1, $2, $3, $4, $5)
   RETURNING *;
 `;
 
@@ -51,7 +50,6 @@ export class UsersRepository {
     userName: string,
     userPhone: string,
     userCountry: string,
-    userSubnational: string,
   ): Promise<UsersT> {
     return await this.db.one(CREATE, [
       userEmail,
@@ -59,7 +57,6 @@ export class UsersRepository {
       userName,
       userPhone,
       userCountry,
-      userSubnational,
     ]);
   }
 

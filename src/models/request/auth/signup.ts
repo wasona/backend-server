@@ -7,6 +7,5 @@ export const SignupRequestSchema = z
     userName: z.string(),
     userPhone: z.string(),
     userCountry: z.string().length(3), // bpchar(3)
-    userSubnational: z.string(),
   })
   .strict(); // denote rejection of unknown fields this way

@@ -60,8 +60,7 @@ export async function signup(
     body.userPw,
     body.userName,
     body.userPhone,
-    body.userCountry,
-    body.userSubnational,
+    body.userCountry
   );
 
   // Create user token for email verification

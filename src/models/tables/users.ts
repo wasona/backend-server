@@ -15,7 +15,6 @@ export const Users = z
     user_login_attempts_left: z.number().optional(),
     user_created_at: z.date().optional(),
     user_updated_at: z.date().optional(),
-    user_subnational: z.string(),
   })
   .strict();
 
